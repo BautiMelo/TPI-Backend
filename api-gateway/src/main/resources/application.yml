@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: ms-solicitudes
+          uri: http://localhost:8081
+          predicates:
+            - Path=/solicitudes/**
+        - id: ms-rutas-transportistas
+          uri: http://localhost:8082
+          predicates:
+            - Path=/rutas/**
+        - id: ms-gestion-calculos
+          uri: http://localhost:8083
+          predicates:
+            - Path=/calculos/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/tpi-backend
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.security: TRACE
+    org.springframework.web.reactive.function.client: TRACE

@@ -1,0 +1,27 @@
+package com.backend.tpi.ms_solicitudes.models;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.math.BigDecimal;
+
+@Entity
+@Data
+@Table(name = "contenedores")
+public class Contenedor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_contenedor")
+    private Long id;
+
+    private BigDecimal peso;
+
+    private BigDecimal volumen;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private EstadoContenedor estado;
+
+    @Column(name = "cliente_id")
+    private Long clienteId;
+}
