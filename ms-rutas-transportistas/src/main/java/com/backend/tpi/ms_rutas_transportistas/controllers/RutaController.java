@@ -45,4 +45,20 @@ public class RutaController {
         rutaService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // ---- Integration endpoints (delegan al service) ----
+
+    @PostMapping("/{id}/asignar-transportista")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<Object> asignarTransportista(@PathVariable Long id, @RequestParam Long transportistaId) {
+        Object result = rutaService.assignTransportista(id, transportistaId);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/por-solicitud/{solicitudId}")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    public ResponseEntity<Object> findBySolicitud(@PathVariable Long solicitudId) {
+        Object result = rutaService.findBySolicitudId(solicitudId);
+        return ResponseEntity.ok(result);
+    }
 }

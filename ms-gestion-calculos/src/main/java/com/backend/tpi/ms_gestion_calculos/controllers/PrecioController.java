@@ -22,4 +22,11 @@ public class PrecioController {
     public CostoResponseDTO getPrecioEstimado(@RequestBody CostoRequestDTO request) {
         return precioService.calcularCostoEstimado(request);
     }
+
+    @PostMapping("/solicitud/{id}/costo")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public CostoResponseDTO getCostoPorSolicitud(@PathVariable Long id) {
+        // Delegar al servicio que calculará el costo para la solicitud (stub por ahora)
+        return precioService.calcularCostoParaSolicitud(id);
+    }
 }

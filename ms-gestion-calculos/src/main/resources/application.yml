@@ -26,3 +26,7 @@ spring:
 springdoc:
   api-docs.enabled: true
   swagger-ui.path: /swagger-ui.html
+
+app:
+  rutas:
+    base-url: http://ms-rutas-transportistas:8082

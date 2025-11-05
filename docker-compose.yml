@@ -35,6 +35,9 @@ services:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      # base-urls for inter-service RestClient (mapped to app.* properties)
+      - APP_TRANSPORTES_BASE_URL=http://ms-rutas-transportistas:8082
+      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
 
   ms-gestion-calculos:
     build:
@@ -46,6 +49,7 @@ services:
       - backend-net
     depends_on:
       - postgres
+      - ms-rutas-transportistas
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
@@ -53,6 +57,8 @@ services:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      # base-urls for inter-service RestClient
+      - APP_RUTAS_BASE_URL=http://ms-rutas-transportistas:8082
 
   ms-rutas-transportistas:
     build:
@@ -65,6 +71,7 @@ services:
     depends_on:
       - postgres
       - ms-gestion-calculos
+      - ms-solicitudes
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
@@ -74,6 +81,9 @@ services:
       - GOOGLE_MAPS_API_URL=${GOOGLE_MAPS_API_URL:-https://maps.googleapis.com/maps/api}
       - GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY:-}
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      # base-urls for inter-service RestClient
+      - APP_SOLICITUDES_BASE_URL=http://ms-solicitudes:8083
+      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3

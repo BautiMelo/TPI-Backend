@@ -12,4 +12,12 @@ public class PrecioService {
         // Placeholder
         return new CostoResponseDTO();
     }
+
+    /**
+     * Calculate cost for a given solicitud id. Integration point: will call repository or other services.
+     * Currently a stub.
+     */
+    public CostoResponseDTO calcularCostoParaSolicitud(Long solicitudId) {
+        throw new UnsupportedOperationException("calcularCostoParaSolicitud not implemented yet");
+    }
 }

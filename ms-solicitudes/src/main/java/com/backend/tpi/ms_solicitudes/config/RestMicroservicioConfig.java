@@ -1,0 +1,19 @@
+package com.backend.tpi.ms_solicitudes.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
+
+@Configuration
+public class RestMicroservicioConfig {
+
+    // Cliente para ms-gestion-calculos (calculos)
+    @Bean
+    public RestClient calculosClient(@Value("${app.calculos.base-url:http://localhost:8081}") String baseUrl) {
+        return RestClient.builder()
+                .baseUrl(baseUrl)
+                .build();
+    }
+
+}

@@ -52,4 +52,28 @@ public class SolicitudService {
     public void delete(Long id) {
         solicitudRepository.deleteById(id);
     }
+
+    // ----- Integration points (stubs) -----
+    /**
+     * Request a route for the given solicitud. Should call ms-rutas-transportistas via RestClient.
+     * Currently a stub: implementation pending.
+     */
+    public Object requestRoute(Long solicitudId) {
+        throw new UnsupportedOperationException("requestRoute not implemented yet");
+    }
+
+    /**
+     * Calculate price for the given solicitud. Should call ms-gestion-calculos via RestClient.
+     * Currently a stub: implementation pending.
+     */
+    public Object calculatePrice(Long solicitudId) {
+        throw new UnsupportedOperationException("calculatePrice not implemented yet");
+    }
+
+    /**
+     * Assign a transport (transportista/camion) to the solicitud. Implementation pending.
+     */
+    public Object assignTransport(Long solicitudId, Long transportistaId) {
+        throw new UnsupportedOperationException("assignTransport not implemented yet");
+    }
 }

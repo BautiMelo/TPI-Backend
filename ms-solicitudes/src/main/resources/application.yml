@@ -26,3 +26,7 @@ spring:
 springdoc:
   api-docs.enabled: true
   swagger-ui.path: /swagger-ui.html
+
+app:
+  calculos:
+    base-url: http://ms-gestion-calculos:8081

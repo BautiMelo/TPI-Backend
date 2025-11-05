@@ -41,4 +41,19 @@ public class RutaService {
     public void delete(Long id) {
         rutaRepository.deleteById(id);
     }
+
+    // ----- Integration/stub methods -----
+    /**
+     * Assign a transportista (or camion) to a ruta. Implementation pending.
+     */
+    public Object assignTransportista(Long rutaId, Long transportistaId) {
+        throw new UnsupportedOperationException("assignTransportista not implemented yet");
+    }
+
+    /**
+     * Find a route by solicitud id. Implementation pending.
+     */
+    public Object findBySolicitudId(Long solicitudId) {
+        throw new UnsupportedOperationException("findBySolicitudId not implemented yet");
+    }
 }

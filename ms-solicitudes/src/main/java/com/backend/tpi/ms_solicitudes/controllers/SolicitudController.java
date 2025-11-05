@@ -55,4 +55,30 @@ public class SolicitudController {
         solicitudService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // ---- Integration endpoints (delegan al service) ----
+
+    @PostMapping("/{id}/request-route")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<Object> requestRoute(@PathVariable Long id) {
+        // Delegar al service que deberá comunicarse con ms-rutas-transportistas
+        Object result = solicitudService.requestRoute(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/{id}/calculate-price")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<Object> calculatePrice(@PathVariable Long id) {
+        // Delegar al service que deberá comunicarse con ms-gestion-calculos
+        Object result = solicitudService.calculatePrice(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/{id}/assign-transport")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<Object> assignTransport(@PathVariable Long id, @RequestParam Long transportistaId) {
+        // Delegar al service para asignar camion/transportista a la solicitud
+        Object result = solicitudService.assignTransport(id, transportistaId);
+        return ResponseEntity.ok(result);
+    }
 }
