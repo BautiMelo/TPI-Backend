@@ -1,0 +1,113 @@
+services:
+  gateway:
+    build:
+      context: ./api-gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - backend-net
+    depends_on:
+      - postgres
+      - keycloak
+      - ms-gestion-calculos
+      - ms-rutas-transportistas
+      - ms-solicitudes
+    environment:
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
+
+  ms-solicitudes:
+    build:
+      context: ./ms-solicitudes
+    container_name: ms-solicitudes
+    expose:
+      - "8083"
+    networks:
+      - backend-net
+    depends_on:
+      - postgres
+      - ms-gestion-calculos
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+
+  ms-gestion-calculos:
+    build:
+      context: ./ms-gestion-calculos 
+    container_name: ms-gestion-calculos
+    expose:
+      - "8081"
+    networks:
+      - backend-net
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+
+  ms-rutas-transportistas:
+    build:
+      context: ./ms-rutas-transportistas
+    container_name: ms-rutas-transportistas
+    expose:
+      - "8082"
+    networks:
+      - backend-net
+    depends_on:
+      - postgres
+      - ms-gestion-calculos
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - GOOGLE_MAPS_API_URL=${GOOGLE_MAPS_API_URL:-https://maps.googleapis.com/maps/api}
+      - GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY:-}
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.3
+    container_name: keycloak
+    command: start-dev
+    ports:
+      - "8081:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin123
+      - KEYCLOAK_IMPORT=/opt/keycloak/data/import/realm-tpi-backend.json
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      - ./keycloak:/opt/keycloak/data/import:ro
+    networks:
+      - backend-net
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tpi_backend_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    driver: bridge
+
+volumes:
+  keycloak_data:
+  postgres_data:
+  

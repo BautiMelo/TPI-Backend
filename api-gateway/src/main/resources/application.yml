@@ -3,33 +3,36 @@ server:
 
 spring:
   application:
-    name: api-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: ms-solicitudes
-          uri: http://localhost:8081
-          predicates:
-            - Path=/solicitudes/**
-        - id: ms-rutas-transportistas
-          uri: http://localhost:8082
-          predicates:
-            - Path=/rutas/**
-        - id: ms-gestion-calculos
-          uri: http://localhost:8083
-          predicates:
-            - Path=/calculos/**
+    name: gateway
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/tpi-backend
+          issuer-uri: http://keycloak:8080/realms/tpi-backend
+  cloud:
+    gateway:
+      routes:
+        - id: calculos
+          # mapped to ms-gestion-calculos service inside docker network
+          uri: http://ms-gestion-calculos:8081
+          predicates:
+            - Path=/api/calculos/**
+        - id: rutas-transportistas
+          # mapped to ms-rutas-transportistas service inside docker network
+          uri: http://ms-rutas-transportistas:8082
+          predicates:
+            - Path=/api/rutas-transportistas/**
+        - id: solicitudes
+          uri: http://ms-solicitudes:8083
+          predicates:
+            - Path=/api/solicitudes/**
 
-logging:
-  level:
-    org.springframework.cloud.gateway: TRACE
-    org.springframework.security: TRACE
-    org.springframework.web.reactive.function.client: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,gateway"  # O directamente: "*"
+  endpoint:
+    gateway:
+      access: READ_ONLY
+
