@@ -4,7 +4,6 @@ import com.backend.tpi.ms_rutas_transportistas.dtos.CreateRutaDTO;
 import com.backend.tpi.ms_rutas_transportistas.dtos.RutaDTO;
 import com.backend.tpi.ms_rutas_transportistas.models.Ruta;
 import com.backend.tpi.ms_rutas_transportistas.repositories.RutaRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,28 +17,37 @@ public class RutaService {
     @Autowired
     private RutaRepository rutaRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    // Manual mapping - ModelMapper removed
 
     public RutaDTO create(CreateRutaDTO createRutaDTO) {
-        Ruta ruta = modelMapper.map(createRutaDTO, Ruta.class);
+        Ruta ruta = new Ruta();
+        ruta.setIdSolicitud(createRutaDTO.getIdSolicitud());
         ruta = rutaRepository.save(ruta);
-        return modelMapper.map(ruta, RutaDTO.class);
+        return toDto(ruta);
     }
 
     public List<RutaDTO> findAll() {
         return rutaRepository.findAll().stream()
-                .map(ruta -> modelMapper.map(ruta, RutaDTO.class))
+                .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
     public RutaDTO findById(Long id) {
         Optional<Ruta> ruta = rutaRepository.findById(id);
-        return ruta.map(value -> modelMapper.map(value, RutaDTO.class)).orElse(null);
+        return ruta.map(this::toDto).orElse(null);
     }
 
     public void delete(Long id) {
         rutaRepository.deleteById(id);
+    }
+
+    private RutaDTO toDto(Ruta ruta) {
+        if (ruta == null) return null;
+        RutaDTO dto = new RutaDTO();
+        dto.setId(ruta.getId());
+        dto.setIdSolicitud(ruta.getIdSolicitud());
+        dto.setFechaCreacion(ruta.getFechaCreacion());
+        return dto;
     }
 
     // ----- Integration/stub methods -----

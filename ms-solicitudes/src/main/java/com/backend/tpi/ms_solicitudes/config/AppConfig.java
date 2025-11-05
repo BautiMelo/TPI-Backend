@@ -1,13 +1,6 @@
 package com.backend.tpi.ms_solicitudes.config;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
+// ModelMapper bean was removed: manual mapping is used in services/controllers.
 public class AppConfig {
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+    // Intentionally left empty to avoid providing a ModelMapper bean.
 }

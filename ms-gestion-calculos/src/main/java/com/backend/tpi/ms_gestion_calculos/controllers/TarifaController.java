@@ -1,6 +1,5 @@
 package com.backend.tpi.ms_gestion_calculos.controllers;
 
-import com.backend.tpi.ms_gestion_calculos.models.Tarifa;
 import com.backend.tpi.ms_gestion_calculos.dtos.TarifaDTO;
 import com.backend.tpi.ms_gestion_calculos.services.TarifaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,41 +18,13 @@ public class TarifaController {
     @GetMapping
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN')")
     public List<TarifaDTO> getAllTarifas() {
-        return tarifaService.findAll().stream()
-                .map(this::toDto)
-                .toList();
+        return tarifaService.findAll();
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public TarifaDTO createTarifa(@RequestBody TarifaDTO tarifaDto) {
-        Tarifa tarifa = toEntity(tarifaDto);
-        Tarifa saved = tarifaService.save(tarifa);
-        return toDto(saved);
+        return tarifaService.save(tarifaDto);
     }
 
-    // Manual mapping helpers (no external mapper library)
-    private TarifaDTO toDto(Tarifa tarifa) {
-        if (tarifa == null) return null;
-        TarifaDTO dto = new TarifaDTO();
-        dto.setId(tarifa.getId());
-        // map valorLitroCombustible -> precioPorKm (approximation)
-        if (tarifa.getValorLitroCombustible() != null) {
-            dto.setPrecioPorKm(tarifa.getValorLitroCombustible().doubleValue());
-        }
-        // nombre is not present in entity; leave null or set a default
-        dto.setNombre(null);
-        return dto;
-    }
-
-    private Tarifa toEntity(TarifaDTO dto) {
-        if (dto == null) return null;
-        Tarifa tarifa = new Tarifa();
-        tarifa.setId(dto.getId());
-        if (dto.getPrecioPorKm() != null) {
-            tarifa.setValorLitroCombustible(java.math.BigDecimal.valueOf(dto.getPrecioPorKm()));
-        }
-        // costoBaseGestionFijo unknown from DTO; leave null
-        return tarifa;
-    }
 }

@@ -1,7 +1,7 @@
 package com.backend.tpi.ms_rutas_transportistas.controllers;
 
 import com.backend.tpi.ms_rutas_transportistas.dtos.TramoRequestDTO;
-import com.backend.tpi.ms_rutas_transportistas.models.Tramo;
+import com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO;
 import com.backend.tpi.ms_rutas_transportistas.services.TramoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class TramoController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
-    public ResponseEntity<Tramo> create(@RequestBody TramoRequestDTO tramoRequestDTO) {
-        Tramo tramo = tramoService.create(tramoRequestDTO);
+    public ResponseEntity<TramoDTO> create(@RequestBody TramoRequestDTO tramoRequestDTO) {
+        TramoDTO tramo = tramoService.create(tramoRequestDTO);
         if (tramo == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -29,7 +29,7 @@ public class TramoController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN','CLIENTE')")
-    public List<Tramo> getAllTramos() {
+    public List<TramoDTO> getAllTramos() {
         return tramoService.findAll();
     }
 }
