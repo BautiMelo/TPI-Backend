@@ -8,13 +8,15 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    @Value("${google.maps.api.url}")
-    private String googleMapsApiUrl;
+    @Value("${app.calculos.base-url}")
+    private String calculosBaseUrl;
 
-    @Bean("googleMapsRestClient")
-    public RestClient googleMapsRestClient() {
+    @Bean("calculosClient")
+    public RestClient calculosClient() {
+        // se configura base URL para poder usar rutas relativas en los servicios
         return RestClient.builder()
-                .baseUrl(googleMapsApiUrl)
+                .baseUrl(calculosBaseUrl)
                 .build();
     }
 }
+

@@ -16,4 +16,12 @@ public class RestMicroservicioConfig {
                 .build();
     }
 
+    // Cliente para ms-rutas-transportistas (rutas)
+    @Bean
+    public RestClient rutasClient(@Value("${app.rutas.base-url:http://localhost:8082}") String baseUrl) {
+        return RestClient.builder()
+                .baseUrl(baseUrl)
+                .build();
+    }
+
 }

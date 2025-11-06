@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TarifaRepository extends JpaRepository<Tarifa, Long> {
+	// Devuelve la tarifa más reciente (por id) para usar como tarifa activa por defecto
+	Tarifa findTopByOrderByIdDesc();
 }

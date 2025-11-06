@@ -13,26 +13,27 @@ spring:
     gateway:
       routes:
         - id: calculos
-          # mapped to ms-gestion-calculos service inside docker network
           uri: http://ms-gestion-calculos:8081
           predicates:
             - Path=/api/calculos/**
+          
         - id: rutas-transportistas
-          # mapped to ms-rutas-transportistas service inside docker network
           uri: http://ms-rutas-transportistas:8082
           predicates:
             - Path=/api/rutas-transportistas/**
+
         - id: solicitudes
           uri: http://ms-solicitudes:8083
           predicates:
             - Path=/api/solicitudes/**
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "health,info,gateway"  # O directamente: "*"
-  endpoint:
-    gateway:
-      access: READ_ONLY
+        
+app:
+  oauth2:
+    # Keycloak token endpoint (client_credentials)
+    token-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/token
+    # client-id / client-secret for the gateway (configure these in Keycloak)
+    client-id: ${GATEWAY_CLIENT_ID:gateway-client}
+    client-secret: ${GATEWAY_CLIENT_SECRET:secret}
+    # optional scopes (space separated)
+    scope: ${GATEWAY_CLIENT_SCOPES:}
 

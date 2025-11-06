@@ -10,18 +10,20 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/realms/tpi-backend
   datasource:
-    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB:tpi_backend_db}
+    # Docker-first: connect to the postgres service on the compose network by default.
+    # Override locally with POSTGRES_HOST=localhost when running the app outside Docker.
+    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:5432/${POSTGRES_DB:tpi_backend_db}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        show_sql: true
+        format-sql: true
 
 springdoc:
   api-docs.enabled: true

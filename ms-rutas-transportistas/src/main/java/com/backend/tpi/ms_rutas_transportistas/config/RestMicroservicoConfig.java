@@ -17,8 +17,8 @@ public class RestMicroservicoConfig {
     }
 
     // Cliente para ms-gestion-calculos. Configurar en application.yml como app.calculos.base-url
-    @Bean
-    public RestClient calculosClient(@Value("${app.calculos.base-url:http://localhost:8081}") String baseUrl) {
+    @Bean("calculosClientDefault")
+    public RestClient calculosClientDefault(@Value("${app.calculos.base-url:http://localhost:8081}") String baseUrl) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
                 .build();

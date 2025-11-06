@@ -32,4 +32,18 @@ public class TramoController {
     public List<TramoDTO> getAllTramos() {
         return tramoService.findAll();
     }
+
+    @GetMapping("/por-ruta/{rutaId}")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN','CLIENTE')")
+    public List<TramoDTO> getByRuta(@PathVariable Long rutaId) {
+        return tramoService.findByRutaId(rutaId);
+    }
+
+    @PostMapping("/{id}/asignar-transportista")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<TramoDTO> asignarTransportista(@PathVariable Long id, @RequestParam Long camionId) {
+        TramoDTO dto = tramoService.assignTransportista(id, camionId);
+        if (dto == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dto);
+    }
 }

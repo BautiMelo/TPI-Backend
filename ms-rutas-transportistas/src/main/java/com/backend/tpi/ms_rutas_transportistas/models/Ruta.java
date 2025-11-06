@@ -8,10 +8,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "rutas")
 @Data
 public class Ruta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_ruta")
     private Long id;
 
     private Long idSolicitud;

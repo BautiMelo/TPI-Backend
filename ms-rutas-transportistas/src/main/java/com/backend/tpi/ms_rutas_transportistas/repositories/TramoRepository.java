@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TramoRepository extends JpaRepository<Tramo, Long> {
+	java.util.List<Tramo> findByRutaId(Long rutaId);
 }

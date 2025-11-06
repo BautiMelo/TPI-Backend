@@ -4,21 +4,40 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
+@Table(name = "tramos")
 @Data
 public class Tramo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_tramo")
     private Long id;
-    private String origen;
-    private String destino;
+    // According to DER: origin/destination reference deposits and lat/long coords
+    private Long origenDepositoId;
+    private Long destinoDepositoId;
+    private java.math.BigDecimal origenLat;
+    private java.math.BigDecimal origenLong;
+    private java.math.BigDecimal destinoLat;
+    private java.math.BigDecimal destinoLong;
     private Double distancia;
 
     @ManyToOne
+    @JoinColumn(name = "ruta_id")
     private Ruta ruta;
 
     @ManyToOne
+    @JoinColumn(name = "tipo_tramo_id")
     private TipoTramo tipoTramo;
 
     @ManyToOne
+    @JoinColumn(name = "estado_tramo_id")
     private EstadoTramo estado;
+    
+    // Camion dominio (patente) referenciado in DER
+    private String camionDominio;
+    private java.math.BigDecimal costoAproximado;
+    private java.math.BigDecimal costoReal;
+    private java.time.LocalDateTime fechaHoraInicioEstimada;
+    private java.time.LocalDateTime fechaHoraFinEstimada;
+    private java.time.LocalDateTime fechaHoraInicioReal;
+    private java.time.LocalDateTime fechaHoraFinReal;
 }

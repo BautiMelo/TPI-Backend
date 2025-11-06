@@ -10,18 +10,18 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/realms/tpi-backend
   datasource:
-    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB:tpi_backend_db}
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: example
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        show_sql: true
+        format-sql: true
+    hibernate:
+      ddl-auto: update
 
 springdoc:
   api-docs.enabled: true
@@ -32,3 +32,4 @@ app:
     base-url: http://ms-solicitudes:8083
   calculos:
     base-url: http://ms-gestion-calculos:8081
+
