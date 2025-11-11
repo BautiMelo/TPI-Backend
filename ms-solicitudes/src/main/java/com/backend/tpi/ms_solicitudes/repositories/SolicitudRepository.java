@@ -6,4 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
+	// Buscar solicitudes por cliente
+	java.util.List<Solicitud> findByClienteId(Long clienteId);
+
+	// Buscar solicitudes por nombre de estado (join automático por propiedad estado.nombre)
+	java.util.List<Solicitud> findByEstado_Nombre(String nombre);
+
+	// Buscar solicitudes por ruta
+	java.util.List<Solicitud> findByRutaId(Long rutaId);
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ContenedorRepository extends JpaRepository<Contenedor, Long> {
+	java.util.List<Contenedor> findByClienteId(Long clienteId);
 }

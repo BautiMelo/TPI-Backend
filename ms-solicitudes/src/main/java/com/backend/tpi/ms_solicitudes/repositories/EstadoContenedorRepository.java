@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoContenedorRepository extends JpaRepository<EstadoContenedor, Long> {
+	java.util.Optional<EstadoContenedor> findByNombre(String nombre);
 }

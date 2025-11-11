@@ -1,0 +1,55 @@
+{
+  "realm": "tpi-backend",
+  "enabled": true,
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": true,
+  "clients": [
+    {
+      "clientId": "postman-test",
+      "rootUrl": "http://localhost:8083",
+      "publicClient": false,
+      "secret": "secret-postman-123",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "tester",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "tester@example.com",
+      "firstName": "Tester",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "CLIENTE",
+        "description": "Cliente que crea solicitudes."
+      },
+      {
+        "name": "TRANSPORTISTA",
+        "description": "Transportista que realiza entregas."
+      },
+      {
+        "name": "OPERADOR",
+        "description": "Operador interno del sistema."
+      }
+    ]
+  }
+}

@@ -21,8 +21,8 @@ services:
     build:
       context: ./ms-solicitudes
     container_name: ms-solicitudes
-    expose:
-      - "8083"
+    ports:
+      - "8083:8083"
     networks:
       - backend-net
     depends_on:
@@ -34,16 +34,16 @@ services:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
-      # base-urls for inter-service RestClient (mapped to app.* properties)
+      # base-urls para comunicación entre microservicios
       - APP_TRANSPORTES_BASE_URL=http://ms-rutas-transportistas:8082
-      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
+      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8084
 
   ms-gestion-calculos:
     build:
-      context: ./ms-gestion-calculos 
+      context: ./ms-gestion-calculos
     container_name: ms-gestion-calculos
-    expose:
-      - "8081"
+    ports:
+      - "8084:8084"
     networks:
       - backend-net
     depends_on:
@@ -55,15 +55,14 @@ services:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
-      # base-urls for inter-service RestClient
       - APP_RUTAS_BASE_URL=http://ms-rutas-transportistas:8082
 
   ms-rutas-transportistas:
     build:
       context: ./ms-rutas-transportistas
     container_name: ms-rutas-transportistas
-    expose:
-      - "8082"
+    ports:
+      - "8082:8082"
     networks:
       - backend-net
     depends_on:
@@ -77,23 +76,22 @@ services:
       - GOOGLE_MAPS_API_URL=${GOOGLE_MAPS_API_URL:-https://maps.googleapis.com/maps/api}
       - GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY:-}
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
-      # base-urls for inter-service RestClient
       - APP_SOLICITUDES_BASE_URL=http://ms-solicitudes:8083
-      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
+      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8084
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3
     container_name: keycloak
-    command: start-dev
+    command: ["start-dev", "--import-realm"]
     ports:
-      - "8081:8080"
+      - "8089:8080"
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin123
-      - KEYCLOAK_IMPORT=/opt/keycloak/data/import/realm-tpi-backend.json
+      - KC_HOSTNAME=keycloak
     volumes:
+      - ./keycloak:/opt/keycloak/data/import
       - keycloak_data:/opt/keycloak/data
-      - ./keycloak:/opt/keycloak/data/import:ro
     networks:
       - backend-net
 
@@ -104,8 +102,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: tpi_backend_db
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
     networks:
       - backend-net
 
@@ -116,4 +117,3 @@ networks:
 volumes:
   keycloak_data:
   postgres_data:
-  
