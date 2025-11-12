@@ -1,0 +1,554 @@
+{
+	"info": {
+		"_postman_id": "tpi-backend-collection",
+		"name": "TPI Backend - Microservicios",
+		"description": "Colección completa de APIs para el sistema de gestión de transportes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "0. Authentication",
+			"item": [
+				{
+					"name": "Obtener Token (Password Grant)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);",
+									"    console.log(\"Token guardado: \" + jsonData.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman-test",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "secret-postman-123",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "tester",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_url}}"
+							],
+							"path": [
+								"realms",
+								"tpi-backend",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1. MS Solicitudes",
+			"item": [
+				{
+					"name": "Crear Solicitud",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"direccionOrigen\": \"Av. Corrientes 1234, CABA\",\n    \"direccionDestino\": \"Av. Santa Fe 5678, CABA\"\n}"
+						},
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes"
+							]
+						},
+						"description": "Requiere rol: CLIENTE"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todas las Solicitudes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes"
+							]
+						},
+						"description": "Requiere rol: RESPONSABLE o ADMIN"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Solicitud por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"1"
+							]
+						},
+						"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Solicitud",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"direccionOrigen\": \"Av. Corrientes 999, CABA\",\n    \"direccionDestino\": \"Av. Santa Fe 777, CABA\"\n}"
+						},
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"1"
+							]
+						},
+						"description": "Requiere rol: RESPONSABLE o ADMIN"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Solicitud",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"1"
+							]
+						},
+						"description": "Requiere rol: RESPONSABLE o ADMIN"
+					},
+					"response": []
+				},
+				{
+					"name": "Solicitar Ruta para Solicitud",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1/request-route",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"1",
+								"request-route"
+							]
+						},
+						"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-rutas-transportistas"
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular Precio de Solicitud",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1/calculate-price",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"1",
+								"calculate-price"
+							]
+						},
+						"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-gestion-calculos"
+					},
+					"response": []
+				},
+				{
+					"name": "Asignar Transporte",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1/assign-transport?transportistaId=1",
+							"host": [
+								"{{solicitudes_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"1",
+								"assign-transport"
+							],
+							"query": [
+								{
+									"key": "transportistaId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Requiere rol: RESPONSABLE o ADMIN"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. MS Gestión Cálculos",
+			"item": [
+				{
+					"name": "Precio",
+					"item": [
+						{
+							"name": "Calcular Costo de Solicitud",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/precio/solicitud/:solicitudId/costo",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"precio",
+										"solicitud",
+										":solicitudId",
+										"costo"
+									],
+									"variable": [
+										{
+											"key": "solicitudId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tarifas",
+					"item": [
+						{
+							"name": "Listar Tarifas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Tarifa",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"Tarifa Express\",\n    \"precioPorKm\": 150.50,\n    \"activa\": true\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Depósitos",
+					"item": [
+						{
+							"name": "Listar Depósitos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/depositos",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3. MS Rutas Transportistas",
+			"item": [
+				{
+					"name": "Rutas",
+					"item": [
+						{
+							"name": "Crear Ruta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"idSolicitud\": 1\n}"
+								},
+								"url": {
+									"raw": "{{rutas_url}}/api/v1/rutas",
+									"host": [
+										"{{rutas_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Rutas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rutas_url}}/api/v1/rutas",
+									"host": [
+										"{{rutas_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Camiones",
+					"item": [
+						{
+							"name": "Listar Camiones",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rutas_url}}/api/v1/camiones",
+									"host": [
+										"{{rutas_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"camiones"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tramos",
+					"item": [
+						{
+							"name": "Listar Tramos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rutas_url}}/api/v1/tramos",
+									"host": [
+										"{{rutas_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tramos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "keycloak_url",
+			"value": "http://localhost:8089",
+			"type": "string"
+		},
+		{
+			"key": "solicitudes_url",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "calculos_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "rutas_url",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

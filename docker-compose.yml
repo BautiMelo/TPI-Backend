@@ -14,7 +14,7 @@ services:
       - ms-rutas-transportistas
       - ms-solicitudes
     environment:
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8089/realms/tpi-backend
       - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
 
   ms-solicitudes:
@@ -27,23 +27,25 @@ services:
       - backend-net
     depends_on:
       - postgres
+      - keycloak
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tpi_backend_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tpi_backend_db?sslmode=prefer
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
-      # base-urls para comunicación entre microservicios
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://host.docker.internal:8089/realms/tpi-backend/protocol/openid-connect/certs
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=DEBUG
+      # base-urls for inter-service RestClient (mapped to app.* properties)
       - APP_TRANSPORTES_BASE_URL=http://ms-rutas-transportistas:8082
-      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8084
+      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
 
   ms-gestion-calculos:
     build:
       context: ./ms-gestion-calculos
     container_name: ms-gestion-calculos
     ports:
-      - "8084:8084"
+      - "8081:8081"
     networks:
       - backend-net
     depends_on:
@@ -54,7 +56,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8089/realms/tpi-backend
       - APP_RUTAS_BASE_URL=http://ms-rutas-transportistas:8082
 
   ms-rutas-transportistas:
@@ -75,9 +77,9 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - GOOGLE_MAPS_API_URL=${GOOGLE_MAPS_API_URL:-https://maps.googleapis.com/maps/api}
       - GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY:-}
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8089/realms/tpi-backend
       - APP_SOLICITUDES_BASE_URL=http://ms-solicitudes:8083
-      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8084
+      - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3
@@ -88,7 +90,8 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin123
-      - KC_HOSTNAME=keycloak
+      - KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
     volumes:
       - ./keycloak:/opt/keycloak/data/import
       - keycloak_data:/opt/keycloak/data
