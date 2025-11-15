@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,4 +21,7 @@ public class Tarifa {
 
     @Column(name = "valor_litro_combustible")
     private BigDecimal valorLitroCombustible;
+
+    @OneToMany(mappedBy = "tarifa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TarifaVolumenPeso> rangos = new ArrayList<>();
 }

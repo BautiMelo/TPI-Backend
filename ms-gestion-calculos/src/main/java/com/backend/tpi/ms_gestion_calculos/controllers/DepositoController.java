@@ -26,4 +26,16 @@ public class DepositoController {
     public DepositoDTO createDeposito(@RequestBody DepositoDTO deposito) {
         return depositoService.save(deposito);
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR','RESPONSABLE')")
+    public DepositoDTO getDepositoById(@PathVariable Long id) {
+        return depositoService.findById(id);
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR','RESPONSABLE')")
+    public DepositoDTO updateDeposito(@PathVariable Long id, @RequestBody DepositoDTO depositoDto) {
+        return depositoService.update(id, depositoDto);
+    }
 }

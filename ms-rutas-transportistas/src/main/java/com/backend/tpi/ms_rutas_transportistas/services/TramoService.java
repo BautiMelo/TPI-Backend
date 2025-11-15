@@ -109,4 +109,32 @@ public class TramoService {
         Tramo saved = tramoRepository.save(tramo);
         return toDto(saved);
     }
+
+    public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO iniciarTramo(Long rutaId, Long tramoId) {
+        Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
+        if (optionalTramo.isEmpty()) return null;
+        
+        Tramo tramo = optionalTramo.get();
+        if (tramo.getRuta() == null || !tramo.getRuta().getId().equals(rutaId)) {
+            throw new RuntimeException("El tramo no pertenece a la ruta especificada");
+        }
+        
+        tramo.setFechaHoraInicioReal(java.time.LocalDateTime.now());
+        Tramo saved = tramoRepository.save(tramo);
+        return toDto(saved);
+    }
+
+    public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO finalizarTramo(Long rutaId, Long tramoId, java.time.LocalDateTime fechaHora) {
+        Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
+        if (optionalTramo.isEmpty()) return null;
+        
+        Tramo tramo = optionalTramo.get();
+        if (tramo.getRuta() == null || !tramo.getRuta().getId().equals(rutaId)) {
+            throw new RuntimeException("El tramo no pertenece a la ruta especificada");
+        }
+        
+        tramo.setFechaHoraFinReal(fechaHora != null ? fechaHora : java.time.LocalDateTime.now());
+        Tramo saved = tramoRepository.save(tramo);
+        return toDto(saved);
+    }
 }

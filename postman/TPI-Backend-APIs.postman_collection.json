@@ -621,6 +621,418 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "OSRM",
+					"item": [
+						{
+							"name": "Calcular Distancia",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rutas_url}}/api/v1/osrm/distancia?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-34.9215&destinoLong=-57.9545",
+									"host": [
+										"{{rutas_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"osrm",
+										"distancia"
+									],
+									"query": [
+										{
+											"key": "origenLat",
+											"value": "-34.6037"
+										},
+										{
+											"key": "origenLong",
+											"value": "-58.3816"
+										},
+										{
+											"key": "destinoLat",
+											"value": "-34.9215"
+										},
+										{
+											"key": "destinoLong",
+											"value": "-57.9545"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Calcular Ruta Simple",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rutas_url}}/api/v1/osrm/ruta-simple?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-31.4201&destinoLong=-64.1888",
+									"host": [
+										"{{rutas_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"osrm",
+										"ruta-simple"
+									],
+									"query": [
+										{
+											"key": "origenLat",
+											"value": "-34.6037"
+										},
+										{
+											"key": "origenLong",
+											"value": "-58.3816"
+										},
+										{
+											"key": "destinoLat",
+											"value": "-31.4201"
+										},
+										{
+											"key": "destinoLong",
+											"value": "-64.1888"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3. MS Gestión Cálculos",
+			"item": [
+				{
+					"name": "Depósitos",
+					"item": [
+						{
+							"name": "Listar Depósitos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/depositos",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Depósito",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Depósito Central\",\n  \"direccion\": \"Av. Corrientes 1234\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"idCiudad\": 1\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/depositos",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener Depósito por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/depositos/1",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Depósito",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Depósito Central Actualizado\",\n  \"direccion\": \"Av. Corrientes 5678\",\n  \"latitud\": -34.6100,\n  \"longitud\": -58.3900\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/depositos/1",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tarifas",
+					"item": [
+						{
+							"name": "Listar Tarifas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Tarifa",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Tarifa Standard\",\n  \"costoBaseGestionFijo\": 5000.0,\n  \"valorLitroCombustible\": 850.0\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener Tarifa por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas/1",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Tarifa",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"costoBaseGestionFijo\": 6000.0,\n  \"valorLitroCombustible\": 900.0\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas/1",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Agregar Rango a Tarifa",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"volumenMin\": 0.0,\n  \"volumenMax\": 50.0,\n  \"pesoMin\": 0.0,\n  \"pesoMax\": 500.0,\n  \"costoPorKmBase\": 25.0\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas/1/rango",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1",
+										"rango"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Rango de Tarifa",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"volumenMax\": 60.0,\n  \"pesoMax\": 600.0,\n  \"costoPorKmBase\": 30.0\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/tarifas/1/rango/1",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1",
+										"rango",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Precio",
+					"item": [
+						{
+							"name": "Calcular Precio Estimado",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idTarifa\": 1,\n  \"volumen\": 30.0,\n  \"peso\": 300.0,\n  \"litrosCombustible\": 40.0,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/precio/estimado",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"precio",
+										"estimado"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Calcular Precio Traslado",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idTarifa\": 1,\n  \"volumen\": 30.0,\n  \"peso\": 300.0,\n  \"litrosCombustible\": 40.0,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
+								},
+								"url": {
+									"raw": "{{calculos_url}}/api/v1/precio/traslado",
+									"host": [
+										"{{calculos_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"precio",
+										"traslado"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

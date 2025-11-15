@@ -32,9 +32,11 @@ public class TarifaVolumenPesoService {
 
     public TarifaVolumenPesoDTO update(Long id, TarifaVolumenPesoDTO dto) {
         return repository.findById(id).map(existing -> {
-            existing.setVolumenMax(dto.getVolumenMax());
-            existing.setPesoMax(dto.getPesoMax());
-            existing.setPrecio(dto.getPrecio());
+            if (dto.getVolumenMin() != null) existing.setVolumenMin(dto.getVolumenMin());
+            if (dto.getVolumenMax() != null) existing.setVolumenMax(dto.getVolumenMax());
+            if (dto.getPesoMin() != null) existing.setPesoMin(dto.getPesoMin());
+            if (dto.getPesoMax() != null) existing.setPesoMax(dto.getPesoMax());
+            if (dto.getCostoPorKmBase() != null) existing.setCostoPorKmBase(dto.getCostoPorKmBase());
             TarifaVolumenPeso saved = repository.save(existing);
             return toDto(saved);
         }).orElse(null);
@@ -48,9 +50,11 @@ public class TarifaVolumenPesoService {
         if (e == null) return null;
         TarifaVolumenPesoDTO dto = new TarifaVolumenPesoDTO();
         dto.setId(e.getId());
+        dto.setVolumenMin(e.getVolumenMin());
         dto.setVolumenMax(e.getVolumenMax());
+        dto.setPesoMin(e.getPesoMin());
         dto.setPesoMax(e.getPesoMax());
-        dto.setPrecio(e.getPrecio());
+        dto.setCostoPorKmBase(e.getCostoPorKmBase());
         return dto;
     }
 
@@ -58,9 +62,11 @@ public class TarifaVolumenPesoService {
         if (dto == null) return null;
         TarifaVolumenPeso e = new TarifaVolumenPeso();
         e.setId(dto.getId());
+        e.setVolumenMin(dto.getVolumenMin());
         e.setVolumenMax(dto.getVolumenMax());
+        e.setPesoMin(dto.getPesoMin());
         e.setPesoMax(dto.getPesoMax());
-        e.setPrecio(dto.getPrecio());
+        e.setCostoPorKmBase(dto.getCostoPorKmBase());
         return e;
     }
 }

@@ -26,12 +26,52 @@ public class DepositoService {
         return toDto(saved);
     }
 
+    public DepositoDTO findById(Long id) {
+        Deposito deposito = depositoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Depósito no encontrado con id: " + id));
+        return toDto(deposito);
+    }
+
+    public DepositoDTO update(Long id, DepositoDTO dto) {
+        Deposito deposito = depositoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Depósito no encontrado con id: " + id));
+        
+        if (dto.getNombre() != null) {
+            deposito.setNombre(dto.getNombre());
+        }
+        if (dto.getDireccion() != null) {
+            deposito.setDireccion(dto.getDireccion());
+        }
+        if (dto.getLatitud() != null) {
+            deposito.setLatitud(java.math.BigDecimal.valueOf(dto.getLatitud()));
+        }
+        if (dto.getLongitud() != null) {
+            deposito.setLongitud(java.math.BigDecimal.valueOf(dto.getLongitud()));
+        }
+        if (dto.getIdCiudad() != null) {
+            // Aquí podrías buscar la ciudad si tienes el repositorio
+            // Por ahora solo guardamos el ID
+        }
+        
+        Deposito saved = depositoRepository.save(deposito);
+        return toDto(saved);
+    }
+
     private DepositoDTO toDto(Deposito deposito) {
         if (deposito == null) return null;
         DepositoDTO dto = new DepositoDTO();
         dto.setId(deposito.getId());
         dto.setNombre(deposito.getNombre());
         dto.setDireccion(deposito.getDireccion());
+        if (deposito.getLatitud() != null) {
+            dto.setLatitud(deposito.getLatitud().doubleValue());
+        }
+        if (deposito.getLongitud() != null) {
+            dto.setLongitud(deposito.getLongitud().doubleValue());
+        }
+        if (deposito.getCiudad() != null) {
+            dto.setIdCiudad(deposito.getCiudad().getId());
+        }
         return dto;
     }
 
@@ -41,6 +81,12 @@ public class DepositoService {
         deposito.setId(dto.getId());
         deposito.setNombre(dto.getNombre());
         deposito.setDireccion(dto.getDireccion());
+        if (dto.getLatitud() != null) {
+            deposito.setLatitud(java.math.BigDecimal.valueOf(dto.getLatitud()));
+        }
+        if (dto.getLongitud() != null) {
+            deposito.setLongitud(java.math.BigDecimal.valueOf(dto.getLongitud()));
+        }
         return deposito;
     }
 }

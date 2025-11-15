@@ -58,7 +58,7 @@ public class PrecioService {
                 boolean aplicaPeso = request.getPeso() == null || t.getPesoMax() == null || request.getPeso() <= t.getPesoMax();
                 boolean aplicaVolumen = request.getVolumen() == null || t.getVolumenMax() == null || request.getVolumen() <= t.getVolumenMax();
                 if (aplicaPeso && aplicaVolumen) {
-                    cargoVolumenPeso = t.getPrecio() != null ? t.getPrecio() : 0.0;
+                    cargoVolumenPeso = t.getCostoPorKmBase() != null ? t.getCostoPorKmBase() : 0.0;
                     break;
                 }
             }
@@ -120,5 +120,14 @@ public class PrecioService {
         CostoResponseDTO resp = calcularCostoEstimado(fallback);
         resp.setTiempoEstimado(resp.getTiempoEstimado() + " (estimado - fallback)");
         return resp;
+    }
+
+    /**
+     * Calcula el costo real de un traslado (similar a estimado pero puede incluir lógica adicional)
+     */
+    public CostoResponseDTO calcularCostoTraslado(CostoRequestDTO request) {
+        // Por ahora usa la misma lógica que el estimado
+        // En el futuro podría incluir costos adicionales, recargos, etc.
+        return calcularCostoEstimado(request);
     }
 }

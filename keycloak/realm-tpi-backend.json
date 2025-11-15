@@ -43,7 +43,7 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["CLIENTE", "RESPONSABLE", "TRANSPORTISTA", "OPERADOR"]
+      "realmRoles": ["CLIENTE", "RESPONSABLE", "TRANSPORTISTA", "OPERADOR", "ADMIN"]
     },
     {
       "username": "cliente1",
@@ -123,6 +123,10 @@
       {
         "name": "OPERADOR",
         "description": "Operador interno del sistema."
+      },
+      {
+        "name": "ADMIN",
+        "description": "Administrador del sistema con acceso completo."
       }
     ]
   }

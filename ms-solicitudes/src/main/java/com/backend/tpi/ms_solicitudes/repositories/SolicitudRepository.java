@@ -14,4 +14,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
 
 	// Buscar solicitudes por ruta
 	java.util.List<Solicitud> findByRutaId(Long rutaId);
+
+	// Buscar solicitud activa por contenedor (para seguimiento)
+	java.util.Optional<Solicitud> findFirstByContenedorIdOrderByIdDesc(Long contenedorId);
 }

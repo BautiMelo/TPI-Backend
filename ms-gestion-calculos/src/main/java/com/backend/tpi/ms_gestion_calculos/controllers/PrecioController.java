@@ -24,6 +24,13 @@ public class PrecioController {
         return precioService.calcularCostoEstimado(request);
     }
 
+    @PostMapping("/traslado")
+    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
+    public CostoResponseDTO getCostoTraslado(@RequestBody CostoRequestDTO request) {
+        // Calcular el costo real de un traslado
+        return precioService.calcularCostoTraslado(request);
+    }
+
     @PostMapping("/solicitud/{id}/costo")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public CostoResponseDTO getCostoPorSolicitud(@PathVariable Long id) {

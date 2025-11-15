@@ -1,18 +1,23 @@
 package com.backend.tpi.ms_gestion_calculos.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "tarifa_volumen_peso")
 public class TarifaVolumenPeso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_tarifa")
+    private Tarifa tarifa;
+    
+    private Double volumenMin;
     private Double volumenMax;
+    private Double pesoMin;
     private Double pesoMax;
-    private Double precio;
+    private Double costoPorKmBase;
 }

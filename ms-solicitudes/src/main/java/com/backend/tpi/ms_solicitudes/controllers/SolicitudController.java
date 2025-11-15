@@ -25,8 +25,10 @@ public class SolicitudController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
-    public ResponseEntity<List<SolicitudDTO>> findAll() {
-        return ResponseEntity.ok(solicitudService.findAll());
+    public ResponseEntity<List<SolicitudDTO>> findAll(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) Long clienteId) {
+        return ResponseEntity.ok(solicitudService.findAllWithFilters(estado, clienteId));
     }
 
     @GetMapping("/{id}")
@@ -80,5 +82,22 @@ public class SolicitudController {
         // Delegar al service para asignar camion/transportista a la solicitud
         Object result = solicitudService.assignTransport(id, transportistaId);
         return ResponseEntity.ok(result);
+    }
+
+    @PatchMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<SolicitudDTO> updateEstado(@PathVariable Long id, @RequestParam Long estadoId) {
+        SolicitudDTO solicitudDTO = solicitudService.updateEstado(id, estadoId);
+        return ResponseEntity.ok(solicitudDTO);
+    }
+
+    @PatchMapping("/{id}/programar")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<SolicitudDTO> programar(
+            @PathVariable Long id, 
+            @RequestParam java.math.BigDecimal costoEstimado,
+            @RequestParam java.math.BigDecimal tiempoEstimado) {
+        SolicitudDTO solicitudDTO = solicitudService.programar(id, costoEstimado, tiempoEstimado);
+        return ResponseEntity.ok(solicitudDTO);
     }
 }

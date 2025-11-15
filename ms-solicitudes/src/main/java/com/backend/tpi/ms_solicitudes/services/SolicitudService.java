@@ -56,6 +56,30 @@ public class SolicitudService {
                 .collect(Collectors.toList());
     }
 
+    public List<SolicitudDTO> findAllWithFilters(String estado, Long clienteId) {
+        List<Solicitud> solicitudes;
+        
+        if (estado != null && !estado.isEmpty() && clienteId != null) {
+            // Filtrar por ambos
+            solicitudes = solicitudRepository.findByEstado_Nombre(estado).stream()
+                    .filter(s -> clienteId.equals(s.getClienteId()))
+                    .toList();
+        } else if (estado != null && !estado.isEmpty()) {
+            // Solo por estado
+            solicitudes = solicitudRepository.findByEstado_Nombre(estado);
+        } else if (clienteId != null) {
+            // Solo por cliente
+            solicitudes = solicitudRepository.findByClienteId(clienteId);
+        } else {
+            // Sin filtros
+            solicitudes = solicitudRepository.findAll();
+        }
+        
+        return solicitudes.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
     public SolicitudDTO findById(Long id) {
         Optional<Solicitud> solicitud = solicitudRepository.findById(id);
         return solicitud.map(this::toDto).orElse(null);
@@ -122,7 +146,7 @@ public class SolicitudService {
             // si falla la llamada remota, caeremos al cálculo local
         }
 
-        // Fallback: cálculo local (mantener compatibilidad)
+
         Optional<Solicitud> optionalSolicitud = solicitudRepository.findById(solicitudId);
         if (optionalSolicitud.isEmpty()) {
             throw new IllegalArgumentException("Solicitud not found: " + solicitudId);
@@ -231,5 +255,34 @@ public class SolicitudService {
         .retrieve()
         .toEntity(Object.class);
     return assignResp != null ? assignResp.getBody() : null;
+    }
+
+    /**
+     * Update only the estado field of a solicitud
+     */
+    public SolicitudDTO updateEstado(Long id, Long estadoId) {
+        Solicitud solicitud = solicitudRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada con ID: " + id));
+        
+        com.backend.tpi.ms_solicitudes.models.EstadoSolicitud estado = new com.backend.tpi.ms_solicitudes.models.EstadoSolicitud();
+        estado.setId(estadoId);
+        solicitud.setEstado(estado);
+        
+        solicitud = solicitudRepository.save(solicitud);
+        return toDto(solicitud);
+    }
+
+    /**
+     * Program a solicitud with estimated cost and time
+     */
+    public SolicitudDTO programar(Long id, java.math.BigDecimal costoEstimado, java.math.BigDecimal tiempoEstimado) {
+        Solicitud solicitud = solicitudRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada con ID: " + id));
+        
+        solicitud.setCostoEstimado(costoEstimado);
+        solicitud.setTiempoEstimado(tiempoEstimado);
+        
+        solicitud = solicitudRepository.save(solicitud);
+        return toDto(solicitud);
     }
 }

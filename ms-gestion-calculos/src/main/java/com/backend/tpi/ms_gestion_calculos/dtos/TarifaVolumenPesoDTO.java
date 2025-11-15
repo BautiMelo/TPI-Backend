@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class TarifaVolumenPesoDTO {
     private Long id;
+    private Double volumenMin;
     private Double volumenMax;
+    private Double pesoMin;
     private Double pesoMax;
-    private Double precio;
+    private Double costoPorKmBase;
 }

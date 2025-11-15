@@ -76,12 +76,12 @@ public class OSRMController {
             description = "Alternativa GET para calcular ruta entre dos puntos")
     public ResponseEntity<RutaCalculadaDTO> calcularRutaSimple(
             @RequestParam Double origenLat,
-            @RequestParam Double origenLon,
+            @RequestParam Double origenLong,
             @RequestParam Double destinoLat,
-            @RequestParam Double destinoLon
+            @RequestParam Double destinoLong
     ) {
-        CoordenadaDTO origen = new CoordenadaDTO(origenLat, origenLon);
-        CoordenadaDTO destino = new CoordenadaDTO(destinoLat, destinoLon);
+        CoordenadaDTO origen = new CoordenadaDTO(origenLat, origenLong);
+        CoordenadaDTO destino = new CoordenadaDTO(destinoLat, destinoLong);
 
         RutaCalculadaDTO resultado = osrmService.calcularRuta(origen, destino);
 
@@ -90,6 +90,30 @@ public class OSRMController {
         } else {
             return ResponseEntity.badRequest().body(resultado);
         }
+    }
+
+    @GetMapping("/distancia")
+    @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','OPERADOR')")
+    @Operation(summary = "Calcular distancia y duración entre dos puntos",
+            description = "Calcula distancia usando OSRM - Compatible con endpoint legacy /maps/distancia")
+    public ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.DistanciaResponseDTO> getDistancia(
+            @RequestParam Double origenLat,
+            @RequestParam Double origenLong,
+            @RequestParam Double destinoLat,
+            @RequestParam Double destinoLong) {
+        
+        CoordenadaDTO origen = new CoordenadaDTO(origenLat, origenLong);
+        CoordenadaDTO destino = new CoordenadaDTO(destinoLat, destinoLong);
+        
+        RutaCalculadaDTO resultado = osrmService.calcularRuta(origen, destino);
+        
+        // Convertir a DistanciaResponseDTO para compatibilidad
+        com.backend.tpi.ms_rutas_transportistas.dtos.DistanciaResponseDTO response = 
+            new com.backend.tpi.ms_rutas_transportistas.dtos.DistanciaResponseDTO();
+        response.setDistancia(resultado.getDistanciaKm());
+        response.setDuracion(resultado.getDuracionMinutos());
+        
+        return ResponseEntity.ok(response);
     }
 
     // DTOs internos para los requests
