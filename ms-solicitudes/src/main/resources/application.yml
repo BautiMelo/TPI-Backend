@@ -8,7 +8,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/tpi-backend
+          issuer-uri: http://localhost:8089/realms/tpi-backend
+          jwk-set-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
 
   datasource:
     url: jdbc:postgresql://postgres:5432/${POSTGRES_DB:tpi_backend_db}

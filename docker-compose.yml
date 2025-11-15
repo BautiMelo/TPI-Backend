@@ -14,15 +14,18 @@ services:
       - ms-rutas-transportistas
       - ms-solicitudes
     environment:
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
       - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   ms-solicitudes:
     build:
       context: ./ms-solicitudes
     container_name: ms-solicitudes
-    ports:
-      - "8083:8083"
+    expose:
+      - "8083"
     networks:
       - backend-net
     depends_on:
@@ -34,18 +37,21 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://host.docker.internal:8089/realms/tpi-backend/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=DEBUG
       # base-urls for inter-service RestClient (mapped to app.* properties)
       - APP_TRANSPORTES_BASE_URL=http://ms-rutas-transportistas:8082
       - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   ms-gestion-calculos:
     build:
       context: ./ms-gestion-calculos
     container_name: ms-gestion-calculos
-    ports:
-      - "8081:8081"
+    expose:
+      - "8081"
     networks:
       - backend-net
     depends_on:
@@ -56,15 +62,18 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
       - APP_RUTAS_BASE_URL=http://ms-rutas-transportistas:8082
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   ms-rutas-transportistas:
     build:
       context: ./ms-rutas-transportistas
     container_name: ms-rutas-transportistas
-    ports:
-      - "8082:8082"
+    expose:
+      - "8082"
     networks:
       - backend-net
     depends_on:
@@ -77,9 +86,12 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - GOOGLE_MAPS_API_URL=${GOOGLE_MAPS_API_URL:-https://maps.googleapis.com/maps/api}
       - GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY:-}
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8089/realms/tpi-backend
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
       - APP_SOLICITUDES_BASE_URL=http://ms-solicitudes:8083
       - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3
@@ -90,7 +102,7 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin123
-      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME=localhost
       - KC_HTTP_ENABLED=true
     volumes:
       - ./keycloak:/opt/keycloak/data/import
@@ -105,8 +117,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: tpi_backend_db
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init:/docker-entrypoint-initdb.d

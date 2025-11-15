@@ -8,32 +8,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/tpi-backend
-  cloud:
-    gateway:
-      routes:
-        - id: calculos
-          uri: http://ms-gestion-calculos:8081
-          predicates:
-            - Path=/api/calculos/**
-          
-        - id: rutas-transportistas
-          uri: http://ms-rutas-transportistas:8082
-          predicates:
-            - Path=/api/rutas-transportistas/**
+          issuer-uri: http://localhost:8089/realms/tpi-backend
+          jwk-set-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
 
-        - id: solicitudes
-          uri: http://ms-solicitudes:8083
-          predicates:
-            - Path=/api/solicitudes/**
-        
-app:
-  oauth2:
-    # Keycloak token endpoint (client_credentials)
-    token-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/token
-    # client-id / client-secret for the gateway (configure these in Keycloak)
-    client-id: ${GATEWAY_CLIENT_ID:gateway-client}
-    client-secret: ${GATEWAY_CLIENT_SECRET:secret}
-    # optional scopes (space separated)
-    scope: ${GATEWAY_CLIENT_SCOPES:}
 

@@ -8,10 +8,9 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/tpi-backend
+          issuer-uri: http://localhost:8089/realms/tpi-backend
+          jwk-set-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
   datasource:
-    # Docker-first: connect to the postgres service on the compose network by default.
-    # Override locally with POSTGRES_HOST=localhost when running the app outside Docker.
     url: jdbc:postgresql://${POSTGRES_HOST:postgres}:5432/${POSTGRES_DB:tpi_backend_db}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}

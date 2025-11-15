@@ -6,6 +6,15 @@
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
   "editUsernameAllowed": true,
+  "accessTokenLifespan": 300,
+  "accessTokenLifespanForImplicitFlow": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "offlineSessionIdleTimeout": 2592000,
+  "offlineSessionMaxLifespanEnabled": false,
+  "accessCodeLifespan": 60,
+  "accessCodeLifespanUserAction": 300,
+  "accessCodeLifespanLogin": 1800,
   "clients": [
     {
       "clientId": "postman-test",
@@ -35,6 +44,70 @@
         }
       ],
       "realmRoles": ["CLIENTE", "RESPONSABLE", "TRANSPORTISTA", "OPERADOR"]
+    },
+    {
+      "username": "cliente1",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "cliente1@example.com",
+      "firstName": "Cliente",
+      "lastName": "Uno",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["CLIENTE"]
+    },
+    {
+      "username": "responsable1",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "responsable1@example.com",
+      "firstName": "Responsable",
+      "lastName": "Uno",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["RESPONSABLE"]
+    },
+    {
+      "username": "transportista1",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "transportista1@example.com",
+      "firstName": "Transportista",
+      "lastName": "Uno",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["TRANSPORTISTA"]
+    },
+    {
+      "username": "operador1",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "operador1@example.com",
+      "firstName": "Operador",
+      "lastName": "Uno",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["OPERADOR"]
     }
   ],
   "roles": {

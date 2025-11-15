@@ -107,11 +107,7 @@ public class SolicitudService {
     return rutasResp != null ? rutasResp.getBody() : null;
     }
 
-    /**
-     * Calculate price for the given solicitud by calling ms-gestion-calculos for distance
-     * and tarifa endpoints and computing a simple price = distancia * precioPorKm.
-     */
-    @SuppressWarnings("unchecked")
+
     public Object calculatePrice(Long solicitudId) {
         // Prefer delegar el cálculo al microservicio ms-gestion-calculos
         try {

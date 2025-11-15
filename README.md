@@ -8,9 +8,20 @@ El proyecto está organizado en una arquitectura de microservicios con un API Ga
 
 - `api-gateway`: Punto de entrada único para todas las solicitudes de los clientes. Se encarga del enrutamiento y la seguridad.
 - `ms-solicitudes`: Microservicio para gestionar las solicitudes de transporte de contenedores.
-- `ms-rutas-transportistas`: Microservicio para gestionar las rutas, camiones y transportistas.
+- `ms-rutas-transportistas`: Microservicio para gestionar las rutas, camiones y transportistas. **Incluye integración con OSRM** para cálculo de distancias y tiempos.
 - `ms-gestion-calculos`: Microservicio para calcular precios y tiempos estimados.
 - `docker`: Contiene la configuración de Docker Compose para levantar todo el entorno.
+
+## Características Principales
+
+### 🗺️ Integración OSRM
+El microservicio `ms-rutas-transportistas` ahora incluye integración con **OSRM (Open Source Routing Machine)** para:
+- Cálculo de distancias precisas entre coordenadas
+- Estimación de tiempos de viaje
+- Rutas con múltiples waypoints
+- Sin costos de API (usa servidor público o self-hosted)
+
+Ver documentación completa en: [`ms-rutas-transportistas/README-OSRM.md`](ms-rutas-transportistas/README-OSRM.md)
 
 ## Cómo empezar
 
@@ -24,4 +35,9 @@ El proyecto está organizado en una arquitectura de microservicios con un API Ga
     Cada microservicio es una aplicación Spring Boot independiente. Puedes ejecutarlos desde tu IDE o usando Maven:
     ```bash
     mvn spring-boot:run
+    ```
+
+3.  **Probar la integración OSRM:**
+    ```powershell
+    .\scripts\test-osrm.ps1
     ```

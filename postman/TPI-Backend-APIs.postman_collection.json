@@ -15,6 +15,43 @@
 			}
 		]
 	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-fetch access_token if missing",
+					"if (!pm.collectionVariables.get('access_token')) {",
+					"    pm.sendRequest({",
+					"        url: pm.collectionVariables.get('keycloak_url') + '/realms/tpi-backend/protocol/openid-connect/token',",
+					"        method: 'POST',",
+					"        header: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+					"        body: {",
+					"            mode: 'urlencoded',",
+					"            urlencoded: [",
+					"                { key: 'grant_type', value: 'password' },",
+					"                { key: 'client_id', value: 'postman-test' },",
+					"                { key: 'client_secret', value: 'secret-postman-123' },",
+					"                { key: 'username', value: 'tester' },",
+					"                { key: 'password', value: '1234' }",
+					"            ]",
+					"        }",
+					"    }, function (err, res) {",
+					"        if (!err && res && res.code === 200) {",
+					"            var json = res.json();",
+					"            pm.collectionVariables.set('access_token', json.access_token);",
+					"            pm.collectionVariables.set('refresh_token', json.refresh_token);",
+					"            console.log('Auto-fetched access_token');",
+					"        } else {",
+					"            console.log('Could not auto-fetch token', err);",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
 	"item": [
 		{
 			"name": "0. Authentication",
@@ -91,6 +128,80 @@
 								"token"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Renovar Token (Refresh Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);",
+									"    console.log(\"Token renovado exitosamente\");",
+									"    console.log(\"Nuevo access_token: \" + jsonData.access_token);",
+									"} else {",
+									"    console.log(\"Error al renovar token - Refresh token expirado. Vuelve a hacer login.\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman-test",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "secret-postman-123",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_url}}"
+							],
+							"path": [
+								"realms",
+								"tpi-backend",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						},
+						"description": "Usa el refresh_token para obtener un nuevo access_token sin pedir credenciales. Si el refresh_token también expiró, deberás volver a hacer login."
 					},
 					"response": []
 				}
@@ -522,17 +633,17 @@
 		},
 		{
 			"key": "solicitudes_url",
-			"value": "http://localhost:8083",
+			"value": "{{gateway_url}}",
 			"type": "string"
 		},
 		{
 			"key": "calculos_url",
-			"value": "http://localhost:8081",
+			"value": "{{gateway_url}}",
 			"type": "string"
 		},
 		{
 			"key": "rutas_url",
-			"value": "http://localhost:8082",
+			"value": "{{gateway_url}}",
 			"type": "string"
 		},
 		{

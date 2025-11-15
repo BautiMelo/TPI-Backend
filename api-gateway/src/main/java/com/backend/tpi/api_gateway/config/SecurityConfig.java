@@ -19,7 +19,7 @@ public class SecurityConfig {
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> {})
+                        .jwt(jwt -> {}) // Valida JWT y automáticamente lo pasa (Token Relay)
                 );
         return http.build();
     }
