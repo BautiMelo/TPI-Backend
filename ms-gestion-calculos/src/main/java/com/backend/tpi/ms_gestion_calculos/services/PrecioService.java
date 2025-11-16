@@ -9,6 +9,8 @@ import com.backend.tpi.ms_gestion_calculos.models.Tarifa;
 import com.backend.tpi.ms_gestion_calculos.models.TarifaVolumenPeso;
 import com.backend.tpi.ms_gestion_calculos.repositories.TarifaRepository;
 import com.backend.tpi.ms_gestion_calculos.repositories.TarifaVolumenPesoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -20,6 +22,8 @@ import java.util.List;
 
 @Service
 public class PrecioService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PrecioService.class);
 
     @Autowired
     private TarifaRepository tarifaRepository;
@@ -38,19 +42,27 @@ public class PrecioService {
      * Algoritmo (simple): costo = costoBaseGestionFijo + precioPorKm * distancia + cargoPorVolumenPeso
      */
     public CostoResponseDTO calcularCostoEstimado(CostoRequestDTO request) {
+        logger.info("Calculando costo estimado - origen: {}, destino: {}, peso: {}, volumen: {}", 
+                request.getOrigen(), request.getDestino(), request.getPeso(), request.getVolumen());
+        
         // obtener distancia usando el servicio de calculos
+        logger.debug("Solicitando cálculo de distancia al servicio de cálculos");
         DistanciaRequestDTO distanciaReq = new DistanciaRequestDTO();
         distanciaReq.setOrigen(request.getOrigen());
         distanciaReq.setDestino(request.getDestino());
         DistanciaResponseDTO distanciaResp = calculoService.calcularDistancia(distanciaReq);
         double distancia = distanciaResp != null && distanciaResp.getDistancia() != null ? distanciaResp.getDistancia() : 0.0;
+        logger.debug("Distancia obtenida: {} km", distancia);
 
         // obtener tarifa base (la más reciente si existe)
+        logger.debug("Obteniendo tarifa base desde repositorio");
         Tarifa tarifa = tarifaRepository.findTopByOrderByIdDesc();
         double costoBase = tarifa != null && tarifa.getCostoBaseGestionFijo() != null ? tarifa.getCostoBaseGestionFijo().doubleValue() : 0.0;
         double precioPorKm = tarifa != null && tarifa.getValorLitroCombustible() != null ? tarifa.getValorLitroCombustible().doubleValue() : 1.0;
+        logger.debug("Tarifa aplicada - costoBase: {}, precioPorKm: {}", costoBase, precioPorKm);
 
         // buscar cargo por volumen/peso aplicable
+        logger.debug("Buscando cargo por volumen/peso aplicable");
         List<TarifaVolumenPeso> tvps = tarifaVolumenPesoRepository.findAll();
         double cargoVolumenPeso = 0.0;
         if (tvps != null && !tvps.isEmpty()) {
@@ -59,12 +71,14 @@ public class PrecioService {
                 boolean aplicaVolumen = request.getVolumen() == null || t.getVolumenMax() == null || request.getVolumen() <= t.getVolumenMax();
                 if (aplicaPeso && aplicaVolumen) {
                     cargoVolumenPeso = t.getCostoPorKmBase() != null ? t.getCostoPorKmBase() : 0.0;
+                    logger.debug("Cargo por volumen/peso encontrado: {}", cargoVolumenPeso);
                     break;
                 }
             }
         }
 
         double costo = costoBase + (precioPorKm * distancia) + cargoVolumenPeso;
+        logger.debug("Costo calculado (antes de redondeo): {}", costo);
 
         // redondear a 2 decimales
         BigDecimal bd = BigDecimal.valueOf(costo).setScale(2, RoundingMode.HALF_UP);
@@ -77,10 +91,12 @@ public class PrecioService {
             int minutos = (int) Math.round((horas - h) * 60);
             tiempoEstimado = String.format("%dh %02dm", h, minutos);
         }
+        logger.debug("Tiempo estimado calculado: {}", tiempoEstimado);
 
         CostoResponseDTO resp = new CostoResponseDTO();
         resp.setCostoTotal(bd.doubleValue());
         resp.setTiempoEstimado(tiempoEstimado);
+        logger.info("Costo estimado calculado exitosamente - total: {}, tiempo: {}", bd.doubleValue(), tiempoEstimado);
         return resp;
     }
 
@@ -89,29 +105,40 @@ public class PrecioService {
      * Si falla la comunicación, cae a un cálculo por defecto como fallback.
      */
     public CostoResponseDTO calcularCostoParaSolicitud(Long solicitudId) {
+        logger.info("Calculando costo para solicitud ID: {}", solicitudId);
         try {
-        ResponseEntity<SolicitudIntegrationDTO> solicitudEntity = solicitudesClient.get()
-                .uri("/api/v1/solicitudes/{id}", solicitudId)
-                .retrieve()
-                .toEntity(SolicitudIntegrationDTO.class);
+            logger.debug("Consultando ms-solicitudes para obtener datos de solicitud ID: {}", solicitudId);
+            ResponseEntity<SolicitudIntegrationDTO> solicitudEntity = solicitudesClient.get()
+                    .uri("/api/v1/solicitudes/{id}", solicitudId)
+                    .retrieve()
+                    .toEntity(SolicitudIntegrationDTO.class);
 
             SolicitudIntegrationDTO solicitud = solicitudEntity != null ? solicitudEntity.getBody() : null;
             if (solicitud != null) {
+                logger.debug("Solicitud obtenida exitosamente - origen: {}, destino: {}", 
+                        solicitud.getDireccionOrigen(), solicitud.getDireccionDestino());
                 CostoRequestDTO req = new CostoRequestDTO();
                 req.setOrigen(solicitud.getDireccionOrigen());
                 req.setDestino(solicitud.getDireccionDestino());
                 // ms-solicitudes no expone peso/volumen por ahora -> usar valores por defecto
                 req.setPeso(1000.0);
                 req.setVolumen(10.0);
+                logger.debug("Usando valores por defecto - peso: 1000.0, volumen: 10.0");
                 CostoResponseDTO resp = calcularCostoEstimado(req);
                 resp.setTiempoEstimado(resp.getTiempoEstimado() + " (calculado desde ms-solicitudes)");
+                logger.info("Costo calculado exitosamente para solicitud ID: {} - costo: {}", 
+                        solicitudId, resp.getCostoTotal());
                 return resp;
+            } else {
+                logger.warn("Respuesta vacía de ms-solicitudes para solicitud ID: {}", solicitudId);
             }
         } catch (Exception ex) {
-            // Loguear en un caso real; por ahora caemos al fallback
+            logger.error("Error al consultar ms-solicitudes para solicitud ID: {} - {}", 
+                    solicitudId, ex.getMessage());
         }
 
         // Fallback: estimación por defecto
+        logger.warn("Usando cálculo fallback para solicitud ID: {}", solicitudId);
         CostoRequestDTO fallback = new CostoRequestDTO();
         fallback.setOrigen("Buenos Aires");
         fallback.setDestino("Rosario");
@@ -119,6 +146,8 @@ public class PrecioService {
         fallback.setVolumen(10.0);
         CostoResponseDTO resp = calcularCostoEstimado(fallback);
         resp.setTiempoEstimado(resp.getTiempoEstimado() + " (estimado - fallback)");
+        logger.info("Costo fallback calculado para solicitud ID: {} - costo: {}", 
+                solicitudId, resp.getCostoTotal());
         return resp;
     }
 
@@ -126,8 +155,12 @@ public class PrecioService {
      * Calcula el costo real de un traslado (similar a estimado pero puede incluir lógica adicional)
      */
     public CostoResponseDTO calcularCostoTraslado(CostoRequestDTO request) {
+        logger.info("Calculando costo de traslado - origen: {}, destino: {}", 
+                request.getOrigen(), request.getDestino());
         // Por ahora usa la misma lógica que el estimado
         // En el futuro podría incluir costos adicionales, recargos, etc.
-        return calcularCostoEstimado(request);
+        CostoResponseDTO resp = calcularCostoEstimado(request);
+        logger.info("Costo de traslado calculado: {}", resp.getCostoTotal());
+        return resp;
     }
 }

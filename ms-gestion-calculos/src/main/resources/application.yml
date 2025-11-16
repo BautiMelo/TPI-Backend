@@ -28,6 +28,21 @@ springdoc:
   api-docs.enabled: true
   swagger-ui.path: /swagger-ui.html
 
+logging:
+  level:
+    com.backend.tpi.ms_gestion_calculos: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
+  file:
+    name: logs/ms-gestion-calculos.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+      total-size-cap: 1GB
+
 app:
   rutas:
     base-url: http://ms-rutas-transportistas:8082
+  osrm:
+    base-url: http://osrm:5000

@@ -4,6 +4,8 @@ import com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO;
 import com.backend.tpi.ms_solicitudes.dtos.SolicitudDTO;
 import com.backend.tpi.ms_solicitudes.models.Solicitud;
 import com.backend.tpi.ms_solicitudes.repositories.SolicitudRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -21,6 +23,8 @@ import org.springframework.core.ParameterizedTypeReference;
 
 @Service
 public class SolicitudService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SolicitudService.class);
 
     @Autowired
     private SolicitudRepository solicitudRepository;
@@ -41,12 +45,15 @@ public class SolicitudService {
     // Manual mapping - removed ModelMapper dependency
 
     public SolicitudDTO create(CreateSolicitudDTO createSolicitudDTO) {
+        logger.debug("Creando nueva solicitud - origen: {}, destino: {}", 
+            createSolicitudDTO.getDireccionOrigen(), createSolicitudDTO.getDireccionDestino());
         Solicitud solicitud = new Solicitud();
         // Map fields from DTO to entity
         solicitud.setDireccionOrigen(createSolicitudDTO.getDireccionOrigen());
         solicitud.setDireccionDestino(createSolicitudDTO.getDireccionDestino());
         // other fields (clienteId, contenedorId, etc.) should be set elsewhere
         solicitud = solicitudRepository.save(solicitud);
+        logger.info("Solicitud creada exitosamente con ID: {}", solicitud.getId());
         return toDto(solicitud);
     }
 
@@ -57,6 +64,7 @@ public class SolicitudService {
     }
 
     public List<SolicitudDTO> findAllWithFilters(String estado, Long clienteId) {
+        logger.debug("Buscando solicitudes con filtros - estado: {}, clienteId: {}", estado, clienteId);
         List<Solicitud> solicitudes;
         
         if (estado != null && !estado.isEmpty() && clienteId != null) {
@@ -75,17 +83,25 @@ public class SolicitudService {
             solicitudes = solicitudRepository.findAll();
         }
         
+        logger.debug("Encontradas {} solicitudes con los filtros aplicados", solicitudes.size());
         return solicitudes.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
     public SolicitudDTO findById(Long id) {
+        logger.debug("Buscando solicitud por ID: {}", id);
         Optional<Solicitud> solicitud = solicitudRepository.findById(id);
+        if (solicitud.isPresent()) {
+            logger.debug("Solicitud encontrada con ID: {}", id);
+        } else {
+            logger.warn("Solicitud no encontrada con ID: {}", id);
+        }
         return solicitud.map(this::toDto).orElse(null);
     }
 
     public SolicitudDTO update(Long id, CreateSolicitudDTO createSolicitudDTO) {
+        logger.debug("Actualizando solicitud ID: {}", id);
         Optional<Solicitud> optionalSolicitud = solicitudRepository.findById(id);
         if (optionalSolicitud.isPresent()) {
             Solicitud solicitud = optionalSolicitud.get();
@@ -93,13 +109,17 @@ public class SolicitudService {
             solicitud.setDireccionOrigen(createSolicitudDTO.getDireccionOrigen());
             solicitud.setDireccionDestino(createSolicitudDTO.getDireccionDestino());
             solicitud = solicitudRepository.save(solicitud);
+            logger.info("Solicitud ID: {} actualizada exitosamente", id);
             return toDto(solicitud);
         }
+        logger.warn("No se pudo actualizar solicitud - ID no encontrado: {}", id);
         return null;
     }
 
     public void delete(Long id) {
+        logger.info("Eliminando solicitud ID: {}", id);
         solicitudRepository.deleteById(id);
+        logger.debug("Solicitud ID: {} eliminada de la base de datos", id);
     }
 
     // Helper: map entity -> DTO
@@ -120,35 +140,49 @@ public class SolicitudService {
      * Request a route for the given solicitud by calling ms-rutas-transportistas.
      */
     public Object requestRoute(Long solicitudId) {
+    logger.info("Solicitando ruta para solicitud ID: {} al microservicio de rutas", solicitudId);
     Map<String, Object> body = new HashMap<>();
     body.put("idSolicitud", solicitudId);
-    // usar rutasClient (baseUrl ya configurada)
-    ResponseEntity<Map<String, Object>> rutasResp = rutasClient.post()
-        .uri("/api/v1/rutas")
-        .body(body, new ParameterizedTypeReference<Map<String, Object>>() {})
-        .retrieve()
-        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
-    return rutasResp != null ? rutasResp.getBody() : null;
+    try {
+        // usar rutasClient (baseUrl ya configurada)
+        ResponseEntity<Map<String, Object>> rutasResp = rutasClient.post()
+            .uri("/api/v1/rutas")
+            .body(body, new ParameterizedTypeReference<Map<String, Object>>() {})
+            .retrieve()
+            .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
+        logger.info("Ruta solicitada exitosamente para solicitud ID: {}", solicitudId);
+        return rutasResp != null ? rutasResp.getBody() : null;
+    } catch (Exception e) {
+        logger.error("Error al solicitar ruta para solicitud ID: {} - {}", solicitudId, e.getMessage());
+        throw e;
+    }
     }
 
 
     public Object calculatePrice(Long solicitudId) {
+        logger.info("Calculando precio para solicitud ID: {}", solicitudId);
         // Prefer delegar el cálculo al microservicio ms-gestion-calculos
         try {
             // delegar la llamada al cálculo remoto
+        logger.debug("Llamando a ms-gestion-calculos para calcular precio de solicitud ID: {}", solicitudId);
         ResponseEntity<com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO> costoResp = calculosClient.post()
             .uri("/api/v1/precio/solicitud/" + solicitudId + "/costo")
             .retrieve()
             .toEntity(com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO.class);
         com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO resp = costoResp != null ? costoResp.getBody() : null;
-        if (resp != null) return resp;
+        if (resp != null) {
+            logger.info("Precio calculado exitosamente para solicitud ID: {} - Costo total: {}", solicitudId, resp.getCostoTotal());
+            return resp;
+        }
         } catch (Exception ex) {
+            logger.warn("Falló la llamada remota para calcular precio de solicitud ID: {} - Usando cálculo local como fallback", solicitudId);
             // si falla la llamada remota, caeremos al cálculo local
         }
 
 
         Optional<Solicitud> optionalSolicitud = solicitudRepository.findById(solicitudId);
         if (optionalSolicitud.isEmpty()) {
+            logger.error("No se puede calcular precio - Solicitud no encontrada con ID: {}", solicitudId);
             throw new IllegalArgumentException("Solicitud not found: " + solicitudId);
         }
         Solicitud solicitud = optionalSolicitud.get();
@@ -158,6 +192,7 @@ public class SolicitudService {
         distanciaReq.put("origen", solicitud.getDireccionOrigen());
         distanciaReq.put("destino", solicitud.getDireccionDestino());
 
+        logger.debug("Calculando distancia para solicitud ID: {}", solicitudId);
         Map<String, Object> distanciaResp = null;
     ResponseEntity<Map<String, Object>> distanciaEntity = calculosClient.post()
         .uri("/api/v1/gestion/distancia")
@@ -204,9 +239,10 @@ public class SolicitudService {
      * 1) fetch route by solicitud id
      * 2) call rutas service to assign transportista to that route
      */
-    @SuppressWarnings("unchecked")
     public Object assignTransport(Long solicitudId, Long transportistaId) {
+        logger.info("Asignando transportista ID: {} a solicitud ID: {}", transportistaId, solicitudId);
         // 1) find route for solicitud
+        logger.debug("Buscando ruta para solicitud ID: {}", solicitudId);
         Map<String, Object> ruta = null;
     ResponseEntity<Map<String, Object>> rutaEntity = rutasClient.get()
         .uri("/api/v1/rutas/por-solicitud/{id}", solicitudId)
@@ -214,14 +250,17 @@ public class SolicitudService {
         .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
     ruta = rutaEntity != null ? rutaEntity.getBody() : null;
         if (ruta == null || ruta.get("id") == null) {
+            logger.error("No se encontró ruta para solicitud ID: {}", solicitudId);
             throw new IllegalArgumentException("No ruta found for solicitud: " + solicitudId);
         }
         Object rutaIdObj = ruta.get("id");
         Long rutaId;
         if (rutaIdObj instanceof Number) rutaId = ((Number) rutaIdObj).longValue();
         else rutaId = Long.valueOf(rutaIdObj.toString());
+        logger.debug("Ruta encontrada con ID: {} para solicitud ID: {}", rutaId, solicitudId);
 
         // 2) get tramos for the route and pick an unassigned tramo
+        logger.debug("Buscando tramos para ruta ID: {}", rutaId);
         java.util.List<Map<String, Object>> tramos = null;
     ResponseEntity<java.util.List<java.util.Map<String, Object>>> tramosEntity = rutasClient.get()
         .uri("/api/v1/tramos/por-ruta/{id}", rutaId)
@@ -229,6 +268,7 @@ public class SolicitudService {
         .toEntity(new ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
     tramos = tramosEntity != null ? tramosEntity.getBody() : null;
         if (tramos == null || tramos.isEmpty()) {
+            logger.error("No se encontraron tramos para ruta ID: {}", rutaId);
             throw new IllegalArgumentException("No tramos found for ruta: " + rutaId);
         }
 
@@ -239,6 +279,7 @@ public class SolicitudService {
                 Object idObj = t.get("id");
                 if (idObj instanceof Number) tramoIdToAssign = ((Number) idObj).longValue();
                 else tramoIdToAssign = Long.valueOf(idObj.toString());
+                logger.debug("Tramo sin asignar encontrado - ID: {}", tramoIdToAssign);
                 break;
             }
         }
@@ -247,13 +288,16 @@ public class SolicitudService {
             Object idObj = tramos.get(0).get("id");
             if (idObj instanceof Number) tramoIdToAssign = ((Number) idObj).longValue();
             else tramoIdToAssign = Long.valueOf(idObj.toString());
+            logger.debug("No hay tramos sin asignar, usando el primero - ID: {}", tramoIdToAssign);
         }
 
         // 3) call assign endpoint for the tramo
+        logger.debug("Asignando transportista ID: {} al tramo ID: {}", transportistaId, tramoIdToAssign);
     ResponseEntity<Object> assignResp = rutasClient.post()
         .uri("/api/v1/tramos/" + tramoIdToAssign + "/asignar-transportista?camionId=" + transportistaId)
         .retrieve()
         .toEntity(Object.class);
+    logger.info("Transportista ID: {} asignado exitosamente a solicitud ID: {}", transportistaId, solicitudId);
     return assignResp != null ? assignResp.getBody() : null;
     }
 
@@ -261,14 +305,19 @@ public class SolicitudService {
      * Update only the estado field of a solicitud
      */
     public SolicitudDTO updateEstado(Long id, Long estadoId) {
+        logger.info("Actualizando estado de solicitud ID: {} a estado ID: {}", id, estadoId);
         Solicitud solicitud = solicitudRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada con ID: " + id));
+                .orElseThrow(() -> {
+                    logger.error("No se puede actualizar estado - Solicitud no encontrada con ID: {}", id);
+                    return new RuntimeException("Solicitud no encontrada con ID: " + id);
+                });
         
         com.backend.tpi.ms_solicitudes.models.EstadoSolicitud estado = new com.backend.tpi.ms_solicitudes.models.EstadoSolicitud();
         estado.setId(estadoId);
         solicitud.setEstado(estado);
         
         solicitud = solicitudRepository.save(solicitud);
+        logger.info("Estado de solicitud ID: {} actualizado exitosamente", id);
         return toDto(solicitud);
     }
 
@@ -276,13 +325,18 @@ public class SolicitudService {
      * Program a solicitud with estimated cost and time
      */
     public SolicitudDTO programar(Long id, java.math.BigDecimal costoEstimado, java.math.BigDecimal tiempoEstimado) {
+        logger.info("Programando solicitud ID: {} con costo: {} y tiempo: {}", id, costoEstimado, tiempoEstimado);
         Solicitud solicitud = solicitudRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada con ID: " + id));
+                .orElseThrow(() -> {
+                    logger.error("No se puede programar - Solicitud no encontrada con ID: {}", id);
+                    return new RuntimeException("Solicitud no encontrada con ID: " + id);
+                });
         
         solicitud.setCostoEstimado(costoEstimado);
         solicitud.setTiempoEstimado(tiempoEstimado);
         
         solicitud = solicitudRepository.save(solicitud);
+        logger.info("Solicitud ID: {} programada exitosamente", id);
         return toDto(solicitud);
     }
 }

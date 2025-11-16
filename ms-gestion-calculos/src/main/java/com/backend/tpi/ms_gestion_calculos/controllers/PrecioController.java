@@ -3,6 +3,8 @@ package com.backend.tpi.ms_gestion_calculos.controllers;
 import com.backend.tpi.ms_gestion_calculos.dtos.CostoRequestDTO;
 import com.backend.tpi.ms_gestion_calculos.dtos.CostoResponseDTO;
 import com.backend.tpi.ms_gestion_calculos.services.PrecioService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,26 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/precio")
 public class PrecioController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PrecioController.class);
+
     @Autowired
     private PrecioService precioService;
 
     @PostMapping("/estimado")
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE')")
     public CostoResponseDTO getPrecioEstimado(@RequestBody CostoRequestDTO request) {
-        return precioService.calcularCostoEstimado(request);
+        logger.info("POST /api/v1/precio/estimado - Calculando precio estimado");
+        CostoResponseDTO result = precioService.calcularCostoEstimado(request);
+        logger.info("POST /api/v1/precio/estimado - Respuesta: 200 - Costo total: {}", result.getCostoTotal());
+        return result;
     }
 
     @PostMapping("/traslado")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public CostoResponseDTO getCostoTraslado(@RequestBody CostoRequestDTO request) {
-        // Calcular el costo real de un traslado
-        return precioService.calcularCostoTraslado(request);
+        logger.info("POST /api/v1/precio/traslado - Calculando costo de traslado");
+        CostoResponseDTO result = precioService.calcularCostoTraslado(request);
+        logger.info("POST /api/v1/precio/traslado - Respuesta: 200 - Costo total: {}", result.getCostoTotal());
+        return result;
     }
 
     @PostMapping("/solicitud/{id}/costo")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public CostoResponseDTO getCostoPorSolicitud(@PathVariable Long id) {
-        // Delegar al servicio que calculará el costo para la solicitud (stub por ahora)
-        return precioService.calcularCostoParaSolicitud(id);
+        logger.info("POST /api/v1/precio/solicitud/{}/costo - Calculando costo para solicitud", id);
+        CostoResponseDTO result = precioService.calcularCostoParaSolicitud(id);
+        logger.info("POST /api/v1/precio/solicitud/{}/costo - Respuesta: 200 - Costo total: {}", id, result.getCostoTotal());
+        return result;
     }
 }

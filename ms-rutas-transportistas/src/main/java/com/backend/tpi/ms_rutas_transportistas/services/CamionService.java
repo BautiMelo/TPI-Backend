@@ -3,6 +3,8 @@ package com.backend.tpi.ms_rutas_transportistas.services;
 import com.backend.tpi.ms_rutas_transportistas.dtos.CamionDTO;
 import com.backend.tpi.ms_rutas_transportistas.models.Camion;
 import com.backend.tpi.ms_rutas_transportistas.repositories.CamionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,36 +14,52 @@ import java.util.List;
 @Service
 public class CamionService {
 
+    private static final Logger logger = LoggerFactory.getLogger(CamionService.class);
+
     @Autowired
     private CamionRepository camionRepository;
 
     public List<CamionDTO> findAll() {
-        return camionRepository.findAll().stream()
+        logger.debug("Buscando todos los camiones");
+        List<CamionDTO> camiones = camionRepository.findAll().stream()
                 .map(this::toDto)
                 .toList();
+        logger.debug("Encontrados {} camiones", camiones.size());
+        return camiones;
     }
 
     public CamionDTO save(CamionDTO dto) {
+        logger.info("Guardando nuevo camión con dominio: {}", dto.getDominio());
         Camion camion = toEntity(dto);
         Camion saved = camionRepository.save(camion);
+        logger.info("Camión guardado exitosamente con ID: {}", saved.getId());
         return toDto(saved);
     }
 
     @Transactional(readOnly = true)
     public CamionDTO findByDominio(String dominio) {
+        logger.debug("Buscando camión por dominio: {}", dominio);
         Camion camion = camionRepository.findAll().stream()
                 .filter(c -> dominio.equals(c.getDominio()) || dominio.equals(c.getPatente()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Camión no encontrado con dominio: " + dominio));
+                .orElseThrow(() -> {
+                    logger.error("Camión no encontrado con dominio: {}", dominio);
+                    return new RuntimeException("Camión no encontrado con dominio: " + dominio);
+                });
+        logger.debug("Camión encontrado con dominio: {}", dominio);
         return toDto(camion);
     }
 
     @Transactional
     public CamionDTO updateEstado(String dominio, Boolean disponible, Boolean activo) {
+        logger.info("Actualizando estado de camión con dominio: {} - disponible: {}, activo: {}", dominio, disponible, activo);
         Camion camion = camionRepository.findAll().stream()
                 .filter(c -> dominio.equals(c.getDominio()) || dominio.equals(c.getPatente()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Camión no encontrado con dominio: " + dominio));
+                .orElseThrow(() -> {
+                    logger.error("Camión no encontrado con dominio: {}", dominio);
+                    return new RuntimeException("Camión no encontrado con dominio: " + dominio);
+                });
         
         if (disponible != null) {
             camion.setDisponible(disponible);
@@ -50,18 +68,24 @@ public class CamionService {
             camion.setActivo(activo);
         }
         Camion saved = camionRepository.save(camion);
+        logger.info("Estado del camión actualizado exitosamente - dominio: {}", dominio);
         return toDto(saved);
     }
 
     @Transactional
     public CamionDTO asignarTransportista(String dominio, String nombreTransportista) {
+        logger.info("Asignando transportista '{}' al camión con dominio: {}", nombreTransportista, dominio);
         Camion camion = camionRepository.findAll().stream()
                 .filter(c -> dominio.equals(c.getDominio()) || dominio.equals(c.getPatente()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Camión no encontrado con dominio: " + dominio));
+                .orElseThrow(() -> {
+                    logger.error("Camión no encontrado con dominio: {}", dominio);
+                    return new RuntimeException("Camión no encontrado con dominio: " + dominio);
+                });
         
         camion.setNombreTransportista(nombreTransportista);
         Camion saved = camionRepository.save(camion);
+        logger.info("Transportista asignado exitosamente al camión con dominio: {}", dominio);
         return toDto(saved);
     }
 

@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class DistanciaResponseDTO {
-    private Double distancia;
-    private Double duracion; // En minutos
+@NoArgsConstructor
+public class CoordenadaDTO {
+    private Double latitud;
+    private Double longitud;
 }

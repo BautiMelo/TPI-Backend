@@ -11,14 +11,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 public class OSRMService {
 
-    @Value("${app.osrm.base-url:https://router.project-osrm.org}")
+    @Value("${app.osrm.base-url:http://osrm:5000}")
     private String osrmBaseUrl;
 
     private final RestClient restClient;
 
-    public OSRMService() {
+    public OSRMService(@Value("${app.osrm.base-url:http://osrm:5000}") String osrmBaseUrl) {
+        this.osrmBaseUrl = osrmBaseUrl;
         this.restClient = RestClient.builder()
-                .baseUrl("https://router.project-osrm.org")
+                .baseUrl(osrmBaseUrl)
                 .build();
     }
 

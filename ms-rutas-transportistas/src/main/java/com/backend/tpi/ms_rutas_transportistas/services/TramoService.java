@@ -6,6 +6,8 @@ import com.backend.tpi.ms_rutas_transportistas.models.Ruta;
 import com.backend.tpi.ms_rutas_transportistas.models.Tramo;
 import com.backend.tpi.ms_rutas_transportistas.repositories.RutaRepository;
 import com.backend.tpi.ms_rutas_transportistas.repositories.TramoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import java.util.Optional;
 
 @Service
 public class TramoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TramoService.class);
 
     @Autowired
     private TramoRepository tramoRepository;
@@ -32,8 +36,11 @@ public class TramoService {
     private String calculosBaseUrl;
 
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO create(TramoRequestDTO tramoRequestDTO) {
+        logger.info("Creando nuevo tramo para ruta ID: {}", tramoRequestDTO.getIdRuta());
         Optional<Ruta> optionalRuta = rutaRepository.findById(tramoRequestDTO.getIdRuta());
         if (optionalRuta.isPresent()) {
+            logger.debug("Calculando distancia del tramo entre depósito origen {} y destino {}", 
+                tramoRequestDTO.getOrigenDepositoId(), tramoRequestDTO.getDestinoDepositoId());
             // call calculos service using configured base-url
         java.util.Map<String, String> distanciaReq = new java.util.HashMap<>();
         distanciaReq.put("origen", String.valueOf(tramoRequestDTO.getOrigenDepositoId()));
@@ -53,10 +60,15 @@ public class TramoService {
             tramo.setOrigenLong(tramoRequestDTO.getOrigenLong());
             tramo.setDestinoLat(tramoRequestDTO.getDestinoLat());
             tramo.setDestinoLong(tramoRequestDTO.getDestinoLong());
-            if (distanciaResponse != null) tramo.setDistancia(distanciaResponse.getDistancia());
+            if (distanciaResponse != null) {
+                tramo.setDistancia(distanciaResponse.getDistancia());
+                logger.debug("Distancia calculada para tramo: {} km", distanciaResponse.getDistancia());
+            }
             Tramo saved = tramoRepository.save(tramo);
+            logger.info("Tramo creado exitosamente con ID: {}", saved.getId());
             return toDto(saved);
         }
+        logger.warn("No se pudo crear tramo - Ruta no encontrada con ID: {}", tramoRequestDTO.getIdRuta());
         return null;
     }
 
@@ -99,42 +111,62 @@ public class TramoService {
         return dto;
     }
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO assignTransportista(Long tramoId, Long camionId) {
+        logger.info("Asignando camión ID: {} al tramo ID: {}", camionId, tramoId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
-        if (optionalTramo.isEmpty()) return null;
+        if (optionalTramo.isEmpty()) {
+            logger.warn("No se pudo asignar camión - Tramo no encontrado con ID: {}", tramoId);
+            return null;
+        }
         Tramo tramo = optionalTramo.get();
         if (camionId != null) {
             Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> maybeCamion = camionRepository.findById(camionId);
-            maybeCamion.ifPresent(c -> tramo.setCamionDominio(c.getPatente()));
+            maybeCamion.ifPresent(c -> {
+                tramo.setCamionDominio(c.getPatente());
+                logger.debug("Camión con dominio {} asignado al tramo ID: {}", c.getPatente(), tramoId);
+            });
         }
         Tramo saved = tramoRepository.save(tramo);
+        logger.info("Camión asignado exitosamente al tramo ID: {}", tramoId);
         return toDto(saved);
     }
 
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO iniciarTramo(Long rutaId, Long tramoId) {
+        logger.info("Iniciando tramo ID: {} de ruta ID: {}", tramoId, rutaId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
-        if (optionalTramo.isEmpty()) return null;
+        if (optionalTramo.isEmpty()) {
+            logger.warn("No se pudo iniciar - Tramo no encontrado con ID: {}", tramoId);
+            return null;
+        }
         
         Tramo tramo = optionalTramo.get();
         if (tramo.getRuta() == null || !tramo.getRuta().getId().equals(rutaId)) {
+            logger.error("El tramo ID: {} no pertenece a la ruta ID: {}", tramoId, rutaId);
             throw new RuntimeException("El tramo no pertenece a la ruta especificada");
         }
         
         tramo.setFechaHoraInicioReal(java.time.LocalDateTime.now());
         Tramo saved = tramoRepository.save(tramo);
+        logger.info("Tramo ID: {} iniciado exitosamente a las {}", tramoId, saved.getFechaHoraInicioReal());
         return toDto(saved);
     }
 
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO finalizarTramo(Long rutaId, Long tramoId, java.time.LocalDateTime fechaHora) {
+        logger.info("Finalizando tramo ID: {} de ruta ID: {}", tramoId, rutaId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
-        if (optionalTramo.isEmpty()) return null;
+        if (optionalTramo.isEmpty()) {
+            logger.warn("No se pudo finalizar - Tramo no encontrado con ID: {}", tramoId);
+            return null;
+        }
         
         Tramo tramo = optionalTramo.get();
         if (tramo.getRuta() == null || !tramo.getRuta().getId().equals(rutaId)) {
+            logger.error("El tramo ID: {} no pertenece a la ruta ID: {}", tramoId, rutaId);
             throw new RuntimeException("El tramo no pertenece a la ruta especificada");
         }
         
         tramo.setFechaHoraFinReal(fechaHora != null ? fechaHora : java.time.LocalDateTime.now());
         Tramo saved = tramoRepository.save(tramo);
+        logger.info("Tramo ID: {} finalizado exitosamente a las {}", tramoId, saved.getFechaHoraFinReal());
         return toDto(saved);
     }
 }

@@ -4,6 +4,8 @@ import com.backend.tpi.ms_rutas_transportistas.dtos.CamionDTO;
 import com.backend.tpi.ms_rutas_transportistas.services.CamionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +18,8 @@ import java.util.List;
 @Tag(name = "Camiones", description = "Gestión de camiones y transportistas")
 public class CamionController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CamionController.class);
+
     @Autowired
     private CamionService camionService;
 
@@ -23,14 +27,19 @@ public class CamionController {
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN')")
     @Operation(summary = "Listar todos los camiones")
     public List<CamionDTO> getAllCamiones() {
-        return camionService.findAll();
+        logger.info("GET /api/v1/camiones - Listando todos los camiones");
+        List<CamionDTO> result = camionService.findAll();
+        logger.info("GET /api/v1/camiones - Respuesta: 200 - {} camiones encontrados", result.size());
+        return result;
     }
 
     @GetMapping("/{dominio}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN')")
     @Operation(summary = "Obtener camión por dominio/patente")
     public ResponseEntity<CamionDTO> getCamionByDominio(@PathVariable String dominio) {
+        logger.info("GET /api/v1/camiones/{} - Buscando camión por dominio", dominio);
         CamionDTO camion = camionService.findByDominio(dominio);
+        logger.info("GET /api/v1/camiones/{} - Respuesta: 200 - Camión encontrado", dominio);
         return ResponseEntity.ok(camion);
     }
 
@@ -38,7 +47,10 @@ public class CamionController {
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     @Operation(summary = "Registrar nuevo camión con capacidad y costos")
     public CamionDTO createCamion(@RequestBody CamionDTO camion) {
-        return camionService.save(camion);
+        logger.info("POST /api/v1/camiones - Creando nuevo camión con dominio: {}", camion.getDominio());
+        CamionDTO result = camionService.save(camion);
+        logger.info("POST /api/v1/camiones - Respuesta: 200 - Camión creado con dominio: {}", result.getDominio());
+        return result;
     }
 
     @PostMapping("/{dominio}/estado")
@@ -48,7 +60,10 @@ public class CamionController {
             @PathVariable String dominio,
             @RequestParam(required = false) Boolean disponible,
             @RequestParam(required = false) Boolean activo) {
+        logger.info("POST /api/v1/camiones/{}/estado - Actualizando estado - disponible: {}, activo: {}", 
+            dominio, disponible, activo);
         CamionDTO camion = camionService.updateEstado(dominio, disponible, activo);
+        logger.info("POST /api/v1/camiones/{}/estado - Respuesta: 200 - Estado actualizado", dominio);
         return ResponseEntity.ok(camion);
     }
 
@@ -58,7 +73,9 @@ public class CamionController {
     public ResponseEntity<CamionDTO> asignarTransportista(
             @PathVariable String dominio,
             @RequestParam String nombreTransportista) {
+        logger.info("PATCH /api/v1/camiones/{}/asignar - Asignando a transportista: {}", dominio, nombreTransportista);
         CamionDTO camion = camionService.asignarTransportista(dominio, nombreTransportista);
+        logger.info("PATCH /api/v1/camiones/{}/asignar - Respuesta: 200 - Transportista asignado", dominio);
         return ResponseEntity.ok(camion);
     }
 }

@@ -116,7 +116,6 @@ public class OSRMController {
         return ResponseEntity.ok(response);
     }
 
-    // DTOs internos para los requests
     @lombok.Data
     public static class RutaRequest {
         private CoordenadaDTO origen;

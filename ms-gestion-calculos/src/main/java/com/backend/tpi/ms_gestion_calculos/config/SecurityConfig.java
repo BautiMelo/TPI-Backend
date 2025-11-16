@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,15 +27,9 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/publico/**").permitAll()
-                .requestMatchers("/api/v1/public/**").permitAll()
-                .requestMatchers("/protegido-administradores/**").hasRole("ADMIN")
-                .requestMatchers("/protegido-usuarios/**").hasAnyRole("USUARIO", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/protegido-mixto/**").hasAnyRole("USUARIO", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/protegido-mixto/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        ).oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt ->
-                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+                        .anyRequest().authenticated()
+                ).oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt ->
+                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
     }
 

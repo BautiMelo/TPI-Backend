@@ -169,20 +169,7 @@ docker run -t -v "${PWD}/osrm-data:/data" osrm/osrm-backend osrm-customize /data
 docker-compose -f docker-compose.osrm.yml up -d
 ```
 
-#### Paso 4: Actualizar configuración del microservicio
-```yaml
-# ms-rutas-transportistas/src/main/resources/application.yml
-app:
-  osrm:
-    base-url: http://osrm:5000  # Para Docker Compose
-    # O http://localhost:5000 para acceso local directo
-```
 
-### Verificar instalación local
-```powershell
-# Probar servidor OSRM directamente
-Invoke-RestMethod "http://localhost:5000/route/v1/driving/-58.381592,-34.603722;-58.370226,-34.608147?overview=false"
-```
 
 ### 📦 Archivos OSRM Generados
 
