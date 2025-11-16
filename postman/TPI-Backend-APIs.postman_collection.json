@@ -127,7 +127,8 @@
 								"openid-connect",
 								"token"
 							]
-						}
+						},
+						"description": "Obtiene un access_token usando credenciales de usuario (grant_type: password)"
 					},
 					"response": []
 				},
@@ -211,197 +212,624 @@
 			"name": "1. MS Solicitudes",
 			"item": [
 				{
-					"name": "Crear Solicitud",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"direccionOrigen\": \"Av. Corrientes 1234, CABA\",\n    \"direccionDestino\": \"Av. Santa Fe 5678, CABA\"\n}"
+					"name": "Solicitudes",
+					"item": [
+						{
+							"name": "Crear Solicitud",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"direccionOrigen\": \"Av. Corrientes 1234, CABA\",\n  \"direccionDestino\": \"Av. Santa Fe 5678, CABA\",\n  \"idCliente\": 1\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes"
+									]
+								},
+								"description": "Requiere rol: CLIENTE"
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes"
-							]
+						{
+							"name": "Listar Solicitudes (con filtros)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes?estado=PENDIENTE&clienteId=1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes"
+									],
+									"query": [
+										{
+											"key": "estado",
+											"value": "PENDIENTE",
+											"description": "Opcional: filtrar por estado"
+										},
+										{
+											"key": "clienteId",
+											"value": "1",
+											"description": "Opcional: filtrar por cliente"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: CLIENTE"
-					},
-					"response": []
+						{
+							"name": "Obtener Solicitud por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Solicitud",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"direccionOrigen\": \"Av. Corrientes 999, CABA\",\n  \"direccionDestino\": \"Av. Santa Fe 777, CABA\"\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Solicitud",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Solicitar Ruta para Solicitud",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/request-route",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1",
+										"request-route"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-rutas-transportistas"
+							},
+							"response": []
+						},
+						{
+							"name": "Calcular Precio de Solicitud",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/calculate-price",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1",
+										"calculate-price"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-gestion-calculos"
+							},
+							"response": []
+						},
+						{
+							"name": "Asignar Transporte",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/assign-transport?transportistaId=1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1",
+										"assign-transport"
+									],
+									"query": [
+										{
+											"key": "transportistaId",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado de Solicitud",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/estado?estadoId=2",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1",
+										"estado"
+									],
+									"query": [
+										{
+											"key": "estadoId",
+											"value": "2"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Programar Solicitud",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/programar?costoEstimado=15000.50&tiempoEstimado=120.5",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitudes",
+										"1",
+										"programar"
+									],
+									"query": [
+										{
+											"key": "costoEstimado",
+											"value": "15000.50"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "120.5",
+											"description": "Tiempo estimado en minutos"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						}
+					]
 				},
 				{
-					"name": "Listar Todas las Solicitudes",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes"
-							]
+					"name": "Clientes",
+					"item": [
+						{
+							"name": "Listar Clientes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: RESPONSABLE o ADMIN"
-					},
-					"response": []
+						{
+							"name": "Buscar Cliente por Email",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes?email=cliente@example.com",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "cliente@example.com"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener Cliente por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes",
+										"1"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Cliente",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"email\": \"juan.perez@example.com\",\n  \"telefono\": \"1144556677\",\n  \"direccion\": \"Av. Siempreviva 742\"\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Cliente",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Juan Carlos Pérez\",\n  \"email\": \"jc.perez@example.com\",\n  \"telefono\": \"1155667788\",\n  \"direccion\": \"Av. Siempreviva 743\"\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Cliente",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes",
+										"1"
+									]
+								},
+								"description": "Requiere rol: ADMIN"
+							},
+							"response": []
+						}
+					]
 				},
 				{
-					"name": "Obtener Solicitud por ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes",
-								"1"
-							]
+					"name": "Contenedores",
+					"item": [
+						{
+							"name": "Listar Contenedores",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
-					},
-					"response": []
-				},
-				{
-					"name": "Actualizar Solicitud",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"direccionOrigen\": \"Av. Corrientes 999, CABA\",\n    \"direccionDestino\": \"Av. Santa Fe 777, CABA\"\n}"
+						{
+							"name": "Obtener Contenedor por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores",
+										"1"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes",
-								"1"
-							]
+						{
+							"name": "Listar Contenedores por Cliente",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores/cliente/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores",
+										"cliente",
+										"1"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: RESPONSABLE o ADMIN"
-					},
-					"response": []
-				},
-				{
-					"name": "Eliminar Solicitud",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes",
-								"1"
-							]
+						{
+							"name": "Crear Contenedor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"descripcion\": \"Contenedor de 20 pies\",\n  \"peso\": 500.0,\n  \"volumen\": 30.0,\n  \"idCliente\": 1\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: RESPONSABLE o ADMIN"
-					},
-					"response": []
-				},
-				{
-					"name": "Solicitar Ruta para Solicitud",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1/request-route",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes",
-								"1",
-								"request-route"
-							]
+						{
+							"name": "Actualizar Contenedor",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"descripcion\": \"Contenedor de 40 pies\",\n  \"peso\": 800.0,\n  \"volumen\": 60.0\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-rutas-transportistas"
-					},
-					"response": []
-				},
-				{
-					"name": "Calcular Precio de Solicitud",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1/calculate-price",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes",
-								"1",
-								"calculate-price"
-							]
+						{
+							"name": "Eliminar Contenedor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores",
+										"1"
+									]
+								},
+								"description": "Requiere rol: ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-gestion-calculos"
-					},
-					"response": []
-				},
-				{
-					"name": "Asignar Transporte",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{solicitudes_url}}/api/v1/solicitudes/1/assign-transport?transportistaId=1",
-							"host": [
-								"{{solicitudes_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"solicitudes",
-								"1",
-								"assign-transport"
-							],
-							"query": [
-								{
-									"key": "transportistaId",
-									"value": "1"
-								}
-							]
+						{
+							"name": "Actualizar Estado de Contenedor",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores/1?estadoId=2",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores",
+										"1"
+									],
+									"query": [
+										{
+											"key": "estadoId",
+											"value": "2"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
 						},
-						"description": "Requiere rol: RESPONSABLE o ADMIN"
-					},
-					"response": []
+						{
+							"name": "Consultar Seguimiento de Contenedor",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/contenedores/1/seguimiento",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contenedores",
+										"1",
+										"seguimiento"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -409,33 +837,88 @@
 			"name": "2. MS Gestión Cálculos",
 			"item": [
 				{
-					"name": "Precio",
+					"name": "Precios",
 					"item": [
+						{
+							"name": "Calcular Precio Estimado",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idTarifa\": 1,\n  \"volumen\": 30.0,\n  \"peso\": 300.0,\n  \"litrosCombustible\": 40.0,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/precio/estimado",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"precio",
+										"estimado"
+									]
+								},
+								"description": "Requiere rol: CLIENTE o RESPONSABLE"
+							},
+							"response": []
+						},
+						{
+							"name": "Calcular Precio Traslado",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idTarifa\": 1,\n  \"volumen\": 30.0,\n  \"peso\": 300.0,\n  \"litrosCombustible\": 40.0,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/precio/traslado",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"precio",
+										"traslado"
+									]
+								},
+								"description": "Requiere rol: ADMIN u OPERADOR"
+							},
+							"response": []
+						},
 						{
 							"name": "Calcular Costo de Solicitud",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{calculos_url}}/api/v1/precio/solicitud/:solicitudId/costo",
+									"raw": "{{gateway_url}}/api/v1/precio/solicitud/1/costo",
 									"host": [
-										"{{calculos_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"precio",
 										"solicitud",
-										":solicitudId",
+										"1",
 										"costo"
-									],
-									"variable": [
-										{
-											"key": "solicitudId",
-											"value": "1"
-										}
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
 							},
 							"response": []
 						}
@@ -450,16 +933,38 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas",
+									"raw": "{{gateway_url}}/api/v1/tarifas",
 									"host": [
-										"{{calculos_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"tarifas"
 									]
-								}
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener Tarifa por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tarifas/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
 							},
 							"response": []
 						},
@@ -475,19 +980,113 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"nombre\": \"Tarifa Express\",\n    \"precioPorKm\": 150.50,\n    \"activa\": true\n}"
+									"raw": "{\n  \"nombre\": \"Tarifa Standard\",\n  \"costoBaseGestionFijo\": 5000.0,\n  \"valorLitroCombustible\": 850.0\n}"
 								},
 								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas",
+									"raw": "{{gateway_url}}/api/v1/tarifas",
 									"host": [
-										"{{calculos_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"tarifas"
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Tarifa",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"costoBaseGestionFijo\": 6000.0,\n  \"valorLitroCombustible\": 900.0\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tarifas/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1"
+									]
+								},
+								"description": "Requiere rol: ADMIN o RESPONSABLE"
+							},
+							"response": []
+						},
+						{
+							"name": "Agregar Rango a Tarifa",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"volumenMin\": 0.0,\n  \"volumenMax\": 50.0,\n  \"pesoMin\": 0.0,\n  \"pesoMax\": 500.0,\n  \"costoPorKmBase\": 25.0\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tarifas/1/rango",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1",
+										"rango"
+									]
+								},
+								"description": "Requiere rol: ADMIN o RESPONSABLE"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Rango de Tarifa",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"volumenMax\": 60.0,\n  \"pesoMax\": 600.0,\n  \"costoPorKmBase\": 30.0\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tarifas/1/rango/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tarifas",
+										"1",
+										"rango",
+										"1"
+									]
+								},
+								"description": "Requiere rol: ADMIN o RESPONSABLE"
 							},
 							"response": []
 						}
@@ -502,16 +1101,132 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{calculos_url}}/api/v1/depositos",
+									"raw": "{{gateway_url}}/api/v1/depositos",
 									"host": [
-										"{{calculos_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"depositos"
 									]
-								}
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener Depósito por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/depositos/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos",
+										"1"
+									]
+								},
+								"description": "Requiere rol: ADMIN, OPERADOR o RESPONSABLE"
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Depósito",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Depósito Central\",\n  \"direccion\": \"Av. Corrientes 1234\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"idCiudad\": 1\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/depositos",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Depósito",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Depósito Central Actualizado\",\n  \"direccion\": \"Av. Corrientes 5678\",\n  \"latitud\": -34.6100,\n  \"longitud\": -58.3900\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/depositos/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"depositos",
+										"1"
+									]
+								},
+								"description": "Requiere rol: ADMIN, OPERADOR o RESPONSABLE"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Gestión",
+					"item": [
+						{
+							"name": "Calcular Distancia",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/gestion/distancia",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"gestion",
+										"distancia"
+									]
+								},
+								"description": "Requiere rol: CLIENTE o RESPONSABLE"
 							},
 							"response": []
 						}
@@ -537,19 +1252,20 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"idSolicitud\": 1\n}"
+									"raw": "{\n  \"idSolicitud\": 1\n}"
 								},
 								"url": {
-									"raw": "{{rutas_url}}/api/v1/rutas",
+									"raw": "{{gateway_url}}/api/v1/rutas",
 									"host": [
-										"{{rutas_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"rutas"
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
 							},
 							"response": []
 						},
@@ -559,16 +1275,299 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rutas_url}}/api/v1/rutas",
+									"raw": "{{gateway_url}}/api/v1/rutas",
 									"host": [
-										"{{rutas_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"rutas"
 									]
-								}
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE, ADMIN o TRANSPORTISTA"
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener Ruta por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"1"
+									]
+								},
+								"description": "Requiere rol: CLIENTE, RESPONSABLE, ADMIN o TRANSPORTISTA"
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Ruta",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Asignar Transportista a Ruta",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/1/asignar-transportista?transportistaId=1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"1",
+										"asignar-transportista"
+									],
+									"query": [
+										{
+											"key": "transportistaId",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar Ruta por Solicitud",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/por-solicitud/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"por-solicitud",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE, ADMIN o TRANSPORTISTA"
+							},
+							"response": []
+						},
+						{
+							"name": "Agregar Tramo a Ruta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545,\n  \"fechaHoraEstimada\": \"2024-12-01T10:00:00\"\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/1/tramos",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"1",
+										"tramos"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Iniciar Tramo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/1/tramos/1/iniciar",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"1",
+										"tramos",
+										"1",
+										"iniciar"
+									]
+								},
+								"description": "Requiere rol: TRANSPORTISTA, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Finalizar Tramo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/rutas/1/tramos/1/finalizar?fechaHoraReal=2024-12-01T12:00:00",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"rutas",
+										"1",
+										"tramos",
+										"1",
+										"finalizar"
+									],
+									"query": [
+										{
+											"key": "fechaHoraReal",
+											"value": "2024-12-01T12:00:00",
+											"description": "Opcional - formato: yyyy-MM-ddTHH:mm:ss"
+										}
+									]
+								},
+								"description": "Requiere rol: TRANSPORTISTA, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tramos",
+					"item": [
+						{
+							"name": "Crear Tramo",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idRuta\": 1,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545,\n  \"fechaHoraEstimada\": \"2024-12-01T10:00:00\"\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tramos",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tramos"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Tramos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tramos",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tramos"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA, ADMIN o CLIENTE"
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Tramos por Ruta",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tramos/por-ruta/1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tramos",
+										"por-ruta",
+										"1"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA, ADMIN o CLIENTE"
+							},
+							"response": []
+						},
+						{
+							"name": "Asignar Transportista a Tramo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/tramos/1/asignar-transportista?camionId=1",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tramos",
+										"1",
+										"asignar-transportista"
+									],
+									"query": [
+										{
+											"key": "camionId",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
 							},
 							"response": []
 						}
@@ -583,40 +1582,129 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rutas_url}}/api/v1/camiones",
+									"raw": "{{gateway_url}}/api/v1/camiones",
 									"host": [
-										"{{rutas_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"camiones"
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA o ADMIN"
 							},
 							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tramos",
-					"item": [
+						},
 						{
-							"name": "Listar Tramos",
+							"name": "Obtener Camión por Dominio",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rutas_url}}/api/v1/tramos",
+									"raw": "{{gateway_url}}/api/v1/camiones/ABC123",
 									"host": [
-										"{{rutas_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"tramos"
+										"camiones",
+										"ABC123"
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Registrar Camión",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dominio\": \"ABC123\",\n  \"marca\": \"Scania\",\n  \"modelo\": \"R450\",\n  \"anio\": 2023,\n  \"capacidadCarga\": 24000.0,\n  \"capacidadVolumen\": 90.0,\n  \"litrosPor100Km\": 28.5,\n  \"costoKm\": 45.0,\n  \"disponible\": true,\n  \"activo\": true\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/camiones",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"camiones"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado del Camión",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/camiones/ABC123/estado?disponible=true&activo=true",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"camiones",
+										"ABC123",
+										"estado"
+									],
+									"query": [
+										{
+											"key": "disponible",
+											"value": "true",
+											"description": "Opcional"
+										},
+										{
+											"key": "activo",
+											"value": "true",
+											"description": "Opcional"
+										}
+									]
+								},
+								"description": "Requiere rol: TRANSPORTISTA, RESPONSABLE o ADMIN"
+							},
+							"response": []
+						},
+						{
+							"name": "Asignar Camión a Transportista",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/camiones/ABC123/asignar?nombreTransportista=Juan Perez",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"camiones",
+										"ABC123",
+										"asignar"
+									],
+									"query": [
+										{
+											"key": "nombreTransportista",
+											"value": "Juan Perez"
+										}
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE o ADMIN"
 							},
 							"response": []
 						}
@@ -626,52 +1714,74 @@
 					"name": "OSRM",
 					"item": [
 						{
-							"name": "Calcular Distancia",
+							"name": "Calcular Ruta (POST)",
 							"request": {
-								"method": "GET",
-								"header": [],
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"origen\": {\n    \"latitud\": -34.6037,\n    \"longitud\": -58.3816\n  },\n  \"destino\": {\n    \"latitud\": -31.4201,\n    \"longitud\": -64.1888\n  }\n}"
+								},
 								"url": {
-									"raw": "{{rutas_url}}/api/v1/osrm/distancia?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-34.9215&destinoLong=-57.9545",
+									"raw": "{{gateway_url}}/api/v1/osrm/ruta",
 									"host": [
-										"{{rutas_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"osrm",
-										"distancia"
-									],
-									"query": [
-										{
-											"key": "origenLat",
-											"value": "-34.6037"
-										},
-										{
-											"key": "origenLong",
-											"value": "-58.3816"
-										},
-										{
-											"key": "destinoLat",
-											"value": "-34.9215"
-										},
-										{
-											"key": "destinoLong",
-											"value": "-57.9545"
-										}
+										"ruta"
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA o ADMIN"
 							},
 							"response": []
 						},
 						{
-							"name": "Calcular Ruta Simple",
+							"name": "Calcular Ruta Múltiple (POST)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"coordenadas\": [\n    {\n      \"latitud\": -34.6037,\n      \"longitud\": -58.3816\n    },\n    {\n      \"latitud\": -34.9215,\n      \"longitud\": -57.9545\n    },\n    {\n      \"latitud\": -31.4201,\n      \"longitud\": -64.1888\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/osrm/ruta-multiple",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"osrm",
+										"ruta-multiple"
+									]
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA o ADMIN. Mínimo 2 coordenadas"
+							},
+							"response": []
+						},
+						{
+							"name": "Calcular Ruta Simple (GET)",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rutas_url}}/api/v1/osrm/ruta-simple?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-31.4201&destinoLong=-64.1888",
+									"raw": "{{gateway_url}}/api/v1/osrm/ruta-simple?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-31.4201&destinoLong=-64.1888",
 									"host": [
-										"{{rutas_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
@@ -697,338 +1807,47 @@
 											"value": "-64.1888"
 										}
 									]
-								}
+								},
+								"description": "Requiere rol: RESPONSABLE, TRANSPORTISTA o ADMIN"
 							},
 							"response": []
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "3. MS Gestión Cálculos",
-			"item": [
-				{
-					"name": "Depósitos",
-					"item": [
+						},
 						{
-							"name": "Listar Depósitos",
+							"name": "Calcular Distancia (GET)",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{calculos_url}}/api/v1/depositos",
+									"raw": "{{gateway_url}}/api/v1/osrm/distancia?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-34.9215&destinoLong=-57.9545",
 									"host": [
-										"{{calculos_url}}"
+										"{{gateway_url}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"depositos"
+										"osrm",
+										"distancia"
+									],
+									"query": [
+										{
+											"key": "origenLat",
+											"value": "-34.6037"
+										},
+										{
+											"key": "origenLong",
+											"value": "-58.3816"
+										},
+										{
+											"key": "destinoLat",
+											"value": "-34.9215"
+										},
+										{
+											"key": "destinoLong",
+											"value": "-57.9545"
+										}
 									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Crear Depósito",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"nombre\": \"Depósito Central\",\n  \"direccion\": \"Av. Corrientes 1234\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"idCiudad\": 1\n}"
 								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/depositos",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"depositos"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Obtener Depósito por ID",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/depositos/1",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"depositos",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Actualizar Depósito",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"nombre\": \"Depósito Central Actualizado\",\n  \"direccion\": \"Av. Corrientes 5678\",\n  \"latitud\": -34.6100,\n  \"longitud\": -58.3900\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/depositos/1",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"depositos",
-										"1"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tarifas",
-					"item": [
-						{
-							"name": "Listar Tarifas",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"tarifas"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Crear Tarifa",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"nombre\": \"Tarifa Standard\",\n  \"costoBaseGestionFijo\": 5000.0,\n  \"valorLitroCombustible\": 850.0\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"tarifas"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Obtener Tarifa por ID",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas/1",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"tarifas",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Actualizar Tarifa",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"costoBaseGestionFijo\": 6000.0,\n  \"valorLitroCombustible\": 900.0\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas/1",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"tarifas",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Agregar Rango a Tarifa",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"volumenMin\": 0.0,\n  \"volumenMax\": 50.0,\n  \"pesoMin\": 0.0,\n  \"pesoMax\": 500.0,\n  \"costoPorKmBase\": 25.0\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas/1/rango",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"tarifas",
-										"1",
-										"rango"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Actualizar Rango de Tarifa",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"volumenMax\": 60.0,\n  \"pesoMax\": 600.0,\n  \"costoPorKmBase\": 30.0\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/tarifas/1/rango/1",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"tarifas",
-										"1",
-										"rango",
-										"1"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Precio",
-					"item": [
-						{
-							"name": "Calcular Precio Estimado",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"idTarifa\": 1,\n  \"volumen\": 30.0,\n  \"peso\": 300.0,\n  \"litrosCombustible\": 40.0,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/precio/estimado",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"precio",
-										"estimado"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Calcular Precio Traslado",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"idTarifa\": 1,\n  \"volumen\": 30.0,\n  \"peso\": 300.0,\n  \"litrosCombustible\": 40.0,\n  \"origenLat\": -34.6037,\n  \"origenLong\": -58.3816,\n  \"destinoLat\": -34.9215,\n  \"destinoLong\": -57.9545\n}"
-								},
-								"url": {
-									"raw": "{{calculos_url}}/api/v1/precio/traslado",
-									"host": [
-										"{{calculos_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"precio",
-										"traslado"
-									]
-								}
+								"description": "Requiere rol: CLIENTE, RESPONSABLE, ADMIN u OPERADOR"
 							},
 							"response": []
 						}
