@@ -1,0 +1,20 @@
+2025-11-16T22:17:32.149Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-16T22:17:32.165Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-16T22:17:35.364Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-16T22:17:36.268Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 205 ms. Found 5 JPA repository interfaces.
+2025-11-16T22:17:38.331Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-16T22:17:38.385Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-16T22:17:38.393Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-16T22:17:38.594Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-16T22:17:38.600Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6204 ms
+2025-11-16T22:17:40.763Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-16T22:17:40.860Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-16T22:17:41.427Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1c7843c3
+2025-11-16T22:17:41.437Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-16T22:17:41.542Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-16T22:17:44.610Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-16T22:17:47.362Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-16T22:17:47.427Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-16T22:17:48.836Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-16T22:17:50.027Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-16T22:17:50.052Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 21.825 seconds (process running for 24.286)

@@ -31,6 +31,8 @@ services:
     depends_on:
       - postgres
       - keycloak
+    volumes:
+      - ./logs/ms-solicitudes:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tpi_backend_db?sslmode=prefer
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -56,6 +58,8 @@ services:
       - backend-net
     depends_on:
       - postgres
+    volumes:
+      - ./logs/ms-gestion-calculos:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tpi_backend_db
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -78,6 +82,8 @@ services:
       - backend-net
     depends_on:
       - postgres
+    volumes:
+      - ./logs/ms-rutas-transportistas:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tpi_backend_db
       - SPRING_DATASOURCE_USERNAME=postgres
