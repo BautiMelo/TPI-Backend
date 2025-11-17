@@ -1,0 +1,21 @@
+2025-11-17T02:56:25.613Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-17T02:56:27.358Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-17T02:56:30.708Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-17T02:56:32.860Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 417 ms. Found 4 JPA repository interfaces.
+2025-11-17T02:56:35.374Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-17T02:56:35.425Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-17T02:56:35.435Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-17T02:56:35.585Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-17T02:56:35.595Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8083 ms
+2025-11-17T02:56:37.513Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-17T02:56:37.617Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-17T02:56:38.207Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1cdd31a4
+2025-11-17T02:56:38.213Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-17T02:56:38.344Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-17T02:56:42.391Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-17T02:56:45.366Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-17T02:56:49.933Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-17T02:56:49.961Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 25.712 seconds (process running for 27.51)
+2025-11-17T02:58:19.394Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-17T02:58:19.402Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-17T02:58:19.423Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

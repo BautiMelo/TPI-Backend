@@ -486,6 +486,39 @@
 					"name": "Clientes",
 					"item": [
 						{
+							"name": "Registro Público de Cliente",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"María González\",\n  \"email\": \"maria.gonzalez@example.com\",\n  \"telefono\": \"1166778899\",\n  \"username\": \"mariagonzalez\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/v1/clientes/registro",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"clientes",
+										"registro"
+									]
+								},
+								"description": "Endpoint PÚBLICO para registrar nuevos clientes. No requiere autenticación.\n\nCrea un usuario en Keycloak con rol CLIENTE y guarda los datos en la base de datos.\n\nCampos requeridos:\n- nombre: Entre 2 y 100 caracteres\n- email: Email válido y único\n- telefono: Entre 8 y 20 caracteres\n- username: Entre 3 y 50 caracteres, único\n- password: Mínimo 4 caracteres"
+							},
+							"response": []
+						},
+						{
 							"name": "Listar Clientes",
 							"request": {
 								"method": "GET",

@@ -1,9 +1,12 @@
 package com.backend.tpi.ms_solicitudes.controllers;
 
+import com.backend.tpi.ms_solicitudes.dto.ClienteRegistroDTO;
+import com.backend.tpi.ms_solicitudes.dto.ClienteRegistroResponseDTO;
 import com.backend.tpi.ms_solicitudes.models.Cliente;
 import com.backend.tpi.ms_solicitudes.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,29 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    /**
+     * POST /api/v1/clientes/registro - Registro público de nuevos clientes
+     * No requiere autenticación - Endpoint público
+     * Crea usuario en Keycloak con rol CLIENTE y guarda datos en BD
+     * @param registroDTO Datos del cliente a registrar
+     * @return Cliente creado con código 201
+     */
+    @PostMapping("/registro")
+    @Operation(summary = "Registro público de nuevos clientes (sin autenticación)")
+    public ResponseEntity<?> registrarCliente(@Valid @RequestBody ClienteRegistroDTO registroDTO) {
+        logger.info("POST /api/v1/clientes/registro - Registrando nuevo cliente: {}", registroDTO.getEmail());
+        try {
+            ClienteRegistroResponseDTO response = clienteService.registrarCliente(registroDTO);
+            logger.info("POST /api/v1/clientes/registro - Respuesta: 201 - Cliente registrado con ID: {}", response.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (RuntimeException e) {
+            logger.error("POST /api/v1/clientes/registro - Error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ErrorResponse(e.getMessage())
+            );
+        }
+    }
 
     /**
      * GET /api/v1/clientes - Lista todos los clientes o busca por email
@@ -114,5 +140,20 @@ public class ClienteController {
         clienteService.deleteById(id);
         logger.info("DELETE /api/v1/clientes/{} - Respuesta: 204 - Cliente eliminado", id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Clase interna para respuestas de error
+     */
+    private static class ErrorResponse {
+        private final String mensaje;
+
+        public ErrorResponse(String mensaje) {
+            this.mensaje = mensaje;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
     }
 }

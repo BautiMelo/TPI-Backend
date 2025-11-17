@@ -47,3 +47,12 @@ app:
     base-url: http://ms-gestion-calculos:8081
   rutas:
     base-url: http://ms-rutas-transportistas:8082
+
+keycloak:
+  admin:
+    server-url: http://keycloak:8080
+    realm: master
+    client-id: admin-cli
+    client-secret:
+    username: admin
+    password: admin123
