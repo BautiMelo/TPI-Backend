@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tarifa de transporte
+ * Define los costos base de gestión y valor del combustible
+ * Se relaciona con TarifaVolumenPeso para cargos adicionales
+ */
 @Entity
 @Data
 @Table(name = "tarifas")

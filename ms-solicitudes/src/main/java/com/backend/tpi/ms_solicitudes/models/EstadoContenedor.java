@@ -3,6 +3,10 @@ package com.backend.tpi.ms_solicitudes.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Estado de un contenedor
+ * Ej: "Disponible", "En Tránsito", "Entregado", etc.
+ */
 @Entity
 @Data
 @Table(name = "estados_contenedor")

@@ -8,7 +8,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8089/realms/tpi-backend
+          issuer-uri: http://keycloak:8080/realms/tpi-backend
           jwk-set-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
 
   datasource:
@@ -45,3 +45,5 @@ logging:
 app:
   calculos:
     base-url: http://ms-gestion-calculos:8081
+  rutas:
+    base-url: http://ms-rutas-transportistas:8082

@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para Tarifas
+ * Gestiona tarifas base y sus rangos de volumen/peso asociados
+ */
 @Service
 public class TarifaService {
 
@@ -22,6 +26,10 @@ public class TarifaService {
     @Autowired
     private TarifaRepository tarifaRepository;
 
+    /**
+     * Obtiene todas las tarifas del sistema
+     * @return Lista de DTOs de tarifas con sus rangos
+     */
     public List<TarifaDTO> findAll() {
         logger.info("Obteniendo todas las tarifas");
         List<TarifaDTO> tarifas = tarifaRepository.findAll().stream()
@@ -31,6 +39,12 @@ public class TarifaService {
         return tarifas;
     }
 
+    /**
+     * Busca una tarifa por su ID
+     * @param id ID de la tarifa
+     * @return DTO de la tarifa encontrada
+     * @throws RuntimeException si no se encuentra la tarifa
+     */
     public TarifaDTO findById(Long id) {
         logger.info("Buscando tarifa por ID: {}", id);
         Tarifa tarifa = tarifaRepository.findById(id)
@@ -42,6 +56,11 @@ public class TarifaService {
         return toDto(tarifa);
     }
 
+    /**
+     * Crea una nueva tarifa
+     * @param dto Datos de la tarifa a crear
+     * @return DTO de la tarifa creada
+     */
     public TarifaDTO save(TarifaDTO dto) {
         logger.info("Creando nueva tarifa");
         Tarifa tarifa = toEntity(dto);
@@ -50,6 +69,12 @@ public class TarifaService {
         return toDto(saved);
     }
 
+    /**
+     * Actualiza una tarifa existente
+     * @param id ID de la tarifa a actualizar
+     * @param dto Nuevos datos de la tarifa
+     * @return DTO de la tarifa actualizada
+     */
     @Transactional
     public TarifaDTO update(Long id, TarifaDTO dto) {
         logger.info("Actualizando tarifa ID: {}", id);
@@ -73,6 +98,12 @@ public class TarifaService {
         return toDto(saved);
     }
 
+    /**
+     * Agrega un nuevo rango de volumen/peso a una tarifa existente
+     * @param tarifaId ID de la tarifa
+     * @param rangoDto Datos del rango a agregar
+     * @return DTO de la tarifa actualizada con el nuevo rango
+     */
     @Transactional
     public TarifaDTO addRango(Long tarifaId, TarifaVolumenPesoDTO rangoDto) {
         logger.info("Agregando rango a tarifa ID: {}", tarifaId);
@@ -99,6 +130,13 @@ public class TarifaService {
         return toDto(saved);
     }
 
+    /**
+     * Actualiza un rango existente de una tarifa
+     * @param tarifaId ID de la tarifa
+     * @param rangoId ID del rango a actualizar
+     * @param rangoDto Nuevos datos del rango
+     * @return DTO de la tarifa con el rango actualizado
+     */
     @Transactional
     public TarifaDTO updateRango(Long tarifaId, Long rangoId, TarifaVolumenPesoDTO rangoDto) {
         logger.info("Actualizando rango ID: {} de tarifa ID: {}", rangoId, tarifaId);
@@ -142,6 +180,11 @@ public class TarifaService {
         return toDto(saved);
     }
 
+    /**
+     * Convierte una entidad Tarifa a su DTO
+     * @param tarifa Entidad tarifa
+     * @return DTO de la tarifa
+     */
     private TarifaDTO toDto(Tarifa tarifa) {
         if (tarifa == null) return null;
         TarifaDTO dto = new TarifaDTO();
@@ -160,6 +203,11 @@ public class TarifaService {
         return dto;
     }
 
+    /**
+     * Convierte una entidad TarifaVolumenPeso a su DTO
+     * @param rango Entidad rango
+     * @return DTO del rango
+     */
     private TarifaVolumenPesoDTO rangoToDto(TarifaVolumenPeso rango) {
         if (rango == null) return null;
         TarifaVolumenPesoDTO dto = new TarifaVolumenPesoDTO();
@@ -172,6 +220,11 @@ public class TarifaService {
         return dto;
     }
 
+    /**
+     * Convierte un DTO de Tarifa a entidad
+     * @param dto DTO de tarifa
+     * @return Entidad tarifa
+     */
     private Tarifa toEntity(TarifaDTO dto) {
         if (dto == null) return null;
         Tarifa tarifa = new Tarifa();

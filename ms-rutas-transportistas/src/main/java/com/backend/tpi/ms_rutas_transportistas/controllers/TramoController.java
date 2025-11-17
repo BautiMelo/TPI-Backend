@@ -21,6 +21,11 @@ public class TramoController {
     @Autowired
     private TramoService tramoService;
 
+    /**
+     * Crea un nuevo tramo para una ruta
+     * @param tramoRequestDTO Datos del tramo a crear
+     * @return Tramo creado
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<TramoDTO> create(@RequestBody TramoRequestDTO tramoRequestDTO) {
@@ -34,6 +39,10 @@ public class TramoController {
         return ResponseEntity.ok(tramo);
     }
 
+    /**
+     * Obtiene la lista de todos los tramos
+     * @return Lista de tramos
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN','CLIENTE')")
     public List<TramoDTO> getAllTramos() {
@@ -43,6 +52,11 @@ public class TramoController {
         return result;
     }
 
+    /**
+     * Obtiene todos los tramos de una ruta específica
+     * @param rutaId ID de la ruta
+     * @return Lista de tramos de la ruta
+     */
     @GetMapping("/por-ruta/{rutaId}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN','CLIENTE')")
     public List<TramoDTO> getByRuta(@PathVariable Long rutaId) {
@@ -52,6 +66,12 @@ public class TramoController {
         return result;
     }
 
+    /**
+     * Asigna un camión a un tramo específico
+     * @param id ID del tramo
+     * @param camionId ID del camión a asignar
+     * @return Tramo con camión asignado
+     */
     @PostMapping("/{id}/asignar-transportista")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<TramoDTO> asignarTransportista(@PathVariable Long id, @RequestParam Long camionId) {

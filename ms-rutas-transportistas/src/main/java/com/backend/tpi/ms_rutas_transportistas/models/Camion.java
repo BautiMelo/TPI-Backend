@@ -3,6 +3,11 @@ package com.backend.tpi.ms_rutas_transportistas.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Camión de transporte
+ * Representa un vehículo disponible para realizar tramos de rutas
+ * Incluye datos de capacidad, costos y transportista asignado
+ */
 @Entity
 @Table(name = "camiones")
 @Data

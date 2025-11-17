@@ -5,13 +5,18 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuración de rutas del API Gateway
+ * Define qué URL van a qué microservicio
+ */
 @Configuration
 public class RouteConfig {
 	
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                // ms-solicitudes: handles /api/v1/solicitudes/**, /api/v1/clientes/**, /api/v1/contenedores/**
+                // Microservicio de Solicitudes (puerto 8083)
+                // Maneja solicitudes, clientes y contenedores
                 .route("ms-solicitudes", spec -> spec.path("/api/v1/solicitudes/**")
                         .uri("http://ms-solicitudes:8083"))
                 .route("ms-clientes", spec -> spec.path("/api/v1/clientes/**")
@@ -19,7 +24,8 @@ public class RouteConfig {
                 .route("ms-contenedores", spec -> spec.path("/api/v1/contenedores/**")
                         .uri("http://ms-solicitudes:8083"))
 
-                // ms-gestion-calculos: handles multiple API groups
+                // Microservicio de Gestión y Cálculos (puerto 8081)
+                // Maneja tarifas, precios, depósitos y cálculos de distancia
                 .route("ms-calculos-gestion", spec -> spec.path("/api/v1/gestion/**")
                         .uri("http://ms-gestion-calculos:8081"))
                 .route("ms-calculos-tarifas", spec -> spec.path("/api/v1/tarifas/**")
@@ -31,7 +37,8 @@ public class RouteConfig {
                 .route("ms-calculos-depositos", spec -> spec.path("/api/v1/depositos/**")
                         .uri("http://ms-gestion-calculos:8081"))
 
-                // ms-rutas-transportistas: routes, tramos, camiones, osrm
+                // Microservicio de Rutas y Transportistas (puerto 8082)
+                // Maneja rutas, tramos, camiones y cálculo de rutas con OSRM
                 .route("ms-rutas-rutas", spec -> spec.path("/api/v1/rutas/**")
                         .uri("http://ms-rutas-transportistas:8082"))
                 .route("ms-rutas-tramos", spec -> spec.path("/api/v1/tramos/**")

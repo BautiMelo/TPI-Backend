@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de negocio para Depósitos
+ * Gestiona operaciones CRUD de depósitos/almacenes
+ */
 @Service
 public class DepositoService {
 
@@ -18,6 +22,10 @@ public class DepositoService {
     @Autowired
     private DepositoRepository depositoRepository;
 
+    /**
+     * Obtiene todos los depósitos del sistema
+     * @return Lista de DTOs de depósitos
+     */
     public List<DepositoDTO> findAll() {
         logger.info("Obteniendo todos los depósitos");
         List<DepositoDTO> depositos = depositoRepository.findAll().stream()
@@ -27,6 +35,11 @@ public class DepositoService {
         return depositos;
     }
 
+    /**
+     * Crea un nuevo depósito
+     * @param dto Datos del depósito a crear
+     * @return DTO del depósito creado
+     */
     public DepositoDTO save(DepositoDTO dto) {
         logger.info("Creando nuevo depósito: {}", dto.getNombre());
         Deposito deposito = toEntity(dto);
@@ -35,6 +48,12 @@ public class DepositoService {
         return toDto(saved);
     }
 
+    /**
+     * Busca un depósito por su ID
+     * @param id ID del depósito
+     * @return DTO del depósito encontrado
+     * @throws RuntimeException si no se encuentra el depósito
+     */
     public DepositoDTO findById(Long id) {
         logger.info("Buscando depósito por ID: {}", id);
         Deposito deposito = depositoRepository.findById(id)
@@ -46,6 +65,12 @@ public class DepositoService {
         return toDto(deposito);
     }
 
+    /**
+     * Actualiza un depósito existente
+     * @param id ID del depósito a actualizar
+     * @param dto Nuevos datos del depósito
+     * @return DTO del depósito actualizado
+     */
     public DepositoDTO update(Long id, DepositoDTO dto) {
         logger.info("Actualizando depósito ID: {}", id);
         Deposito deposito = depositoRepository.findById(id)
@@ -81,6 +106,11 @@ public class DepositoService {
         return toDto(saved);
     }
 
+    /**
+     * Convierte una entidad Deposito a su DTO
+     * @param deposito Entidad depósito
+     * @return DTO del depósito
+     */
     private DepositoDTO toDto(Deposito deposito) {
         if (deposito == null) return null;
         DepositoDTO dto = new DepositoDTO();
@@ -99,6 +129,11 @@ public class DepositoService {
         return dto;
     }
 
+    /**
+     * Convierte un DTO de Deposito a entidad
+     * @param dto DTO de depósito
+     * @return Entidad depósito
+     */
     private Deposito toEntity(DepositoDTO dto) {
         if (dto == null) return null;
         Deposito deposito = new Deposito();

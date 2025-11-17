@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para gestionar Solicitudes de transporte
+ * Expone endpoints CRUD y operaciones de integración con otros microservicios
+ */
 @RestController
 @RequestMapping("/api/v1/solicitudes")
 public class SolicitudController {
@@ -21,6 +25,12 @@ public class SolicitudController {
     @Autowired
     private SolicitudService solicitudService;
 
+    /**
+     * POST /api/v1/solicitudes - Crea una nueva solicitud de transporte
+     * Requiere rol CLIENTE
+     * @param createSolicitudDTO Datos de la solicitud a crear
+     * @return Solicitud creada con código 200
+     */
     @PostMapping
     @PreAuthorize("hasRole('CLIENTE')")
     public ResponseEntity<SolicitudDTO> create(@RequestBody CreateSolicitudDTO createSolicitudDTO) {
@@ -30,6 +40,13 @@ public class SolicitudController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * GET /api/v1/solicitudes - Obtiene lista de solicitudes con filtros opcionales
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param estado Filtro por nombre de estado (opcional)
+     * @param clienteId Filtro por ID de cliente (opcional)
+     * @return Lista de solicitudes filtradas
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<List<SolicitudDTO>> findAll(
@@ -41,6 +58,12 @@ public class SolicitudController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * GET /api/v1/solicitudes/{id} - Obtiene una solicitud específica por ID
+     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @return Solicitud encontrada (200) o Not Found (404)
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN')")
     public ResponseEntity<SolicitudDTO> findById(@PathVariable Long id) {
@@ -54,6 +77,13 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudDTO);
     }
 
+    /**
+     * PUT /api/v1/solicitudes/{id} - Actualiza los datos de una solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud a actualizar
+     * @param createSolicitudDTO Nuevos datos de la solicitud
+     * @return Solicitud actualizada (200) o Not Found (404)
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<SolicitudDTO> update(@PathVariable Long id, @RequestBody CreateSolicitudDTO createSolicitudDTO) {
@@ -67,6 +97,12 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudDTO);
     }
 
+    /**
+     * DELETE /api/v1/solicitudes/{id} - Elimina una solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud a eliminar
+     * @return No Content (204)
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -78,33 +114,59 @@ public class SolicitudController {
 
     // ---- Integration endpoints (delegan al service) ----
 
-    @PostMapping("/{id}/request-route")
+    /**
+     * POST /api/v1/solicitudes/{id}/solicitar-ruta - Solicita una ruta para la solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @return Respuesta del microservicio de rutas
+     */
+    @PostMapping("/{id}/solicitar-ruta")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<Object> requestRoute(@PathVariable Long id) {
-        logger.info("POST /api/v1/solicitudes/{}/request-route - Solicitando ruta", id);
+        logger.info("POST /api/v1/solicitudes/{}/solicitar-ruta - Solicitando ruta", id);
         Object result = solicitudService.requestRoute(id);
-        logger.info("POST /api/v1/solicitudes/{}/request-route - Respuesta: 200 - Ruta solicitada", id);
+        logger.info("POST /api/v1/solicitudes/{}/solicitar-ruta - Respuesta: 200 - Ruta solicitada", id);
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/{id}/calculate-price")
+    /**
+     * POST /api/v1/solicitudes/{id}/calcular-precio - Calcula el precio de una solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @return Información de costos calculados
+     */
+    @PostMapping("/{id}/calcular-precio")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<Object> calculatePrice(@PathVariable Long id) {
-        logger.info("POST /api/v1/solicitudes/{}/calculate-price - Calculando precio", id);
+        logger.info("POST /api/v1/solicitudes/{}/calcular-precio - Calculando precio", id);
         Object result = solicitudService.calculatePrice(id);
-        logger.info("POST /api/v1/solicitudes/{}/calculate-price - Respuesta: 200 - Precio calculado", id);
+        logger.info("POST /api/v1/solicitudes/{}/calcular-precio - Respuesta: 200 - Precio calculado", id);
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/{id}/assign-transport")
+    /**
+     * POST /api/v1/solicitudes/{id}/asignar-transporte - Asigna un camión/transportista a la solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @param transportistaId ID del camión a asignar
+     * @return Respuesta de la asignación
+     */
+    @PostMapping("/{id}/asignar-transporte")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<Object> assignTransport(@PathVariable Long id, @RequestParam Long transportistaId) {
-        logger.info("POST /api/v1/solicitudes/{}/assign-transport - Asignando transporte - transportistaId: {}", id, transportistaId);
+        logger.info("POST /api/v1/solicitudes/{}/asignar-transporte - Asignando transporte - transportistaId: {}", id, transportistaId);
         Object result = solicitudService.assignTransport(id, transportistaId);
-        logger.info("POST /api/v1/solicitudes/{}/assign-transport - Respuesta: 200 - Transporte asignado", id);
+        logger.info("POST /api/v1/solicitudes/{}/asignar-transporte - Respuesta: 200 - Transporte asignado", id);
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * PATCH /api/v1/solicitudes/{id}/estado - Actualiza el estado de una solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @param estadoId ID del nuevo estado
+     * @return Solicitud con estado actualizado
+     */
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<SolicitudDTO> updateEstado(@PathVariable Long id, @RequestParam Long estadoId) {
@@ -114,6 +176,14 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudDTO);
     }
 
+    /**
+     * PATCH /api/v1/solicitudes/{id}/programar - Programa una solicitud asignando costo y tiempo estimados
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @param costoEstimado Costo estimado del transporte
+     * @param tiempoEstimado Tiempo estimado del transporte
+     * @return Solicitud programada
+     */
     @PatchMapping("/{id}/programar")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<SolicitudDTO> programar(

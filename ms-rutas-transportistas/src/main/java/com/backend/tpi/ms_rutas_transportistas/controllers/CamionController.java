@@ -23,6 +23,10 @@ public class CamionController {
     @Autowired
     private CamionService camionService;
 
+    /**
+     * Obtiene la lista de todos los camiones registrados
+     * @return Lista de camiones
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN')")
     @Operation(summary = "Listar todos los camiones")
@@ -33,6 +37,11 @@ public class CamionController {
         return result;
     }
 
+    /**
+     * Obtiene un camión por su dominio o patente
+     * @param dominio Dominio o patente del camión
+     * @return Camión encontrado
+     */
     @GetMapping("/{dominio}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN')")
     @Operation(summary = "Obtener camión por dominio/patente")
@@ -43,6 +52,11 @@ public class CamionController {
         return ResponseEntity.ok(camion);
     }
 
+    /**
+     * Registra un nuevo camión en el sistema
+     * @param camion Datos del camión a registrar
+     * @return Camión registrado
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     @Operation(summary = "Registrar nuevo camión con capacidad y costos")
@@ -53,6 +67,13 @@ public class CamionController {
         return result;
     }
 
+    /**
+     * Actualiza el estado operativo de un camión
+     * @param dominio Dominio del camión
+     * @param disponible Nuevo estado de disponibilidad
+     * @param activo Nuevo estado de actividad
+     * @return Camión con estado actualizado
+     */
     @PostMapping("/{dominio}/estado")
     @PreAuthorize("hasAnyRole('TRANSPORTISTA','RESPONSABLE','ADMIN')")
     @Operation(summary = "Actualizar estado operativo del camión")
@@ -67,6 +88,12 @@ public class CamionController {
         return ResponseEntity.ok(camion);
     }
 
+    /**
+     * Asigna un camión a un transportista específico
+     * @param dominio Dominio del camión
+     * @param nombreTransportista Nombre del transportista
+     * @return Camión con transportista asignado
+     */
     @PatchMapping("/{dominio}/asignar")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     @Operation(summary = "Asignar camión a un transportista")

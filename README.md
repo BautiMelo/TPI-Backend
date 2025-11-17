@@ -21,7 +21,16 @@ El microservicio `ms-rutas-transportistas` ahora incluye integración con **OSRM
 - Rutas con múltiples waypoints
 - Sin costos de API (usa servidor público o self-hosted)
 
-Ver documentación completa en: [`ms-rutas-transportistas/README-OSRM.md`](ms-rutas-transportistas/README-OSRM.md)
+### 📚 Documentación API con Swagger
+Todos los microservicios incluyen **Swagger UI** (SpringDoc OpenAPI) para explorar y probar los endpoints:
+
+| Microservicio | Swagger UI | API Docs JSON |
+|---------------|------------|---------------|
+| **MS-Solicitudes** | http://localhost:8083/swagger-ui.html | http://localhost:8083/v3/api-docs |
+| **MS-Rutas** | http://localhost:8082/swagger-ui.html | http://localhost:8082/v3/api-docs |
+| **MS-Cálculos** | http://localhost:8081/swagger-ui.html | http://localhost:8081/v3/api-docs |
+
+**Nota:** Swagger requiere autenticación JWT. Obtén un token desde Keycloak y usa el botón "Authorize" (🔓) en Swagger UI.
 
 ## Cómo empezar
 

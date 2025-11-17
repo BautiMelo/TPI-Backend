@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para cálculos de rutas con OSRM
+ * Expone endpoints para calcular distancias y rutas reales entre coordenadas
+ * Utiliza el servicio OSRM que se conecta al servidor OSRM en Docker
+ */
 @RestController
 @RequestMapping("/api/v1/osrm")
 @Tag(name = "OSRM", description = "Cálculo de rutas y distancias usando OSRM")
@@ -22,6 +27,11 @@ public class OSRMController {
     @Autowired
     private OSRMService osrmService;
 
+    /**
+     * Calcula la ruta óptima entre dos puntos geográficos
+     * @param request Coordenadas de origen y destino
+     * @return Ruta calculada con distancia, duración y geometría
+     */
     @PostMapping("/ruta")
     @PreAuthorize("hasAnyRole('RESPONSABLE', 'TRANSPORTISTA', 'ADMIN')")
     @Operation(summary = "Calcular ruta entre dos puntos",
@@ -43,6 +53,11 @@ public class OSRMController {
         }
     }
 
+    /**
+     * Calcula una ruta que pasa por múltiples puntos de forma secuencial
+     * @param request Lista de coordenadas (mínimo 2 puntos)
+     * @return Ruta calculada que conecta todos los puntos
+     */
     @PostMapping("/ruta-multiple")
     @PreAuthorize("hasAnyRole('RESPONSABLE', 'TRANSPORTISTA', 'ADMIN')")
     @Operation(summary = "Calcular ruta con múltiples waypoints",
@@ -70,6 +85,14 @@ public class OSRMController {
         }
     }
 
+    /**
+     * Calcula una ruta entre dos puntos usando parámetros de consulta (GET)
+     * @param origenLat Latitud del punto de origen
+     * @param origenLong Longitud del punto de origen
+     * @param destinoLat Latitud del punto de destino
+     * @param destinoLong Longitud del punto de destino
+     * @return Ruta calculada con distancia y duración
+     */
     @GetMapping("/ruta-simple")
     @PreAuthorize("hasAnyRole('RESPONSABLE', 'TRANSPORTISTA', 'ADMIN')")
     @Operation(summary = "Calcular ruta (GET con query params)",
@@ -92,6 +115,14 @@ public class OSRMController {
         }
     }
 
+    /**
+     * Calcula la distancia y duración entre dos puntos (endpoint de compatibilidad)
+     * @param origenLat Latitud del punto de origen
+     * @param origenLong Longitud del punto de origen
+     * @param destinoLat Latitud del punto de destino
+     * @param destinoLong Longitud del punto de destino
+     * @return Distancia en km y duración en minutos
+     */
     @GetMapping("/distancia")
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','OPERADOR')")
     @Operation(summary = "Calcular distancia y duración entre dos puntos",

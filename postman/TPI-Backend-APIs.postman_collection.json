@@ -353,7 +353,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{gateway_url}}/api/v1/solicitudes/1/request-route",
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/solicitar-ruta",
 									"host": [
 										"{{gateway_url}}"
 									],
@@ -362,7 +362,7 @@
 										"v1",
 										"solicitudes",
 										"1",
-										"request-route"
+										"solicitar-ruta"
 									]
 								},
 								"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-rutas-transportistas"
@@ -375,7 +375,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{gateway_url}}/api/v1/solicitudes/1/calculate-price",
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/calcular-precio",
 									"host": [
 										"{{gateway_url}}"
 									],
@@ -384,7 +384,7 @@
 										"v1",
 										"solicitudes",
 										"1",
-										"calculate-price"
+										"calcular-precio"
 									]
 								},
 								"description": "Requiere rol: RESPONSABLE o ADMIN. Llama a ms-gestion-calculos"
@@ -397,7 +397,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{gateway_url}}/api/v1/solicitudes/1/assign-transport?transportistaId=1",
+									"raw": "{{gateway_url}}/api/v1/solicitudes/1/asignar-transporte?transportistaId=1",
 									"host": [
 										"{{gateway_url}}"
 									],
@@ -406,7 +406,7 @@
 										"v1",
 										"solicitudes",
 										"1",
-										"assign-transport"
+										"asignar-transporte"
 									],
 									"query": [
 										{
@@ -1894,3 +1894,4 @@
 		}
 	]
 }
+

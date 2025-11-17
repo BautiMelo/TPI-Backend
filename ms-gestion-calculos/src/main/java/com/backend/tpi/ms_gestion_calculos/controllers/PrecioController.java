@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controlador REST para cálculo de Precios
+ * Expone endpoints para calcular costos estimados y reales de traslados
+ */
 @RestController
 @RequestMapping("/api/v1/precio")
 public class PrecioController {
@@ -22,6 +26,12 @@ public class PrecioController {
     @Autowired
     private PrecioService precioService;
 
+    /**
+     * POST /api/v1/precio/estimado - Calcula un precio estimado para un traslado
+     * Requiere rol CLIENTE o RESPONSABLE
+     * @param request Datos del origen, destino, peso y volumen
+     * @return Costo total estimado y tiempo estimado
+     */
     @PostMapping("/estimado")
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE')")
     public CostoResponseDTO getPrecioEstimado(@RequestBody CostoRequestDTO request) {
@@ -31,6 +41,12 @@ public class PrecioController {
         return result;
     }
 
+    /**
+     * POST /api/v1/precio/traslado - Calcula el costo real de un traslado
+     * Requiere rol ADMIN u OPERADOR
+     * @param request Datos del traslado
+     * @return Costo total y tiempo estimado
+     */
     @PostMapping("/traslado")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public CostoResponseDTO getCostoTraslado(@RequestBody CostoRequestDTO request) {
@@ -40,6 +56,13 @@ public class PrecioController {
         return result;
     }
 
+    /**
+     * POST /api/v1/precio/solicitud/{id}/costo - Calcula el costo para una solicitud específica
+     * Obtiene datos de la solicitud desde ms-solicitudes y calcula el costo
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @return Costo total calculado
+     */
     @PostMapping("/solicitud/{id}/costo")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public CostoResponseDTO getCostoPorSolicitud(@PathVariable Long id) {

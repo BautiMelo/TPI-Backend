@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Configuración de seguridad con Keycloak
+ * Define las reglas de autenticación OAuth2 con JWT
+ * Extrae los roles de Keycloak y los convierte en autoridades de Spring Security
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

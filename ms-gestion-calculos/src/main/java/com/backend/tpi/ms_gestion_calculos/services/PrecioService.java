@@ -15,11 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+/**
+ * Servicio de negocio para cálculo de Precios
+ * Calcula costos estimados y reales basándose en tarifas, distancias y características de carga
+ * Se integra con ms-solicitudes para obtener datos de solicitudes
+ */
 @Service
 public class PrecioService {
 
@@ -108,8 +115,10 @@ public class PrecioService {
         logger.info("Calculando costo para solicitud ID: {}", solicitudId);
         try {
             logger.debug("Consultando ms-solicitudes para obtener datos de solicitud ID: {}", solicitudId);
+            String token = extractBearerToken();
             ResponseEntity<SolicitudIntegrationDTO> solicitudEntity = solicitudesClient.get()
                     .uri("/api/v1/solicitudes/{id}", solicitudId)
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
                     .retrieve()
                     .toEntity(SolicitudIntegrationDTO.class);
 
@@ -162,5 +171,16 @@ public class PrecioService {
         CostoResponseDTO resp = calcularCostoEstimado(request);
         logger.info("Costo de traslado calculado: {}", resp.getCostoTotal());
         return resp;
+    }
+
+    /**
+     * Helper: extrae token Bearer del SecurityContext si existe
+     */
+    private String extractBearerToken() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof JwtAuthenticationToken) {
+            return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
+        }
+        return null;
     }
 }

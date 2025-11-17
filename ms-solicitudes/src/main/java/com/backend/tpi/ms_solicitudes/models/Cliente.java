@@ -3,6 +3,10 @@ package com.backend.tpi.ms_solicitudes.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Cliente del sistema
+ * Representa a una persona o empresa que solicita servicios de transporte
+ */
 @Entity
 @Data
 @Table(name = "clientes")

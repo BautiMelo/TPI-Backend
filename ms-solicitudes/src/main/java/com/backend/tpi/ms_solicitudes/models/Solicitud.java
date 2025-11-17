@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * Solicitud de transporte
+ * Representa la solicitud de un cliente para transportar un contenedor
+ * desde un origen hasta un destino
+ */
 @Entity
 @Data
 @Table(name = "solicitudes")

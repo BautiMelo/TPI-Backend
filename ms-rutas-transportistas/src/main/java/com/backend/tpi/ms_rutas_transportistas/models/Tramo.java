@@ -3,6 +3,11 @@ package com.backend.tpi.ms_rutas_transportistas.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Tramo de una ruta
+ * Representa un segmento del recorrido (ej: depósito A -> depósito B)
+ * Incluye información de camión asignado, costos y tiempos
+ */
 @Entity
 @Table(name = "tramos")
 @Data

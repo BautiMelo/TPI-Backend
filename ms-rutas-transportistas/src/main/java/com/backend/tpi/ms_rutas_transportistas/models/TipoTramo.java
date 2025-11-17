@@ -6,6 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+/**
+ * Tipo de tramo
+ * Ej: "Nacional", "Internacional", "Urbano", etc.
+ */
 @Entity
 @Data
 public class TipoTramo {

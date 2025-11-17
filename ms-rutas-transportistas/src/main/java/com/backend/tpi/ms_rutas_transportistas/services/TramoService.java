@@ -11,10 +11,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servicio de negocio para Tramos
+ * Gestiona la creación de tramos, cálculo de distancias y asignación de camiones
+ * Se comunica con ms-gestion-calculos para obtener distancias
+ */
 @Service
 public class TramoService {
 
@@ -35,6 +42,11 @@ public class TramoService {
     @org.springframework.beans.factory.annotation.Value("${app.calculos.base-url:http://ms-gestion-calculos:8081}")
     private String calculosBaseUrl;
 
+    /**
+     * Crea un nuevo tramo para una ruta, calculando la distancia entre origen y destino
+     * @param tramoRequestDTO Datos del tramo a crear
+     * @return Tramo creado como DTO, o null si la ruta no existe
+     */
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO create(TramoRequestDTO tramoRequestDTO) {
         logger.info("Creando nuevo tramo para ruta ID: {}", tramoRequestDTO.getIdRuta());
         Optional<Ruta> optionalRuta = rutaRepository.findById(tramoRequestDTO.getIdRuta());
@@ -45,8 +57,10 @@ public class TramoService {
         java.util.Map<String, String> distanciaReq = new java.util.HashMap<>();
         distanciaReq.put("origen", String.valueOf(tramoRequestDTO.getOrigenDepositoId()));
         distanciaReq.put("destino", String.valueOf(tramoRequestDTO.getDestinoDepositoId()));
+    String token = extractBearerToken();
     ResponseEntity<DistanciaResponseDTO> distanciaRespEntity = calculosClient.post()
         .uri("/api/v1/gestion/distancia")
+        .headers(h -> { if (token != null) h.setBearerAuth(token); })
         .body(distanciaReq, new org.springframework.core.ParameterizedTypeReference<java.util.Map<String,String>>() {})
         .retrieve()
         .toEntity(DistanciaResponseDTO.class);
@@ -72,23 +86,42 @@ public class TramoService {
         return null;
     }
 
+    /**
+     * Obtiene la lista de todos los tramos registrados
+     * @return Lista de tramos como DTOs
+     */
     public java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO> findAll() {
         return tramoRepository.findAll().stream()
                 .map(this::toDto)
                 .toList();
     }
 
+    /**
+     * Obtiene todos los tramos de una ruta específica
+     * @param rutaId ID de la ruta
+     * @return Lista de tramos de la ruta
+     */
     public java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO> findByRutaId(Long rutaId) {
         return tramoRepository.findByRutaId(rutaId).stream()
                 .map(this::toDto)
                 .toList();
     }
 
+    /**
+     * Guarda o actualiza un tramo
+     * @param tramo Entidad tramo a guardar
+     * @return Tramo guardado como DTO
+     */
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO save(Tramo tramo) {
         Tramo saved = tramoRepository.save(tramo);
         return toDto(saved);
     }
 
+    /**
+     * Convierte una entidad Tramo a DTO
+     * @param tramo Entidad a convertir
+     * @return DTO con los datos del tramo
+     */
     private com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO toDto(Tramo tramo) {
         if (tramo == null) return null;
         com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO dto = new com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO();
@@ -110,6 +143,13 @@ public class TramoService {
         dto.setFechaHoraFinReal(tramo.getFechaHoraFinReal());
         return dto;
     }
+    
+    /**
+     * Asigna un camión a un tramo específico
+     * @param tramoId ID del tramo
+     * @param camionId ID del camión a asignar
+     * @return Tramo con camión asignado como DTO, o null si el tramo no existe
+     */
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO assignTransportista(Long tramoId, Long camionId) {
         logger.info("Asignando camión ID: {} al tramo ID: {}", camionId, tramoId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
@@ -130,6 +170,13 @@ public class TramoService {
         return toDto(saved);
     }
 
+    /**
+     * Marca el inicio de un tramo, registrando la fecha y hora actual
+     * @param rutaId ID de la ruta
+     * @param tramoId ID del tramo a iniciar
+     * @return Tramo iniciado como DTO, o null si no existe
+     * @throws RuntimeException si el tramo no pertenece a la ruta
+     */
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO iniciarTramo(Long rutaId, Long tramoId) {
         logger.info("Iniciando tramo ID: {} de ruta ID: {}", tramoId, rutaId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
@@ -150,6 +197,14 @@ public class TramoService {
         return toDto(saved);
     }
 
+    /**
+     * Marca la finalización de un tramo, registrando la fecha y hora
+     * @param rutaId ID de la ruta
+     * @param tramoId ID del tramo a finalizar
+     * @param fechaHora Fecha y hora de finalización (null para usar la actual)
+     * @return Tramo finalizado como DTO, o null si no existe
+     * @throws RuntimeException si el tramo no pertenece a la ruta
+     */
     public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO finalizarTramo(Long rutaId, Long tramoId, java.time.LocalDateTime fechaHora) {
         logger.info("Finalizando tramo ID: {} de ruta ID: {}", tramoId, rutaId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
@@ -168,5 +223,16 @@ public class TramoService {
         Tramo saved = tramoRepository.save(tramo);
         logger.info("Tramo ID: {} finalizado exitosamente a las {}", tramoId, saved.getFechaHoraFinReal());
         return toDto(saved);
+    }
+
+    /**
+     * Helper: extrae token Bearer del SecurityContext si existe
+     */
+    private String extractBearerToken() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof JwtAuthenticationToken) {
+            return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
+        }
+        return null;
     }
 }

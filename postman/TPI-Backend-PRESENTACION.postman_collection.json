@@ -1,0 +1,848 @@
+{
+	"info": {
+		"_postman_id": "presentacion-tpi-backend",
+		"name": "🎯 TPI Backend - PRESENTACIÓN (10 MIN)",
+		"description": "Colección optimizada para demostración en 10 minutos con flujos ordenados",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "0️⃣ AUTENTICACIÓN",
+			"description": "Obtener token JWT desde Keycloak",
+			"item": [
+				{
+					"name": "🔑 Login - CLIENTE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);",
+									"    console.log(\"✅ Token de CLIENTE obtenido correctamente\");",
+									"    pm.test(\"Login exitoso\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman-test",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "secret-postman-123",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "cliente1",
+									"type": "text",
+									"description": "Usuario con rol CLIENTE"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_url}}"
+							],
+							"path": [
+								"realms",
+								"tpi-backend",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						},
+						"description": "Autenticación como CLIENTE para crear solicitudes"
+					}
+				},
+				{
+					"name": "🔑 Login - RESPONSABLE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);",
+									"    console.log(\"✅ Token de RESPONSABLE obtenido correctamente\");",
+									"    pm.test(\"Login exitoso\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman-test",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "secret-postman-123",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "responsable1",
+									"type": "text",
+									"description": "Usuario con rol RESPONSABLE"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_url}}"
+							],
+							"path": [
+								"realms",
+								"tpi-backend",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						},
+						"description": "Autenticación como RESPONSABLE para gestionar operaciones"
+					}
+				}
+			]
+		},
+		{
+			"name": "1️⃣ FLUJO CLIENTE (Crear Solicitud)",
+			"description": "El cliente crea su solicitud de transporte",
+			"item": [
+				{
+					"name": "1. Crear Cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"cliente_id\", jsonData.id);",
+									"    console.log(\"✅ Cliente creado con ID: \" + jsonData.id);",
+									"    pm.test(\"Cliente creado exitosamente\", function () {",
+									"        pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Empresa Demo S.A.\",\n  \"email\": \"demo@empresa.com\",\n  \"telefono\": \"1144556677\",\n  \"direccion\": \"Av. Corrientes 1234, CABA\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/clientes",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clientes"
+							]
+						},
+						"description": "Paso 1: Crear cliente que hará la solicitud de transporte"
+					}
+				},
+				{
+					"name": "2. Crear Contenedor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"contenedor_id\", jsonData.id);",
+									"    console.log(\"✅ Contenedor creado con ID: \" + jsonData.id);",
+									"    pm.test(\"Contenedor creado exitosamente\", function () {",
+									"        pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descripcion\": \"Contenedor de 40 pies - Electrónica\",\n  \"peso\": 850.0,\n  \"volumen\": 55.0,\n  \"idCliente\": {{cliente_id}}\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/contenedores",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contenedores"
+							]
+						},
+						"description": "Paso 2: Crear contenedor que necesita transportarse"
+					}
+				},
+				{
+					"name": "3. Crear Solicitud (Buenos Aires → Rosario)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"solicitud_id\", jsonData.id);",
+									"    console.log(\"✅ Solicitud creada con ID: \" + jsonData.id);",
+									"    console.log(\"📍 Origen: \" + jsonData.direccionOrigen);",
+									"    console.log(\"📍 Destino: \" + jsonData.direccionDestino);",
+									"    pm.test(\"Solicitud creada exitosamente\", function () {",
+									"        pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"direccionOrigen\": \"Av. Corrientes 1000, Buenos Aires, Argentina\",\n  \"direccionDestino\": \"Av. Pellegrini 500, Rosario, Santa Fe, Argentina\",\n  \"idCliente\": {{cliente_id}},\n  \"idContenedor\": {{contenedor_id}}\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/solicitudes",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes"
+							]
+						},
+						"description": "Paso 3: Cliente solicita transporte de Buenos Aires a Rosario (300km aprox)"
+					}
+				},
+				{
+					"name": "4. 📍 Seguimiento de Contenedor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/contenedores/{{contenedor_id}}/seguimiento",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contenedores",
+								"{{contenedor_id}}",
+								"seguimiento"
+							]
+						},
+						"description": "Cliente consulta dónde está su contenedor y en qué estado"
+					}
+				}
+			]
+		},
+		{
+			"name": "2️⃣ FLUJO RESPONSABLE (Gestión)",
+			"description": "Responsable gestiona la solicitud: calcula precio, crea ruta, asigna transportista",
+			"item": [
+				{
+					"name": "1. 💰 Calcular Precio de la Solicitud",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(\"✅ Precio calculado:\");",
+									"    console.log(\"💵 Costo Total: $\" + jsonData.costoTotal);",
+									"    console.log(\"⏱️ Tiempo Estimado: \" + jsonData.tiempoEstimado + \" minutos\");",
+									"    console.log(\"📏 Distancia: \" + jsonData.distancia + \" km\");",
+									"    pm.test(\"Precio calculado exitosamente\", function () {",
+									"        pm.response.to.have.status(200);",
+									"        pm.expect(jsonData.costoTotal).to.be.above(0);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/solicitudes/{{solicitud_id}}/calcular-precio",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"{{solicitud_id}}",
+								"calcular-precio"
+							]
+						},
+						"description": "MS-Solicitudes → MS-Cálculos → MS-Rutas → OSRM\n\nCalcula el precio estimado basado en:\n- Distancia real (OSRM)\n- Tarifas configuradas\n- Peso y volumen del contenedor"
+					}
+				},
+				{
+					"name": "2. 🛣️ Solicitar Ruta (Crear Ruta Optimizada)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"ruta_id\", jsonData.id);",
+									"    console.log(\"✅ Ruta creada con ID: \" + jsonData.id);",
+									"    console.log(\"📊 Distancia Total: \" + jsonData.distanciaTotal + \" km\");",
+									"    console.log(\"🕒 Tiempo Estimado: \" + jsonData.tiempoEstimado + \" minutos\");",
+									"    pm.test(\"Ruta creada exitosamente\", function () {",
+									"        pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"        pm.expect(jsonData.distanciaTotal).to.be.above(0);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/solicitudes/{{solicitud_id}}/solicitar-ruta",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"{{solicitud_id}}",
+								"solicitar-ruta"
+							]
+						},
+						"description": "MS-Solicitudes → MS-Rutas → OSRM\n\nCrea la ruta óptima usando:\n- OSRM para calcular ruta real\n- Divide en tramos si es necesario\n- Asigna depósitos intermedios"
+					}
+				},
+				{
+					"name": "3. 🚛 Ver Camiones Disponibles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(\"✅ Camiones disponibles: \" + jsonData.length);",
+									"    if (jsonData.length > 0) {",
+									"        pm.collectionVariables.set(\"camion_dominio\", jsonData[0].dominio);",
+									"        console.log(\"🚛 Primer camión disponible: \" + jsonData[0].dominio + \" (\" + jsonData[0].marca + \" \" + jsonData[0].modelo + \")\");",
+									"    }",
+									"    pm.test(\"Camiones listados exitosamente\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/camiones",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"camiones"
+							]
+						},
+						"description": "Listar camiones disponibles para asignar al transporte"
+					}
+				},
+				{
+					"name": "4. ✅ Asignar Camión a la Solicitud",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    console.log(\"✅ Camión asignado correctamente\");",
+									"    console.log(\"📦 La solicitud está lista para transporte\");",
+									"    pm.test(\"Camión asignado exitosamente\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/solicitudes/{{solicitud_id}}/asignar-transporte?transportistaId=1",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"{{solicitud_id}}",
+								"asignar-transporte"
+							],
+							"query": [
+								{
+									"key": "transportistaId",
+									"value": "1",
+									"description": "ID del transportista/camión (número)"
+								}
+							]
+						},
+						"description": "Asignar el camión a la solicitud de transporte.\n\nUsa el ID numérico del transportista (ej: 1, 2, 3)"
+					}
+				},
+				{
+					"name": "5. 📋 Ver Detalles de la Solicitud",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/solicitudes/{{solicitud_id}}",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"solicitudes",
+								"{{solicitud_id}}"
+							]
+						},
+						"description": "Ver todos los detalles de la solicitud: estado, precio, ruta asignada, etc."
+					}
+				}
+			]
+		},
+		{
+			"name": "3️⃣ EXTRAS (Consultas OSRM)",
+			"description": "Demostrar integración con OSRM",
+			"item": [
+				{
+					"name": "📏 Calcular Distancia (Buenos Aires → Córdoba)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(\"✅ Distancia calculada con OSRM:\");",
+									"    console.log(\"📏 Distancia: \" + jsonData.distancia + \" km\");",
+									"    console.log(\"⏱️ Tiempo: \" + jsonData.tiempo + \" minutos\");",
+									"    pm.test(\"Distancia calculada exitosamente\", function () {",
+									"        pm.response.to.have.status(200);",
+									"        pm.expect(jsonData.distancia).to.be.above(0);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/osrm/distancia?origenLat=-34.6037&origenLong=-58.3816&destinoLat=-31.4201&destinoLong=-64.1888",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"osrm",
+								"distancia"
+							],
+							"query": [
+								{
+									"key": "origenLat",
+									"value": "-34.6037",
+									"description": "Buenos Aires - Latitud"
+								},
+								{
+									"key": "origenLong",
+									"value": "-58.3816",
+									"description": "Buenos Aires - Longitud"
+								},
+								{
+									"key": "destinoLat",
+									"value": "-31.4201",
+									"description": "Córdoba - Latitud"
+								},
+								{
+									"key": "destinoLong",
+									"value": "-64.1888",
+									"description": "Córdoba - Longitud"
+								}
+							]
+						},
+						"description": "Calcular distancia real por carretera usando OSRM\n\nBuenos Aires → Córdoba (~700 km)"
+					}
+				},
+				{
+					"name": "🗺️ Calcular Ruta Completa (con geometría)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    console.log(\"✅ Ruta calculada con OSRM:\");",
+									"    console.log(\"📏 Distancia: \" + jsonData.distance + \" metros\");",
+									"    console.log(\"⏱️ Duración: \" + (jsonData.duration / 60).toFixed(2) + \" minutos\");",
+									"    console.log(\"🗺️ Geometría: \" + (jsonData.geometry ? \"Incluida\" : \"No incluida\"));",
+									"    pm.test(\"Ruta calculada exitosamente\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"origen\": {\n    \"latitud\": -34.6037,\n    \"longitud\": -58.3816\n  },\n  \"destino\": {\n    \"latitud\": -32.9468,\n    \"longitud\": -60.6393\n  }\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/osrm/ruta",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"osrm",
+								"ruta"
+							]
+						},
+						"description": "Calcular ruta completa con geometría para visualización\n\nBuenos Aires → Rosario"
+					}
+				}
+			]
+		},
+		{
+			"name": "🔧 SETUP (Ejecutar antes de presentar)",
+			"description": "Crear datos base necesarios para la demo",
+			"item": [
+				{
+					"name": "Crear Tarifa Base",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"tarifa_id\", jsonData.id);",
+									"    console.log(\"✅ Tarifa creada con ID: \" + jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Tarifa Standard 2024\",\n  \"costoBaseGestionFijo\": 5000.0,\n  \"valorLitroCombustible\": 950.0\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/tarifas",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tarifas"
+							]
+						}
+					}
+				},
+				{
+					"name": "Agregar Rango a Tarifa",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"volumenMin\": 0.0,\n  \"volumenMax\": 100.0,\n  \"pesoMin\": 0.0,\n  \"pesoMax\": 2000.0,\n  \"costoPorKmBase\": 35.0\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/tarifas/{{tarifa_id}}/rango",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tarifas",
+								"{{tarifa_id}}",
+								"rango"
+							]
+						}
+					}
+				},
+				{
+					"name": "Crear Camión 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dominio\": \"ABC123\",\n  \"marca\": \"Scania\",\n  \"modelo\": \"R450\",\n  \"anio\": 2023,\n  \"capacidadCarga\": 24000.0,\n  \"capacidadVolumen\": 90.0,\n  \"litrosPor100Km\": 28.5,\n  \"costoKm\": 45.0,\n  \"disponible\": true,\n  \"activo\": true\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/camiones",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"camiones"
+							]
+						}
+					}
+				},
+				{
+					"name": "Crear Camión 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dominio\": \"XYZ789\",\n  \"marca\": \"Volvo\",\n  \"modelo\": \"FH16\",\n  \"anio\": 2022,\n  \"capacidadCarga\": 22000.0,\n  \"capacidadVolumen\": 85.0,\n  \"litrosPor100Km\": 30.0,\n  \"costoKm\": 42.0,\n  \"disponible\": true,\n  \"activo\": true\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/v1/camiones",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"camiones"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "keycloak_url",
+			"value": "http://localhost:8089",
+			"type": "string"
+		},
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cliente_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "contenedor_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "solicitud_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ruta_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "camion_dominio",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tarifa_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
+

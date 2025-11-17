@@ -8,6 +8,10 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
+/**
+ * Manejador global de excepciones
+ * Captura errores y devuelve respuestas HTTP con información del error
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

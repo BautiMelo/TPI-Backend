@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para gestionar Rutas
+ * Maneja la creación de rutas, asignación de transportistas y gestión de tramos
+ */
 @RestController
 @RequestMapping("/api/v1/rutas")
 @Tag(name = "Rutas", description = "Gestión de rutas y tramos de transporte")
@@ -30,6 +34,11 @@ public class RutaController {
     @Autowired
     private TramoService tramoService;
 
+    /**
+     * Crea una nueva ruta para una solicitud de transporte
+     * @param createRutaDTO Datos de la ruta a crear
+     * @return Ruta creada
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<RutaDTO> create(@RequestBody CreateRutaDTO createRutaDTO) {
@@ -39,6 +48,10 @@ public class RutaController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * Obtiene la lista de todas las rutas registradas
+     * @return Lista de rutas
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','TRANSPORTISTA')")
     public ResponseEntity<List<RutaDTO>> findAll() {
@@ -48,6 +61,11 @@ public class RutaController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * Obtiene una ruta específica por su ID
+     * @param id ID de la ruta
+     * @return Ruta encontrada o 404 si no existe
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','TRANSPORTISTA')")
     public ResponseEntity<RutaDTO> findById(@PathVariable Long id) {
@@ -61,6 +79,11 @@ public class RutaController {
         return ResponseEntity.ok(rutaDTO);
     }
 
+    /**
+     * Elimina una ruta del sistema
+     * @param id ID de la ruta a eliminar
+     * @return Respuesta sin contenido
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -72,6 +95,12 @@ public class RutaController {
 
     // ---- Integration endpoints (delegan al service) ----
 
+    /**
+     * Asigna un transportista a una ruta específica
+     * @param id ID de la ruta
+     * @param transportistaId ID del transportista a asignar
+     * @return Resultado de la asignación
+     */
     @PostMapping("/{id}/asignar-transportista")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public ResponseEntity<Object> asignarTransportista(@PathVariable Long id, @RequestParam Long transportistaId) {
@@ -81,6 +110,11 @@ public class RutaController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * Busca la ruta asociada a una solicitud específica
+     * @param solicitudId ID de la solicitud
+     * @return Ruta asociada a la solicitud
+     */
     @GetMapping("/por-solicitud/{solicitudId}")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
     public ResponseEntity<Object> findBySolicitud(@PathVariable Long solicitudId) {
@@ -90,6 +124,12 @@ public class RutaController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * Agrega un nuevo tramo a una ruta existente
+     * @param id ID de la ruta
+     * @param tramoRequest Datos del tramo a agregar
+     * @return Tramo creado
+     */
     @PostMapping("/{id}/tramos")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     @Operation(summary = "Agregar un nuevo tramo a una ruta")
@@ -107,6 +147,12 @@ public class RutaController {
         return ResponseEntity.ok(tramo);
     }
 
+    /**
+     * Marca el inicio de un tramo de transporte
+     * @param id ID de la ruta
+     * @param tramoId ID del tramo a iniciar
+     * @return Tramo iniciado
+     */
     @PostMapping("/{id}/tramos/{tramoId}/iniciar")
     @PreAuthorize("hasAnyRole('TRANSPORTISTA','RESPONSABLE','ADMIN')")
     @Operation(summary = "Marcar el inicio de un tramo de transporte")
@@ -123,6 +169,13 @@ public class RutaController {
         return ResponseEntity.ok(tramo);
     }
 
+    /**
+     * Marca la finalización de un tramo de transporte
+     * @param id ID de la ruta
+     * @param tramoId ID del tramo a finalizar
+     * @param fechaHoraReal Fecha y hora de finalización (opcional)
+     * @return Tramo finalizado
+     */
     @PostMapping("/{id}/tramos/{tramoId}/finalizar")
     @PreAuthorize("hasAnyRole('TRANSPORTISTA','RESPONSABLE','ADMIN')")
     @Operation(summary = "Marcar la finalización de un tramo de transporte")

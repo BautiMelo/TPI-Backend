@@ -6,6 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+/**
+ * Estado de una solicitud
+ * Ej: "Pendiente", "En Proceso", "Completada", etc.
+ */
 @Entity
 @Data
 public class EstadoSolicitud {

@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servicio de negocio para Contenedores
+ * Gestiona operaciones CRUD de contenedores y su seguimiento de ubicación
+ */
 @Service
 @Slf4j
 public class ContenedorService {
@@ -24,17 +28,32 @@ public class ContenedorService {
     @Autowired
     private SolicitudRepository solicitudRepository;
 
+    /**
+     * Obtiene todos los contenedores del sistema
+     * @return Lista con todos los contenedores
+     */
     @Transactional(readOnly = true)
     public List<Contenedor> findAll() {
         return contenedorRepository.findAll();
     }
 
+    /**
+     * Busca un contenedor por su ID
+     * @param id ID del contenedor
+     * @return Contenedor encontrado
+     * @throws RuntimeException si no se encuentra el contenedor
+     */
     @Transactional(readOnly = true)
     public Contenedor findById(Long id) {
         return contenedorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contenedor no encontrado con ID: " + id));
     }
 
+    /**
+     * Busca todos los contenedores de un cliente específico
+     * @param clienteId ID del cliente
+     * @return Lista de contenedores del cliente
+     */
     @Transactional(readOnly = true)
     public List<Contenedor> findByClienteId(Long clienteId) {
         return contenedorRepository.findAll().stream()
@@ -42,12 +61,23 @@ public class ContenedorService {
                 .toList();
     }
 
+    /**
+     * Guarda un nuevo contenedor en la base de datos
+     * @param contenedor Contenedor a guardar
+     * @return Contenedor guardado con su ID asignado
+     */
     @Transactional
     public Contenedor save(Contenedor contenedor) {
         log.info("Guardando contenedor para cliente ID: {}", contenedor.getClienteId());
         return contenedorRepository.save(contenedor);
     }
 
+    /**
+     * Actualiza los datos de un contenedor existente
+     * @param id ID del contenedor a actualizar
+     * @param contenedorActualizado Datos actualizados del contenedor
+     * @return Contenedor actualizado
+     */
     @Transactional
     public Contenedor update(Long id, Contenedor contenedorActualizado) {
         Contenedor contenedor = findById(id);
@@ -59,6 +89,10 @@ public class ContenedorService {
         return contenedorRepository.save(contenedor);
     }
 
+    /**
+     * Elimina un contenedor por su ID
+     * @param id ID del contenedor a eliminar
+     */
     @Transactional
     public void deleteById(Long id) {
         Contenedor contenedor = findById(id);
@@ -66,6 +100,12 @@ public class ContenedorService {
         contenedorRepository.delete(contenedor);
     }
 
+    /**
+     * Actualiza únicamente el estado de un contenedor
+     * @param id ID del contenedor
+     * @param estadoId ID del nuevo estado
+     * @return Contenedor con estado actualizado
+     */
     @Transactional
     public Contenedor updateEstado(Long id, Long estadoId) {
         Contenedor contenedor = findById(id);
@@ -76,6 +116,12 @@ public class ContenedorService {
         return contenedorRepository.save(contenedor);
     }
 
+    /**
+     * Obtiene información de seguimiento de un contenedor (ubicación, estado, depósito)
+     * Determina la ubicación según el estado de la solicitud activa
+     * @param id ID del contenedor
+     * @return DTO con información de seguimiento del contenedor
+     */
     @Transactional(readOnly = true)
     public SeguimientoContenedorDTO getSeguimiento(Long id) {
         Contenedor contenedor = findById(id);

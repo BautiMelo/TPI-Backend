@@ -7,6 +7,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Ruta de transporte
+ * Representa el camino completo desde origen a destino para una solicitud
+ * Está compuesta por varios tramos
+ */
 @Entity
 @Table(name = "rutas")
 @Data

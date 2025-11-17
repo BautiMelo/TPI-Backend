@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para Rutas
+ * Gestiona la creación de rutas y la asignación de transportistas a tramos
+ */
 @Service
 public class RutaService {
 
@@ -28,6 +32,11 @@ public class RutaService {
 
     // Manual mapping - ModelMapper removed
 
+    /**
+     * Crea una nueva ruta para una solicitud
+     * @param createRutaDTO Datos de la ruta a crear (incluye idSolicitud)
+     * @return DTO de la ruta creada
+     */
     public RutaDTO create(CreateRutaDTO createRutaDTO) {
         logger.debug("Creando nueva ruta para solicitud ID: {}", createRutaDTO.getIdSolicitud());
         Ruta ruta = new Ruta();
@@ -37,6 +46,10 @@ public class RutaService {
         return toDto(ruta);
     }
 
+    /**
+     * Obtiene todas las rutas del sistema
+     * @return Lista de DTOs de rutas
+     */
     public List<RutaDTO> findAll() {
         logger.debug("Buscando todas las rutas");
         List<RutaDTO> rutas = rutaRepository.findAll().stream()
@@ -46,6 +59,11 @@ public class RutaService {
         return rutas;
     }
 
+    /**
+     * Busca una ruta por su ID
+     * @param id ID de la ruta
+     * @return DTO de la ruta encontrada, o null si no existe
+     */
     public RutaDTO findById(Long id) {
         logger.debug("Buscando ruta por ID: {}", id);
         Optional<Ruta> ruta = rutaRepository.findById(id);
@@ -57,12 +75,21 @@ public class RutaService {
         return ruta.map(this::toDto).orElse(null);
     }
 
+    /**
+     * Elimina una ruta por su ID
+     * @param id ID de la ruta a eliminar
+     */
     public void delete(Long id) {
         logger.info("Eliminando ruta ID: {}", id);
         rutaRepository.deleteById(id);
         logger.debug("Ruta ID: {} eliminada de la base de datos", id);
     }
 
+    /**
+     * Convierte una entidad Ruta a su DTO
+     * @param ruta Entidad ruta
+     * @return DTO de la ruta
+     */
     private RutaDTO toDto(Ruta ruta) {
         if (ruta == null) return null;
         RutaDTO dto = new RutaDTO();
@@ -74,7 +101,11 @@ public class RutaService {
 
     // ----- Integration/stub methods -----
     /**
-     * Assign a transportista (or camion) to a ruta. Implementation pending.
+     * Asigna un transportista (camión) a una ruta
+     * Busca el primer tramo sin asignar y le asigna el transportista
+     * @param rutaId ID de la ruta
+     * @param transportistaId ID del camión a asignar
+     * @return DTO del tramo con el transportista asignado
      */
     public Object assignTransportista(Long rutaId, Long transportistaId) {
         logger.info("Asignando transportista ID: {} a ruta ID: {}", transportistaId, rutaId);
@@ -110,7 +141,9 @@ public class RutaService {
     }
 
     /**
-     * Find a route by solicitud id. Implementation pending.
+     * Busca una ruta por el ID de la solicitud asociada
+     * @param solicitudId ID de la solicitud
+     * @return DTO de la ruta encontrada, o null si no existe
      */
     public Object findBySolicitudId(Long solicitudId) {
         logger.debug("Buscando ruta por solicitud ID: {}", solicitudId);

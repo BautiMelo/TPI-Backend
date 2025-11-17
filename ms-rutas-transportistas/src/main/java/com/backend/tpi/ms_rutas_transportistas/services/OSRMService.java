@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Servicio para integrar con OSRM (Open Source Routing Machine)
+ * Calcula rutas reales usando datos de OpenStreetMap
+ * OSRM provee cálculos de distancia y tiempo más precisos que la fórmula Haversine
+ */
 @Service
 @Slf4j
 public class OSRMService {

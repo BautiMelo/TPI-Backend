@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para Depósitos
+ * Permite gestionar depósitos/almacenes del sistema
+ */
 @RestController
 @RequestMapping("/api/v1/depositos")
 public class DepositoController {
@@ -19,6 +23,11 @@ public class DepositoController {
     @Autowired
     private DepositoService depositoService;
 
+    /**
+     * GET /api/v1/depositos - Lista todos los depósitos del sistema
+     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+     * @return Lista de depósitos
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN')")
     public List<DepositoDTO> getAllDepositos() {
@@ -28,6 +37,12 @@ public class DepositoController {
         return result;
     }
 
+    /**
+     * POST /api/v1/depositos - Crea un nuevo depósito
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param deposito Datos del depósito a crear
+     * @return Depósito creado
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
     public DepositoDTO createDeposito(@RequestBody DepositoDTO deposito) {
@@ -37,6 +52,12 @@ public class DepositoController {
         return result;
     }
 
+    /**
+     * GET /api/v1/depositos/{id} - Obtiene un depósito específico por ID
+     * Requiere rol ADMIN, OPERADOR o RESPONSABLE
+     * @param id ID del depósito
+     * @return Depósito encontrado
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR','RESPONSABLE')")
     public DepositoDTO getDepositoById(@PathVariable Long id) {
@@ -46,6 +67,13 @@ public class DepositoController {
         return result;
     }
 
+    /**
+     * PATCH /api/v1/depositos/{id} - Actualiza un depósito existente
+     * Requiere rol ADMIN, OPERADOR o RESPONSABLE
+     * @param id ID del depósito a actualizar
+     * @param depositoDto Nuevos datos del depósito
+     * @return Depósito actualizado
+     */
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR','RESPONSABLE')")
     public DepositoDTO updateDeposito(@PathVariable Long id, @RequestBody DepositoDTO depositoDto) {

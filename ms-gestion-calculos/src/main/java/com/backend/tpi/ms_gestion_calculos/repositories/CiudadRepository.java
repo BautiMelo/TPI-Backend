@@ -4,6 +4,10 @@ import com.backend.tpi.ms_gestion_calculos.models.Ciudad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repositorio para acceso a datos de Ciudades
+ * Gestiona la información de ciudades y sus coordenadas
+ */
 @Repository
 public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
 }

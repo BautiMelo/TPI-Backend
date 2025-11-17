@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controlador REST para cálculos de distancia
+ * Expone endpoints para calcular distancias entre orígenes y destinos
+ * Usa OSRM para cálculos reales o Haversine como fallback
+ */
 @RestController
 @RequestMapping("/api/v1/gestion")
 public class CalculoController {
@@ -22,6 +27,12 @@ public class CalculoController {
     @Autowired
     private CalculoService calculoService;
 
+    /**
+     * POST /api/v1/gestion/distancia - Calcula la distancia entre dos ubicaciones
+     * Requiere rol CLIENTE o RESPONSABLE
+     * @param request Datos de origen y destino
+     * @return Distancia en kilómetros y tiempo estimado
+     */
     @PostMapping("/distancia")
     @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE')")
     public ResponseEntity<DistanciaResponseDTO> calcularDistancia(@RequestBody DistanciaRequestDTO request) {

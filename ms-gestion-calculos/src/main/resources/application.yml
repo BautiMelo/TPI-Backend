@@ -8,7 +8,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8089/realms/tpi-backend
+          issuer-uri: http://keycloak:8080/realms/tpi-backend
           jwk-set-uri: http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:postgres}:5432/${POSTGRES_DB:tpi_backend_db}
@@ -42,6 +42,8 @@ logging:
       total-size-cap: 1GB
 
 app:
+  solicitudes:
+    base-url: http://ms-solicitudes:8083
   rutas:
     base-url: http://ms-rutas-transportistas:8082
   osrm:

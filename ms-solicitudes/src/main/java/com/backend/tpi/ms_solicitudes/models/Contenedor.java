@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * Contenedor de carga
+ * Representa un contenedor con peso y volumen que debe ser transportado
+ */
 @Entity
 @Data
 @Table(name = "contenedores")

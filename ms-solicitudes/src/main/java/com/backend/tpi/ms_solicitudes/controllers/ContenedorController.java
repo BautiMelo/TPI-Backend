@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para gestionar Contenedores
+ * Permite gestionar contenedores de carga y su seguimiento
+ */
 @RestController
 @RequestMapping("/api/v1/contenedores")
 @Tag(name = "Contenedores", description = "Gestión de contenedores")
@@ -25,6 +29,11 @@ public class ContenedorController {
     @Autowired
     private ContenedorService contenedorService;
 
+    /**
+     * GET /api/v1/contenedores - Lista todos los contenedores del sistema
+     * Requiere rol RESPONSABLE o ADMIN
+     * @return Lista de todos los contenedores
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Listar todos los contenedores")
@@ -35,6 +44,12 @@ public class ContenedorController {
         return ResponseEntity.ok(contenedores);
     }
 
+    /**
+     * GET /api/v1/contenedores/{id} - Obtiene un contenedor específico por ID
+     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+     * @param id ID del contenedor
+     * @return Contenedor encontrado
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Obtener contenedor por ID")
@@ -45,6 +60,12 @@ public class ContenedorController {
         return ResponseEntity.ok(contenedor);
     }
 
+    /**
+     * GET /api/v1/contenedores/cliente/{clienteId} - Lista contenedores de un cliente
+     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+     * @param clienteId ID del cliente
+     * @return Lista de contenedores del cliente
+     */
     @GetMapping("/cliente/{clienteId}")
     @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Listar contenedores por cliente")
@@ -55,6 +76,12 @@ public class ContenedorController {
         return ResponseEntity.ok(contenedores);
     }
 
+    /**
+     * POST /api/v1/contenedores - Crea un nuevo contenedor
+     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+     * @param contenedor Datos del contenedor a crear
+     * @return Contenedor creado con código 201
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Crear nuevo contenedor")
@@ -65,6 +92,13 @@ public class ContenedorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoContenedor);
     }
 
+    /**
+     * PUT /api/v1/contenedores/{id} - Actualiza un contenedor existente
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID del contenedor a actualizar
+     * @param contenedor Datos actualizados del contenedor
+     * @return Contenedor actualizado
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Actualizar contenedor existente")
@@ -75,6 +109,12 @@ public class ContenedorController {
         return ResponseEntity.ok(contenedorActualizado);
     }
 
+    /**
+     * DELETE /api/v1/contenedores/{id} - Elimina un contenedor
+     * Requiere rol ADMIN
+     * @param id ID del contenedor a eliminar
+     * @return No Content (204)
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Eliminar contenedor")
@@ -85,6 +125,13 @@ public class ContenedorController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * PATCH /api/v1/contenedores/{id} - Actualiza el estado de un contenedor
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID del contenedor
+     * @param estadoId ID del nuevo estado
+     * @return Contenedor con estado actualizado
+     */
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Actualizar estado del contenedor")
@@ -95,6 +142,12 @@ public class ContenedorController {
         return ResponseEntity.ok(contenedor);
     }
 
+    /**
+     * GET /api/v1/contenedores/{id}/seguimiento - Consulta la ubicación y estado actual de un contenedor
+     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+     * @param id ID del contenedor
+     * @return Información de seguimiento del contenedor
+     */
     @GetMapping("/{id}/seguimiento")
     @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
     @Operation(summary = "Consultar seguimiento del contenedor")

@@ -9,10 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Servicio de negocio para cálculo de Distancias
+ * Calcula distancias entre ubicaciones usando OSRM (servicio externo) o fórmula de Haversine como fallback
+ * Incluye geocodificación básica de ciudades argentinas
+ */
 @Service
 public class CalculoService {
 
@@ -41,6 +48,13 @@ public class CalculoService {
         CIUDADES.put("Santa Fe", new CoordenadaDTO(-31.6333, -60.7000));
     }
 
+    /**
+     * Calcula la distancia entre dos ubicaciones
+     * Intenta usar OSRM (vía ms-rutas-transportistas) para rutas reales
+     * Si falla, usa fórmula de Haversine como fallback
+     * @param request Datos de origen y destino
+     * @return Distancia en kilómetros y duración estimada (si está disponible)
+     */
     public DistanciaResponseDTO calcularDistancia(DistanciaRequestDTO request) {
         logger.debug("Calculando distancia - origen: {}, destino: {}", request.getOrigen(), request.getDestino());
         
@@ -58,6 +72,7 @@ public class CalculoService {
             
             // Llamar a OSRM a través del microservicio de rutas
             logger.debug("Llamando a ms-rutas-transportistas para calcular distancia real con OSRM");
+            String token = extractBearerToken();
             DistanciaResponseDTO distanciaResp = rutasClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/api/v1/osrm/distancia")
@@ -66,6 +81,7 @@ public class CalculoService {
                             .queryParam("destinoLat", coordDestino.getLatitud())
                             .queryParam("destinoLong", coordDestino.getLongitud())
                             .build())
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
                     .retrieve()
                     .body(DistanciaResponseDTO.class);
             
@@ -90,6 +106,12 @@ public class CalculoService {
     }
     
 
+    /**
+     * Geocodifica una dirección (nombre de ciudad) a coordenadas lat/long
+     * Usa un mapa estático de ciudades argentinas principales
+     * @param direccion Nombre de la ciudad
+     * @return Coordenadas de la ciudad, o null si no se encuentra
+     */
     private CoordenadaDTO geocodificar(String direccion) {
         if (direccion == null) {
             return null;
@@ -113,6 +135,13 @@ public class CalculoService {
         return null;
     }
 
+    /**
+     * Calcula distancia usando fórmula de Haversine entre dos ciudades
+     * Geocodifica los nombres de las ciudades primero
+     * @param origen Nombre de la ciudad origen
+     * @param destino Nombre de la ciudad destino
+     * @return Distancia en kilómetros (redondeada a 2 decimales)
+     */
     private double calcularDistanciaHaversine(String origen, String destino) {
         logger.debug("Aplicando fórmula de Haversine para calcular distancia");
         
@@ -132,6 +161,13 @@ public class CalculoService {
         );
     }
     
+    /**
+     * Calcula distancia usando fórmula de Haversine entre dos coordenadas
+     * Fórmula matemática para calcular distancia en la superficie de una esfera
+     * @param origen Coordenadas del punto origen
+     * @param destino Coordenadas del punto destino
+     * @return Distancia en kilómetros (redondeada a 2 decimales)
+     */
     private double calcularDistanciaHaversine(CoordenadaDTO origen, CoordenadaDTO destino) {
         double lat1 = origen.getLatitud();
         double lon1 = origen.getLongitud();
@@ -148,5 +184,16 @@ public class CalculoService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return Math.round(RADIO_TIERRA * c * 100.0) / 100.0; // Redondear a 2 decimales
+    }
+
+    /**
+     * Helper: extrae token Bearer del SecurityContext si existe
+     */
+    private String extractBearerToken() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof JwtAuthenticationToken) {
+            return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
+        }
+        return null;
     }
 }

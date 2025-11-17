@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * Depósito de almacenamiento
+ * Representa un lugar físico donde se almacenan contenedores
+ * Incluye ubicación geográfica y costos de estadía
+ */
 @Entity
 @Data
 @Table(name = "depositos")

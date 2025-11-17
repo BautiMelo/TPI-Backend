@@ -8,6 +8,10 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
+/**
+ * Manejador global de excepciones
+ * Captura todas las excepciones no manejadas y devuelve una respuesta HTTP estructurada
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -18,6 +22,9 @@ public class GlobalExceptionHandler {
     }
 }
 
+/**
+ * Clase para estructurar la información de error en la respuesta
+ */
 class ErrorDetails {
     private Date timestamp;
     private String message;
