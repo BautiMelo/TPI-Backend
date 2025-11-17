@@ -40,11 +40,4 @@ public class Camion {
     
     private Boolean disponible; // Estado operativo del camión
     private Boolean activo; // Si el camión está activo en el sistema
-    
-    // Legacy field (puede ser eliminado si ya no se usa)
-    @Deprecated
-    private String patente; // Usar 'dominio' en su lugar
-    
-    @Deprecated
-    private Double capacidadCarga; // Usar 'capacidadPesoMax' en su lugar
 }

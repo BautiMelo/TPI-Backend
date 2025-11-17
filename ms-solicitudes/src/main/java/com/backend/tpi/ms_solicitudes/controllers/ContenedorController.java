@@ -157,4 +157,20 @@ public class ContenedorController {
         logger.info("GET /api/v1/contenedores/{}/seguimiento - Respuesta: 200 - Seguimiento obtenido", id);
         return ResponseEntity.ok(seguimiento);
     }
+
+    /**
+     * GET /api/v1/contenedores/{id}/estados-permitidos - Consulta los estados a los que puede transicionar el contenedor
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID del contenedor
+     * @return Lista de nombres de estados permitidos
+     */
+    @GetMapping("/{id}/estados-permitidos")
+    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @Operation(summary = "Consultar estados permitidos para el contenedor")
+    public ResponseEntity<List<String>> getEstadosPermitidos(@PathVariable Long id) {
+        logger.info("GET /api/v1/contenedores/{}/estados-permitidos - Consultando transiciones permitidas", id);
+        List<String> estadosPermitidos = contenedorService.getEstadosPermitidos(id);
+        logger.info("GET /api/v1/contenedores/{}/estados-permitidos - Respuesta: 200 - {} estados permitidos", id, estadosPermitidos.size());
+        return ResponseEntity.ok(estadosPermitidos);
+    }
 }

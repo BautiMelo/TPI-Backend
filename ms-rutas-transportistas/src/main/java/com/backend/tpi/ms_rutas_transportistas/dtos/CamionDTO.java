@@ -16,12 +16,4 @@ public class CamionDTO {
     private Integer numeroTransportistas;
     private Boolean disponible; // Estado operativo
     private Boolean activo; // Activo en sistema
-    
-    // Backward compatibility
-    @Deprecated
-    private String patente; // Usar 'dominio'
-    @Deprecated
-    private Double capacidad; // Usar 'capacidadPesoMax'
-    @Deprecated
-    private String estado; // Usar 'disponible'
 }

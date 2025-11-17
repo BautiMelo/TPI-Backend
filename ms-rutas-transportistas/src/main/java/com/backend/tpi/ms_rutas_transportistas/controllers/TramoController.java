@@ -67,21 +67,36 @@ public class TramoController {
     }
 
     /**
-     * Asigna un camión a un tramo específico
+     * Asigna un camión a un tramo específico, validando capacidad
      * @param id ID del tramo
      * @param camionId ID del camión a asignar
      * @return Tramo con camión asignado
      */
     @PostMapping("/{id}/asignar-transportista")
     @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
-    public ResponseEntity<TramoDTO> asignarTransportista(@PathVariable Long id, @RequestParam Long camionId) {
+    public ResponseEntity<?> asignarTransportista(@PathVariable Long id, @RequestParam Long camionId) {
         logger.info("POST /api/v1/tramos/{}/asignar-transportista - Asignando camión ID: {}", id, camionId);
-        TramoDTO dto = tramoService.assignTransportista(id, camionId);
-        if (dto == null) {
-            logger.warn("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 404 - Tramo no encontrado", id);
-            return ResponseEntity.notFound().build();
+        
+        try {
+            TramoDTO dto = tramoService.assignTransportista(id, camionId);
+            if (dto == null) {
+                logger.warn("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 404 - Tramo no encontrado", id);
+                return ResponseEntity.notFound().build();
+            }
+            logger.info("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 200 - Camión asignado", id);
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException e) {
+            logger.error("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 400 - {}", id, e.getMessage());
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                "error", "Validación de capacidad fallida",
+                "mensaje", e.getMessage()
+            ));
+        } catch (Exception e) {
+            logger.error("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 500 - Error inesperado: {}", id, e.getMessage());
+            return ResponseEntity.internalServerError().body(java.util.Map.of(
+                "error", "Error al asignar camión",
+                "mensaje", e.getMessage()
+            ));
         }
-        logger.info("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 200 - Camión asignado", id);
-        return ResponseEntity.ok(dto);
     }
 }

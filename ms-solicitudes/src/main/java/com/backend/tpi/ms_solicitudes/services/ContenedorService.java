@@ -6,6 +6,7 @@ import com.backend.tpi.ms_solicitudes.models.EstadoContenedor;
 import com.backend.tpi.ms_solicitudes.models.Solicitud;
 import com.backend.tpi.ms_solicitudes.repositories.ContenedorRepository;
 import com.backend.tpi.ms_solicitudes.repositories.SolicitudRepository;
+import com.backend.tpi.ms_solicitudes.repositories.EstadoContenedorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,12 @@ public class ContenedorService {
 
     @Autowired
     private SolicitudRepository solicitudRepository;
+    
+    @Autowired
+    private EstadoContenedorRepository estadoContenedorRepository;
+    
+    @Autowired
+    private EstadoTransicionService estadoTransicionService;
 
     /**
      * Obtiene todos los contenedores del sistema
@@ -46,7 +53,7 @@ public class ContenedorService {
     @Transactional(readOnly = true)
     public Contenedor findById(Long id) {
         return contenedorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contenedor no encontrado con ID: " + id));
+                .orElseThrow(() -> new com.backend.tpi.ms_solicitudes.exceptions.ResourceNotFoundException("Contenedor", id));
     }
 
     /**
@@ -65,9 +72,28 @@ public class ContenedorService {
      * Guarda un nuevo contenedor en la base de datos
      * @param contenedor Contenedor a guardar
      * @return Contenedor guardado con su ID asignado
+     * @throws IllegalArgumentException si los datos del contenedor son inválidos
      */
     @Transactional
     public Contenedor save(Contenedor contenedor) {
+        // Validar datos de entrada
+        if (contenedor == null) {
+            log.error("Contenedor no puede ser null");
+            throw new IllegalArgumentException("Los datos del contenedor no pueden ser null");
+        }
+        if (contenedor.getClienteId() == null) {
+            log.error("ClienteId no puede ser null");
+            throw new IllegalArgumentException("El ID del cliente es obligatorio");
+        }
+        if (contenedor.getPeso() != null && contenedor.getPeso().compareTo(java.math.BigDecimal.ZERO) <= 0) {
+            log.error("Peso inválido: {}", contenedor.getPeso());
+            throw new IllegalArgumentException("El peso debe ser mayor a 0");
+        }
+        if (contenedor.getVolumen() != null && contenedor.getVolumen().compareTo(java.math.BigDecimal.ZERO) <= 0) {
+            log.error("Volumen inválido: {}", contenedor.getVolumen());
+            throw new IllegalArgumentException("El volumen debe ser mayor a 0");
+        }
+        
         log.info("Guardando contenedor para cliente ID: {}", contenedor.getClienteId());
         return contenedorRepository.save(contenedor);
     }
@@ -101,18 +127,41 @@ public class ContenedorService {
     }
 
     /**
-     * Actualiza únicamente el estado de un contenedor
+     * Actualiza únicamente el estado de un contenedor con validación de transición
      * @param id ID del contenedor
      * @param estadoId ID del nuevo estado
      * @return Contenedor con estado actualizado
+     * @throws IllegalStateException si la transición no es válida
      */
     @Transactional
     public Contenedor updateEstado(Long id, Long estadoId) {
-        Contenedor contenedor = findById(id);
-        EstadoContenedor estado = new EstadoContenedor();
-        estado.setId(estadoId);
-        contenedor.setEstado(estado);
         log.info("Actualizando estado del contenedor ID: {} a estado ID: {}", id, estadoId);
+        Contenedor contenedor = findById(id);
+        
+        // Obtener el estado destino
+        EstadoContenedor estadoDestino = estadoContenedorRepository.findById(estadoId)
+            .orElseThrow(() -> {
+                log.error("Estado de contenedor no encontrado con ID: {}", estadoId);
+                return new IllegalArgumentException("Estado de contenedor no encontrado con ID: " + estadoId);
+            });
+        
+        // Validar transición si hay estado actual
+        if (contenedor.getEstado() != null) {
+            String estadoOrigenNombre = contenedor.getEstado().getNombre();
+            String estadoDestinoNombre = estadoDestino.getNombre();
+            
+            if (!estadoTransicionService.esTransicionContenedorValida(estadoOrigenNombre, estadoDestinoNombre)) {
+                log.error("Transición de estado inválida de {} a {}", estadoOrigenNombre, estadoDestinoNombre);
+                throw new IllegalStateException(
+                    String.format("No se puede cambiar el estado de '%s' a '%s'. Transición no permitida.", 
+                        estadoOrigenNombre, estadoDestinoNombre)
+                );
+            }
+            log.debug("Transición válida de {} a {}", estadoOrigenNombre, estadoDestinoNombre);
+        }
+        
+        contenedor.setEstado(estadoDestino);
+        log.info("Estado del contenedor ID: {} actualizado exitosamente a {}", id, estadoDestino.getNombre());
         return contenedorRepository.save(contenedor);
     }
 
@@ -182,5 +231,26 @@ public class ContenedorService {
         }
         
         return seguimiento;
+    }
+
+    /**
+     * Consulta los estados a los que puede transicionar un contenedor desde su estado actual
+     * @param id ID del contenedor
+     * @return Lista de nombres de estados permitidos
+     */
+    @Transactional(readOnly = true)
+    public List<String> getEstadosPermitidos(Long id) {
+        log.info("Consultando estados permitidos para contenedor ID: {}", id);
+        Contenedor contenedor = findById(id);
+        
+        if (contenedor.getEstado() == null) {
+            log.warn("El contenedor ID: {} no tiene estado actual asignado", id);
+            return List.of(); // Sin estado actual, no hay transiciones
+        }
+        
+        String estadoActual = contenedor.getEstado().getNombre();
+        List<String> permitidos = estadoTransicionService.getEstadosPermitidosContenedor(estadoActual);
+        log.info("Contenedor ID: {} en estado '{}' puede transicionar a: {}", id, estadoActual, permitidos);
+        return permitidos;
     }
 }

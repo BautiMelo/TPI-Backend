@@ -4,11 +4,11 @@ import com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO;
 import com.backend.tpi.ms_solicitudes.dtos.SolicitudDTO;
 import com.backend.tpi.ms_solicitudes.models.Solicitud;
 import com.backend.tpi.ms_solicitudes.repositories.SolicitudRepository;
+import com.backend.tpi.ms_solicitudes.repositories.EstadoSolicitudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-// removed unused imports: HttpEntity, HttpHeaders, MediaType
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -40,6 +40,12 @@ public class SolicitudService {
     @Autowired
     private org.springframework.web.client.RestClient rutasClient;
 
+    @Autowired
+    private EstadoTransicionService estadoTransicionService;
+    
+    @Autowired
+    private EstadoSolicitudRepository estadoSolicitudRepository;
+
     // Base URLs for other microservices (provide defaults for local/docker environment)
     @Value("${app.calculos.base-url:http://ms-gestion-calculos:8081}")
     private String calculosBaseUrl;
@@ -50,35 +56,30 @@ public class SolicitudService {
     // Manual mapping - removed ModelMapper dependency
 
     /**
-    @Service
-    public class SolicitudService {
-
-        private static final Logger logger = LoggerFactory.getLogger(SolicitudService.class);
-
-        @Autowired
-        private SolicitudRepository solicitudRepository;
-
-        @Autowired
-        private org.springframework.web.client.RestClient calculosClient;
-
-        @Autowired
-        private org.springframework.web.client.RestClient rutasClient;
-
-        // Base URLs for other microservices (provide defaults for local/docker environment)
-        @Value("${app.calculos.base-url:http://ms-gestion-calculos:8081}")
-        private String calculosBaseUrl;
-
-        @Value("${app.rutas.base-url:http://ms-rutas-transportistas:8082}")
-        private String rutasBaseUrl;
-
-        // Manual mapping - removed ModelMapper dependency
-
-        /**
          * Crea una nueva solicitud de transporte
          * @param createSolicitudDTO Datos de la solicitud a crear
          * @return DTO con los datos de la solicitud creada
+         * @throws IllegalArgumentException si los datos son inválidos
          */
         public SolicitudDTO create(CreateSolicitudDTO createSolicitudDTO) {
+            // Validar datos de entrada
+            if (createSolicitudDTO == null) {
+                logger.error("CreateSolicitudDTO no puede ser null");
+                throw new IllegalArgumentException("Los datos de la solicitud no pueden ser null");
+            }
+            if (createSolicitudDTO.getDireccionOrigen() == null || createSolicitudDTO.getDireccionOrigen().trim().isEmpty()) {
+                logger.error("Dirección de origen no puede ser null o vacía");
+                throw new IllegalArgumentException("La dirección de origen es obligatoria");
+            }
+            if (createSolicitudDTO.getDireccionDestino() == null || createSolicitudDTO.getDireccionDestino().trim().isEmpty()) {
+                logger.error("Dirección de destino no puede ser null o vacía");
+                throw new IllegalArgumentException("La dirección de destino es obligatoria");
+            }
+            if (createSolicitudDTO.getDireccionOrigen().equals(createSolicitudDTO.getDireccionDestino())) {
+                logger.error("Dirección de origen y destino no pueden ser iguales");
+                throw new IllegalArgumentException("La dirección de origen y destino deben ser diferentes");
+            }
+            
             logger.debug("Creando nueva solicitud - origen: {}, destino: {}", 
                 createSolicitudDTO.getDireccionOrigen(), createSolicitudDTO.getDireccionDestino());
             Solicitud solicitud = new Solicitud();
@@ -95,6 +96,7 @@ public class SolicitudService {
          * Obtiene todas las solicitudes sin filtros
          * @return Lista de DTOs con todas las solicitudes
          */
+        @org.springframework.transaction.annotation.Transactional(readOnly = true)
         public List<SolicitudDTO> findAll() {
             return solicitudRepository.findAll().stream()
                     .map(this::toDto)
@@ -107,6 +109,7 @@ public class SolicitudService {
          * @param clienteId ID del cliente a filtrar (opcional)
          * @return Lista de solicitudes que cumplen los criterios
          */
+        @org.springframework.transaction.annotation.Transactional(readOnly = true)
         public List<SolicitudDTO> findAllWithFilters(String estado, Long clienteId) {
             logger.debug("Buscando solicitudes con filtros - estado: {}, clienteId: {}", estado, clienteId);
             List<Solicitud> solicitudes;
@@ -138,6 +141,7 @@ public class SolicitudService {
          * @param id ID de la solicitud
          * @return DTO de la solicitud encontrada, o null si no existe
          */
+        @org.springframework.transaction.annotation.Transactional(readOnly = true)
         public SolicitudDTO findById(Long id) {
             logger.debug("Buscando solicitud por ID: {}", id);
             Optional<Solicitud> solicitud = solicitudRepository.findById(id);
@@ -155,6 +159,7 @@ public class SolicitudService {
          * @param createSolicitudDTO Nuevos datos de la solicitud
          * @return DTO de la solicitud actualizada, o null si no existe
          */
+        @org.springframework.transaction.annotation.Transactional
         public SolicitudDTO update(Long id, CreateSolicitudDTO createSolicitudDTO) {
             logger.debug("Actualizando solicitud ID: {}", id);
             Optional<Solicitud> optionalSolicitud = solicitudRepository.findById(id);
@@ -175,6 +180,7 @@ public class SolicitudService {
          * Elimina una solicitud por su ID
          * @param id ID de la solicitud a eliminar
          */
+        @org.springframework.transaction.annotation.Transactional
         public void delete(Long id) {
             logger.info("Eliminando solicitud ID: {}", id);
             solicitudRepository.deleteById(id);
@@ -386,11 +392,13 @@ public class SolicitudService {
         }
 
         /**
-         * Actualiza únicamente el estado de una solicitud
+         * Actualiza el estado de una solicitud con validación de transición
          * @param id ID de la solicitud
          * @param estadoId ID del nuevo estado
          * @return DTO de la solicitud actualizada
+         * @throws IllegalStateException si la transición no es válida
          */
+        @org.springframework.transaction.annotation.Transactional
         public SolicitudDTO updateEstado(Long id, Long estadoId) {
             logger.info("Actualizando estado de solicitud ID: {} a estado ID: {}", id, estadoId);
             Solicitud solicitud = solicitudRepository.findById(id)
@@ -399,9 +407,29 @@ public class SolicitudService {
                         return new RuntimeException("Solicitud no encontrada con ID: " + id);
                     });
         
-            com.backend.tpi.ms_solicitudes.models.EstadoSolicitud estado = new com.backend.tpi.ms_solicitudes.models.EstadoSolicitud();
-            estado.setId(estadoId);
-            solicitud.setEstado(estado);
+            // Obtener el estado destino
+            com.backend.tpi.ms_solicitudes.models.EstadoSolicitud estadoDestino = estadoSolicitudRepository.findById(estadoId)
+                .orElseThrow(() -> {
+                    logger.error("Estado no encontrado con ID: {}", estadoId);
+                    return new IllegalArgumentException("Estado no encontrado con ID: " + estadoId);
+                });
+            
+            // Validar transición si hay estado actual
+            if (solicitud.getEstado() != null) {
+                String estadoOrigenNombre = solicitud.getEstado().getNombre();
+                String estadoDestinoNombre = estadoDestino.getNombre();
+                
+                if (!estadoTransicionService.esTransicionSolicitudValida(estadoOrigenNombre, estadoDestinoNombre)) {
+                    logger.error("Transición de estado inválida de {} a {}", estadoOrigenNombre, estadoDestinoNombre);
+                    throw new IllegalStateException(
+                        String.format("No se puede cambiar el estado de '%s' a '%s'. Transición no permitida.", 
+                            estadoOrigenNombre, estadoDestinoNombre)
+                    );
+                }
+                logger.debug("Transición válida de {} a {}", estadoOrigenNombre, estadoDestinoNombre);
+            }
+            
+            solicitud.setEstado(estadoDestino);
         
             solicitud = solicitudRepository.save(solicitud);
             logger.info("Estado de solicitud ID: {} actualizado exitosamente", id);
@@ -415,6 +443,7 @@ public class SolicitudService {
          * @param tiempoEstimado Tiempo estimado del transporte
          * @return DTO de la solicitud programada
          */
+        @org.springframework.transaction.annotation.Transactional
         public SolicitudDTO programar(Long id, java.math.BigDecimal costoEstimado, java.math.BigDecimal tiempoEstimado) {
             logger.info("Programando solicitud ID: {} con costo: {} y tiempo: {}", id, costoEstimado, tiempoEstimado);
             Solicitud solicitud = solicitudRepository.findById(id)
@@ -426,19 +455,44 @@ public class SolicitudService {
             solicitud.setCostoEstimado(costoEstimado);
             solicitud.setTiempoEstimado(tiempoEstimado);
         
-            solicitud = solicitudRepository.save(solicitud);
-            logger.info("Solicitud ID: {} programada exitosamente", id);
-            return toDto(solicitud);
-        }
-
-        /**
-         * Helper: extrae token Bearer del SecurityContext si existe
-         */
-        private String extractBearerToken() {
-            var auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth instanceof JwtAuthenticationToken) {
-                return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
-            }
-            return null;
-        }
+        solicitud = solicitudRepository.save(solicitud);
+        logger.info("Solicitud ID: {} programada exitosamente", id);
+        return toDto(solicitud);
     }
+
+    /**
+     * Consulta los estados a los que puede transicionar una solicitud desde su estado actual
+     * @param id ID de la solicitud
+     * @return Lista de nombres de estados permitidos
+     */
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public List<String> getEstadosPermitidos(Long id) {
+        logger.info("Consultando estados permitidos para solicitud ID: {}", id);
+        Solicitud solicitud = solicitudRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Solicitud no encontrada con ID: {}", id);
+                    return new RuntimeException("Solicitud no encontrada con ID: " + id);
+                });
+        
+        if (solicitud.getEstado() == null) {
+            logger.warn("La solicitud ID: {} no tiene estado actual asignado", id);
+            return List.of(); // Sin estado actual, no hay transiciones
+        }
+        
+        String estadoActual = solicitud.getEstado().getNombre();
+        List<String> permitidos = estadoTransicionService.getEstadosPermitidosSolicitud(estadoActual);
+        logger.info("Solicitud ID: {} en estado '{}' puede transicionar a: {}", id, estadoActual, permitidos);
+        return permitidos;
+    }
+
+    /**
+     * Helper: extrae token Bearer del SecurityContext si existe
+     */
+    private String extractBearerToken() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof JwtAuthenticationToken) {
+            return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
+        }
+        return null;
+    }
+}

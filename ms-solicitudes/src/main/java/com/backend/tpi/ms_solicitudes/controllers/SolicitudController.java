@@ -196,4 +196,19 @@ public class SolicitudController {
         logger.info("PATCH /api/v1/solicitudes/{}/programar - Respuesta: 200 - Solicitud programada", id);
         return ResponseEntity.ok(solicitudDTO);
     }
+
+    /**
+     * GET /api/v1/solicitudes/{id}/estados-permitidos - Consulta los estados a los que puede transicionar la solicitud
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID de la solicitud
+     * @return Lista de nombres de estados permitidos
+     */
+    @GetMapping("/{id}/estados-permitidos")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    public ResponseEntity<List<String>> getEstadosPermitidos(@PathVariable Long id) {
+        logger.info("GET /api/v1/solicitudes/{}/estados-permitidos - Consultando transiciones permitidas", id);
+        List<String> estadosPermitidos = solicitudService.getEstadosPermitidos(id);
+        logger.info("GET /api/v1/solicitudes/{}/estados-permitidos - Respuesta: 200 - {} estados permitidos", id, estadosPermitidos.size());
+        return ResponseEntity.ok(estadosPermitidos);
+    }
 }

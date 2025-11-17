@@ -43,7 +43,7 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public Cliente findByEmail(String email) {
         return clienteRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con email: " + email));
+                .orElseThrow(() -> new com.backend.tpi.ms_solicitudes.exceptions.ResourceNotFoundException("Cliente", "email", email));
     }
 
     /**
@@ -55,7 +55,7 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public Cliente findById(Long id) {
         return clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + id));
+                .orElseThrow(() -> new com.backend.tpi.ms_solicitudes.exceptions.ResourceNotFoundException("Cliente", id));
     }
 
     /**

@@ -36,8 +36,27 @@ public class RutaService {
      * Crea una nueva ruta para una solicitud
      * @param createRutaDTO Datos de la ruta a crear (incluye idSolicitud)
      * @return DTO de la ruta creada
+     * @throws IllegalArgumentException si los datos son inválidos o ya existe una ruta para la solicitud
      */
+    @org.springframework.transaction.annotation.Transactional
     public RutaDTO create(CreateRutaDTO createRutaDTO) {
+        // Validar datos de entrada
+        if (createRutaDTO == null) {
+            logger.error("CreateRutaDTO no puede ser null");
+            throw new IllegalArgumentException("Los datos de la ruta no pueden ser null");
+        }
+        if (createRutaDTO.getIdSolicitud() == null) {
+            logger.error("IdSolicitud no puede ser null");
+            throw new IllegalArgumentException("El ID de la solicitud es obligatorio");
+        }
+        
+        // Verificar si ya existe una ruta para esta solicitud
+        Optional<Ruta> rutaExistente = rutaRepository.findByIdSolicitud(createRutaDTO.getIdSolicitud());
+        if (rutaExistente.isPresent()) {
+            logger.error("Ya existe una ruta para la solicitud ID: {}", createRutaDTO.getIdSolicitud());
+            throw new IllegalArgumentException("Ya existe una ruta para la solicitud ID: " + createRutaDTO.getIdSolicitud());
+        }
+        
         logger.debug("Creando nueva ruta para solicitud ID: {}", createRutaDTO.getIdSolicitud());
         Ruta ruta = new Ruta();
         ruta.setIdSolicitud(createRutaDTO.getIdSolicitud());
@@ -50,6 +69,7 @@ public class RutaService {
      * Obtiene todas las rutas del sistema
      * @return Lista de DTOs de rutas
      */
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public List<RutaDTO> findAll() {
         logger.debug("Buscando todas las rutas");
         List<RutaDTO> rutas = rutaRepository.findAll().stream()
@@ -64,6 +84,7 @@ public class RutaService {
      * @param id ID de la ruta
      * @return DTO de la ruta encontrada, o null si no existe
      */
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public RutaDTO findById(Long id) {
         logger.debug("Buscando ruta por ID: {}", id);
         Optional<Ruta> ruta = rutaRepository.findById(id);
@@ -79,6 +100,7 @@ public class RutaService {
      * Elimina una ruta por su ID
      * @param id ID de la ruta a eliminar
      */
+    @org.springframework.transaction.annotation.Transactional
     public void delete(Long id) {
         logger.info("Eliminando ruta ID: {}", id);
         rutaRepository.deleteById(id);
@@ -106,8 +128,16 @@ public class RutaService {
      * @param rutaId ID de la ruta
      * @param transportistaId ID del camión a asignar
      * @return DTO del tramo con el transportista asignado
+     * @throws IllegalArgumentException si la ruta no existe o el transportistaId es null
      */
+    @org.springframework.transaction.annotation.Transactional
     public Object assignTransportista(Long rutaId, Long transportistaId) {
+        // Validar que transportistaId no sea null
+        if (transportistaId == null) {
+            logger.error("TransportistaId no puede ser null");
+            throw new IllegalArgumentException("El ID del transportista no puede ser null");
+        }
+        
         logger.info("Asignando transportista ID: {} a ruta ID: {}", transportistaId, rutaId);
         Optional<Ruta> optionalRuta = rutaRepository.findById(rutaId);
         if (optionalRuta.isEmpty()) {
@@ -145,6 +175,7 @@ public class RutaService {
      * @param solicitudId ID de la solicitud
      * @return DTO de la ruta encontrada, o null si no existe
      */
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public Object findBySolicitudId(Long solicitudId) {
         logger.debug("Buscando ruta por solicitud ID: {}", solicitudId);
         Optional<Ruta> ruta = rutaRepository.findByIdSolicitud(solicitudId);
