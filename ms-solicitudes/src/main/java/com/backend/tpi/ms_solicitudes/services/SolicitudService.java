@@ -45,6 +45,9 @@ public class SolicitudService {
     
     @Autowired
     private EstadoSolicitudRepository estadoSolicitudRepository;
+    
+    @Autowired
+    private GeocodificacionService geocodificacionService;
 
     // Base URLs for other microservices (provide defaults for local/docker environment)
     @Value("${app.calculos.base-url:http://ms-gestion-calculos:8081}")
@@ -86,6 +89,32 @@ public class SolicitudService {
             // Map fields from DTO to entity
             solicitud.setDireccionOrigen(createSolicitudDTO.getDireccionOrigen());
             solicitud.setDireccionDestino(createSolicitudDTO.getDireccionDestino());
+            
+            // Geocodificar direcciones a coordenadas
+            logger.debug("Geocodificando dirección de origen: {}", createSolicitudDTO.getDireccionOrigen());
+            com.backend.tpi.ms_solicitudes.dtos.CoordenadaDTO coordOrigen = geocodificacionService.geocodificar(
+                createSolicitudDTO.getDireccionOrigen());
+            if (coordOrigen != null) {
+                solicitud.setOrigenLat(geocodificacionService.toBigDecimal(coordOrigen.getLatitud()));
+                solicitud.setOrigenLong(geocodificacionService.toBigDecimal(coordOrigen.getLongitud()));
+                logger.info("Coordenadas de origen geocodificadas: lat={}, lon={}", 
+                    coordOrigen.getLatitud(), coordOrigen.getLongitud());
+            } else {
+                logger.warn("No se pudo geocodificar la dirección de origen: {}", createSolicitudDTO.getDireccionOrigen());
+            }
+            
+            logger.debug("Geocodificando dirección de destino: {}", createSolicitudDTO.getDireccionDestino());
+            com.backend.tpi.ms_solicitudes.dtos.CoordenadaDTO coordDestino = geocodificacionService.geocodificar(
+                createSolicitudDTO.getDireccionDestino());
+            if (coordDestino != null) {
+                solicitud.setDestinoLat(geocodificacionService.toBigDecimal(coordDestino.getLatitud()));
+                solicitud.setDestinoLong(geocodificacionService.toBigDecimal(coordDestino.getLongitud()));
+                logger.info("Coordenadas de destino geocodificadas: lat={}, lon={}", 
+                    coordDestino.getLatitud(), coordDestino.getLongitud());
+            } else {
+                logger.warn("No se pudo geocodificar la dirección de destino: {}", createSolicitudDTO.getDireccionDestino());
+            }
+            
             // other fields (clienteId, contenedorId, etc.) should be set elsewhere
             solicitud = solicitudRepository.save(solicitud);
             logger.info("Solicitud creada exitosamente con ID: {}", solicitud.getId());
@@ -168,6 +197,32 @@ public class SolicitudService {
                 // manual mapping of updatable fields
                 solicitud.setDireccionOrigen(createSolicitudDTO.getDireccionOrigen());
                 solicitud.setDireccionDestino(createSolicitudDTO.getDireccionDestino());
+                
+                // Geocodificar direcciones a coordenadas
+                logger.debug("Geocodificando dirección de origen actualizada: {}", createSolicitudDTO.getDireccionOrigen());
+                com.backend.tpi.ms_solicitudes.dtos.CoordenadaDTO coordOrigen = geocodificacionService.geocodificar(
+                    createSolicitudDTO.getDireccionOrigen());
+                if (coordOrigen != null) {
+                    solicitud.setOrigenLat(geocodificacionService.toBigDecimal(coordOrigen.getLatitud()));
+                    solicitud.setOrigenLong(geocodificacionService.toBigDecimal(coordOrigen.getLongitud()));
+                    logger.info("Coordenadas de origen actualizadas: lat={}, lon={}", 
+                        coordOrigen.getLatitud(), coordOrigen.getLongitud());
+                } else {
+                    logger.warn("No se pudo geocodificar la dirección de origen: {}", createSolicitudDTO.getDireccionOrigen());
+                }
+                
+                logger.debug("Geocodificando dirección de destino actualizada: {}", createSolicitudDTO.getDireccionDestino());
+                com.backend.tpi.ms_solicitudes.dtos.CoordenadaDTO coordDestino = geocodificacionService.geocodificar(
+                    createSolicitudDTO.getDireccionDestino());
+                if (coordDestino != null) {
+                    solicitud.setDestinoLat(geocodificacionService.toBigDecimal(coordDestino.getLatitud()));
+                    solicitud.setDestinoLong(geocodificacionService.toBigDecimal(coordDestino.getLongitud()));
+                    logger.info("Coordenadas de destino actualizadas: lat={}, lon={}", 
+                        coordDestino.getLatitud(), coordDestino.getLongitud());
+                } else {
+                    logger.warn("No se pudo geocodificar la dirección de destino: {}", createSolicitudDTO.getDireccionDestino());
+                }
+                
                 solicitud = solicitudRepository.save(solicitud);
                 logger.info("Solicitud ID: {} actualizada exitosamente", id);
                 return toDto(solicitud);

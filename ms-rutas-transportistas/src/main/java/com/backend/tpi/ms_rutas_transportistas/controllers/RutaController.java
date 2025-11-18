@@ -252,4 +252,117 @@ public class RutaController {
                 resultado.getDistanciaTotal(), resultado.getNumeroTramos());
         return ResponseEntity.ok(resultado);
     }
+
+    /**
+     * Calcula las distancias y duraciones de todos los tramos de una ruta usando OSRM
+     * @param id ID de la ruta
+     * @return Resultado del cálculo con distancias y duraciones actualizadas
+     */
+    @PostMapping("/{id}/calcular-distancias")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @Operation(summary = "Calcular distancias y duraciones de todos los tramos",
+            description = "Usa OSRM para calcular las distancias y duraciones reales de cada tramo de la ruta")
+    public ResponseEntity<java.util.Map<String, Object>> calcularDistancias(@PathVariable Long id) {
+        logger.info("POST /api/v1/rutas/{}/calcular-distancias - Calculando distancias de tramos", id);
+        try {
+            java.util.Map<String, Object> resultado = rutaService.calcularRutaCompleta(id);
+            logger.info("POST /api/v1/rutas/{}/calcular-distancias - Respuesta: 200 - {} tramos actualizados", 
+                id, resultado.get("tramosActualizados"));
+            return ResponseEntity.ok(resultado);
+        } catch (IllegalArgumentException e) {
+            logger.warn("POST /api/v1/rutas/{}/calcular-distancias - Respuesta: 400 - {}", id, e.getMessage());
+            java.util.Map<String, Object> error = new java.util.HashMap<>();
+            error.put("exitoso", false);
+            error.put("mensaje", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        } catch (Exception e) {
+            logger.error("POST /api/v1/rutas/{}/calcular-distancias - Respuesta: 500 - {}", id, e.getMessage());
+            java.util.Map<String, Object> error = new java.util.HashMap<>();
+            error.put("exitoso", false);
+            error.put("mensaje", "Error al calcular distancias: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+    /**
+     * Calcula el costo total de una ruta basado en las distancias de sus tramos
+     * @param id ID de la ruta
+     * @return Resultado del cálculo con el costo total y costos por tramo
+     */
+    @PostMapping("/{id}/calcular-costos")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @Operation(summary = "Calcular costos de todos los tramos de la ruta",
+            description = "Calcula el costo de cada tramo basado en su distancia y la tarifa por km configurada")
+    public ResponseEntity<java.util.Map<String, Object>> calcularCostos(@PathVariable Long id) {
+        logger.info("POST /api/v1/rutas/{}/calcular-costos - Calculando costos", id);
+        try {
+            java.util.Map<String, Object> resultado = rutaService.calcularCostoRuta(id);
+            logger.info("POST /api/v1/rutas/{}/calcular-costos - Respuesta: 200 - Costo total: ${}", 
+                id, resultado.get("costoTotal"));
+            return ResponseEntity.ok(resultado);
+        } catch (IllegalArgumentException e) {
+            logger.warn("POST /api/v1/rutas/{}/calcular-costos - Respuesta: 400 - {}", id, e.getMessage());
+            java.util.Map<String, Object> error = new java.util.HashMap<>();
+            error.put("exitoso", false);
+            error.put("mensaje", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        } catch (Exception e) {
+            logger.error("POST /api/v1/rutas/{}/calcular-costos - Respuesta: 500 - {}", id, e.getMessage());
+            java.util.Map<String, Object> error = new java.util.HashMap<>();
+            error.put("exitoso", false);
+            error.put("mensaje", "Error al calcular costos: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+    /**
+     * Calcula tanto las distancias como los costos de una ruta en una sola operación
+     * @param id ID de la ruta
+     * @return Resultado combinado con distancias, duraciones y costos
+     */
+    @PostMapping("/{id}/calcular-completo")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @Operation(summary = "Calcular distancias y costos completos de la ruta",
+            description = "Calcula las distancias de todos los tramos usando OSRM y luego calcula los costos basados en esas distancias")
+    public ResponseEntity<java.util.Map<String, Object>> calcularCompleto(@PathVariable Long id) {
+        logger.info("POST /api/v1/rutas/{}/calcular-completo - Calculando distancias y costos", id);
+        try {
+            // Primero calcular distancias
+            java.util.Map<String, Object> distancias = rutaService.calcularRutaCompleta(id);
+            
+            // Luego calcular costos
+            java.util.Map<String, Object> costos = rutaService.calcularCostoRuta(id);
+            
+            // Combinar resultados
+            java.util.Map<String, Object> resultado = new java.util.HashMap<>();
+            resultado.put("rutaId", id);
+            resultado.put("distanciaTotal", distancias.get("distanciaTotal"));
+            resultado.put("duracionTotalHoras", distancias.get("duracionTotalHoras"));
+            resultado.put("duracionTotalMinutos", distancias.get("duracionTotalMinutos"));
+            resultado.put("numeroTramos", distancias.get("numeroTramos"));
+            resultado.put("tramosActualizados", distancias.get("tramosActualizados"));
+            resultado.put("costoTotal", costos.get("costoTotal"));
+            resultado.put("tarifaPorKm", costos.get("tarifaPorKm"));
+            resultado.put("costosPorTramo", costos.get("costosPorTramo"));
+            resultado.put("exitoso", true);
+            resultado.put("mensaje", String.format("Ruta calculada: %.2f km, %.2f horas, $%.2f", 
+                resultado.get("distanciaTotal"), resultado.get("duracionTotalHoras"), resultado.get("costoTotal")));
+            
+            logger.info("POST /api/v1/rutas/{}/calcular-completo - Respuesta: 200 - Distancia: {} km, Costo: ${}", 
+                id, resultado.get("distanciaTotal"), resultado.get("costoTotal"));
+            return ResponseEntity.ok(resultado);
+        } catch (IllegalArgumentException e) {
+            logger.warn("POST /api/v1/rutas/{}/calcular-completo - Respuesta: 400 - {}", id, e.getMessage());
+            java.util.Map<String, Object> error = new java.util.HashMap<>();
+            error.put("exitoso", false);
+            error.put("mensaje", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        } catch (Exception e) {
+            logger.error("POST /api/v1/rutas/{}/calcular-completo - Respuesta: 500 - {}", id, e.getMessage());
+            java.util.Map<String, Object> error = new java.util.HashMap<>();
+            error.put("exitoso", false);
+            error.put("mensaje", "Error al calcular ruta completa: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
+        }
+    }
 }

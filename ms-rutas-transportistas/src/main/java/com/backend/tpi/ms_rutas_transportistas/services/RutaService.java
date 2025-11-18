@@ -35,6 +35,15 @@ public class RutaService {
     
     @Autowired
     private RutaTentativaService rutaTentativaService;
+    
+    @Autowired
+    private OSRMService osrmService;
+    
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.TramoRepository tramoRepository;
+    
+    @Autowired
+    private org.springframework.web.client.RestClient calculosClient;
 
     // Manual mapping - ModelMapper removed
 
@@ -249,5 +258,269 @@ public class RutaService {
             logger.warn("No se encontró ruta para solicitud ID: {}", solicitudId);
         }
         return ruta.map(this::toDto).orElse(null);
+    }
+
+    /**
+     * Calcula las distancias y duraciones de todos los tramos de una ruta usando OSRM con ruta múltiple
+     * Este método busca todos los tramos ordenados de la ruta, extrae sus coordenadas,
+     * llama al endpoint de ruta múltiple de OSRM para calcular la ruta óptima completa,
+     * y actualiza cada tramo con las distancias y duraciones calculadas.
+     * 
+     * @param rutaId ID de la ruta
+     * @return Map con información de la ruta calculada (distanciaTotal, duracionTotal, tramosActualizados)
+     * @throws IllegalArgumentException si la ruta no existe o no tiene tramos
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public Map<String, Object> calcularRutaCompleta(Long rutaId) {
+        logger.info("Calculando ruta completa para ruta ID: {}", rutaId);
+        
+        // Verificar que la ruta existe
+        Optional<Ruta> optionalRuta = rutaRepository.findById(rutaId);
+        if (optionalRuta.isEmpty()) {
+            logger.error("No se puede calcular - Ruta no encontrada con ID: {}", rutaId);
+            throw new IllegalArgumentException("Ruta no encontrada con ID: " + rutaId);
+        }
+        
+        // Buscar todos los tramos de la ruta ordenados
+        List<Tramo> tramos = tramoRepository.findByRutaId(rutaId);
+        if (tramos == null || tramos.isEmpty()) {
+            logger.error("No se puede calcular - Ruta ID: {} no tiene tramos", rutaId);
+            throw new IllegalArgumentException("La ruta no tiene tramos para calcular");
+        }
+        
+        // Ordenar tramos por número de orden
+        tramos.sort((t1, t2) -> {
+            Integer orden1 = t1.getOrden() != null ? t1.getOrden() : Integer.MAX_VALUE;
+            Integer orden2 = t2.getOrden() != null ? t2.getOrden() : Integer.MAX_VALUE;
+            return orden1.compareTo(orden2);
+        });
+        
+        logger.debug("Encontrados {} tramos para la ruta ID: {}", tramos.size(), rutaId);
+        
+        // Extraer coordenadas de todos los puntos (origen del primer tramo + destino de cada tramo)
+        List<com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO> coordenadas = new java.util.ArrayList<>();
+        
+        // Agregar origen del primer tramo
+        Tramo primerTramo = tramos.get(0);
+        if (primerTramo.getOrigenLat() != null && primerTramo.getOrigenLong() != null) {
+            coordenadas.add(new com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO(
+                primerTramo.getOrigenLat().doubleValue(),
+                primerTramo.getOrigenLong().doubleValue()
+            ));
+        } else {
+            logger.error("Primer tramo (orden {}) no tiene coordenadas de origen", primerTramo.getOrden());
+            throw new IllegalArgumentException("El primer tramo no tiene coordenadas de origen");
+        }
+        
+        // Agregar destino de cada tramo
+        for (Tramo tramo : tramos) {
+            if (tramo.getDestinoLat() != null && tramo.getDestinoLong() != null) {
+                coordenadas.add(new com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO(
+                    tramo.getDestinoLat().doubleValue(),
+                    tramo.getDestinoLong().doubleValue()
+                ));
+            } else {
+                logger.error("Tramo (orden {}) no tiene coordenadas de destino", tramo.getOrden());
+                throw new IllegalArgumentException("El tramo con orden " + tramo.getOrden() + " no tiene coordenadas de destino");
+            }
+        }
+        
+        logger.debug("Calculando ruta múltiple con {} puntos de coordenadas", coordenadas.size());
+        
+        // Llamar a OSRM para calcular la ruta completa
+        com.backend.tpi.ms_rutas_transportistas.dtos.osrm.RutaCalculadaDTO rutaCalculada = 
+            osrmService.calcularRutaMultiple(coordenadas.toArray(new com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO[0]));
+        
+        if (!rutaCalculada.isExitoso()) {
+            logger.error("Error al calcular ruta múltiple: {}", rutaCalculada.getMensaje());
+            throw new RuntimeException("Error al calcular ruta con OSRM: " + rutaCalculada.getMensaje());
+        }
+        
+        logger.info("Ruta múltiple calculada exitosamente: {} km, {} horas", 
+            rutaCalculada.getDistanciaKm(), rutaCalculada.getDuracionHoras());
+        
+        // Ahora calcular distancias individuales de cada tramo
+        double distanciaTotal = 0.0;
+        double duracionTotal = 0.0;
+        int tramosActualizados = 0;
+        
+        for (int i = 0; i < tramos.size(); i++) {
+            Tramo tramo = tramos.get(i);
+            
+            // Calcular distancia y duración de este tramo específico (desde su origen a su destino)
+            com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO origen = new com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO(
+                tramo.getOrigenLat().doubleValue(),
+                tramo.getOrigenLong().doubleValue()
+            );
+            com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO destino = new com.backend.tpi.ms_rutas_transportistas.dtos.osrm.CoordenadaDTO(
+                tramo.getDestinoLat().doubleValue(),
+                tramo.getDestinoLong().doubleValue()
+            );
+            
+            com.backend.tpi.ms_rutas_transportistas.dtos.osrm.RutaCalculadaDTO rutaTramo = 
+                osrmService.calcularRuta(origen, destino);
+            
+            if (rutaTramo.isExitoso()) {
+                // Actualizar distancia y duración del tramo
+                tramo.setDistancia(rutaTramo.getDistanciaKm());
+                tramo.setDuracionHoras(rutaTramo.getDuracionHoras());
+                tramoRepository.save(tramo);
+                
+                distanciaTotal += rutaTramo.getDistanciaKm();
+                duracionTotal += rutaTramo.getDuracionHoras();
+                tramosActualizados++;
+                
+                logger.debug("Tramo {} actualizado: {} km, {} horas", 
+                    tramo.getOrden(), rutaTramo.getDistanciaKm(), rutaTramo.getDuracionHoras());
+            } else {
+                logger.warn("No se pudo calcular distancia del tramo {}: {}", 
+                    tramo.getOrden(), rutaTramo.getMensaje());
+            }
+        }
+        
+        // Preparar respuesta
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("rutaId", rutaId);
+        resultado.put("distanciaTotal", Math.round(distanciaTotal * 100.0) / 100.0);
+        resultado.put("duracionTotalHoras", Math.round(duracionTotal * 100.0) / 100.0);
+        resultado.put("duracionTotalMinutos", Math.round(duracionTotal * 60.0 * 100.0) / 100.0);
+        resultado.put("numeroTramos", tramos.size());
+        resultado.put("tramosActualizados", tramosActualizados);
+        resultado.put("exitoso", tramosActualizados == tramos.size());
+        resultado.put("mensaje", String.format("Ruta calculada: %d/%d tramos actualizados", tramosActualizados, tramos.size()));
+        
+        logger.info("Cálculo de ruta completa finalizado - Distancia total: {} km, Duración: {} horas, Tramos actualizados: {}/{}",
+            resultado.get("distanciaTotal"), resultado.get("duracionTotalHoras"), tramosActualizados, tramos.size());
+        
+        return resultado;
+    }
+
+    /**
+     * Calcula el costo total de una ruta sumando los costos de todos sus tramos
+     * Obtiene la tarifa por km desde el microservicio de cálculos y calcula el costo
+     * de cada tramo en base a su distancia.
+     * 
+     * @param rutaId ID de la ruta
+     * @return Map con información de costos (costoTotal, costosPorTramo, tarifaPorKm)
+     * @throws IllegalArgumentException si la ruta no existe o no tiene tramos
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public Map<String, Object> calcularCostoRuta(Long rutaId) {
+        logger.info("Calculando costo total para ruta ID: {}", rutaId);
+        
+        // Verificar que la ruta existe
+        Optional<Ruta> optionalRuta = rutaRepository.findById(rutaId);
+        if (optionalRuta.isEmpty()) {
+            logger.error("No se puede calcular costo - Ruta no encontrada con ID: {}", rutaId);
+            throw new IllegalArgumentException("Ruta no encontrada con ID: " + rutaId);
+        }
+        
+        // Buscar todos los tramos de la ruta
+        List<Tramo> tramos = tramoRepository.findByRutaId(rutaId);
+        if (tramos == null || tramos.isEmpty()) {
+            logger.error("No se puede calcular costo - Ruta ID: {} no tiene tramos", rutaId);
+            throw new IllegalArgumentException("La ruta no tiene tramos para calcular el costo");
+        }
+        
+        logger.debug("Encontrados {} tramos para calcular costo", tramos.size());
+        
+        // Obtener tarifa por km desde el servicio de cálculos
+        Double tarifaPorKm = obtenerTarifaPorKm();
+        if (tarifaPorKm == null) {
+            logger.warn("No se pudo obtener tarifa por km, usando tarifa por defecto: 100.0");
+            tarifaPorKm = 100.0; // Tarifa por defecto
+        }
+        
+        logger.debug("Tarifa por km: {}", tarifaPorKm);
+        
+        // Calcular costo de cada tramo
+        double costoTotal = 0.0;
+        List<Map<String, Object>> costosPorTramo = new java.util.ArrayList<>();
+        int tramosCalculados = 0;
+        
+        for (Tramo tramo : tramos) {
+            if (tramo.getDistancia() != null && tramo.getDistancia() > 0) {
+                double costoTramo = tramo.getDistancia() * tarifaPorKm;
+                
+                // Actualizar costo aproximado del tramo
+                tramo.setCostoAproximado(java.math.BigDecimal.valueOf(costoTramo));
+                tramoRepository.save(tramo);
+                
+                costoTotal += costoTramo;
+                tramosCalculados++;
+                
+                Map<String, Object> infoTramo = new HashMap<>();
+                infoTramo.put("tramoId", tramo.getId());
+                infoTramo.put("orden", tramo.getOrden());
+                infoTramo.put("distancia", tramo.getDistancia());
+                infoTramo.put("costo", Math.round(costoTramo * 100.0) / 100.0);
+                costosPorTramo.add(infoTramo);
+                
+                logger.debug("Tramo {} - Distancia: {} km, Costo: ${}", 
+                    tramo.getOrden(), tramo.getDistancia(), Math.round(costoTramo * 100.0) / 100.0);
+            } else {
+                logger.warn("Tramo {} no tiene distancia calculada, se omite del costo", tramo.getOrden());
+            }
+        }
+        
+        // Preparar respuesta
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("rutaId", rutaId);
+        resultado.put("costoTotal", Math.round(costoTotal * 100.0) / 100.0);
+        resultado.put("tarifaPorKm", tarifaPorKm);
+        resultado.put("numeroTramos", tramos.size());
+        resultado.put("tramosCalculados", tramosCalculados);
+        resultado.put("costosPorTramo", costosPorTramo);
+        resultado.put("exitoso", tramosCalculados > 0);
+        resultado.put("mensaje", String.format("Costos calculados para %d/%d tramos", tramosCalculados, tramos.size()));
+        
+        logger.info("Cálculo de costos finalizado - Costo total: ${}, Tramos calculados: {}/{}",
+            resultado.get("costoTotal"), tramosCalculados, tramos.size());
+        
+        return resultado;
+    }
+
+    /**
+     * Obtiene la tarifa por kilómetro desde el microservicio de cálculos
+     * @return Tarifa por km, o null si no se puede obtener
+     */
+    private Double obtenerTarifaPorKm() {
+        try {
+            String token = extractBearerToken();
+            
+            org.springframework.http.ResponseEntity<java.util.List<java.util.Map<String, Object>>> response = 
+                calculosClient.get()
+                    .uri("/api/v1/tarifas")
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
+            
+            java.util.List<java.util.Map<String, Object>> tarifas = response.getBody();
+            
+            if (tarifas != null && !tarifas.isEmpty()) {
+                Object precioPorKm = tarifas.get(0).get("precioPorKm");
+                if (precioPorKm instanceof Number) {
+                    return ((Number) precioPorKm).doubleValue();
+                }
+            }
+            
+            logger.warn("No se encontraron tarifas en el servicio de cálculos");
+            return null;
+            
+        } catch (Exception e) {
+            logger.error("Error al obtener tarifa por km: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Helper: extrae token Bearer del SecurityContext si existe
+     */
+    private String extractBearerToken() {
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken) {
+            return ((org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken) auth).getToken().getTokenValue();
+        }
+        return null;
     }
 }
