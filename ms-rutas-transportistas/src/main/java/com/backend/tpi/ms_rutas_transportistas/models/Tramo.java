@@ -16,6 +16,16 @@ public class Tramo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tramo")
     private Long id;
+    
+    // Orden del tramo en la ruta (1, 2, 3, etc.)
+    private Integer orden;
+    
+    // Indica si el tramo fue generado automáticamente por cálculo de ruta
+    private Boolean generadoAutomaticamente;
+    
+    // Duración estimada del tramo en horas (calculada por OSRM)
+    private Double duracionHoras;
+    
     // According to DER: origin/destination reference deposits and lat/long coords
     private Long origenDepositoId;
     private Long destinoDepositoId;

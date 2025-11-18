@@ -169,6 +169,9 @@ public class TramoService {
         com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO dto = new com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO();
         dto.setId(tramo.getId());
         if (tramo.getRuta() != null) dto.setIdRuta(tramo.getRuta().getId());
+        dto.setOrden(tramo.getOrden());
+        dto.setGeneradoAutomaticamente(tramo.getGeneradoAutomaticamente());
+        dto.setDuracionHoras(tramo.getDuracionHoras());
         dto.setOrigenDepositoId(tramo.getOrigenDepositoId());
         dto.setDestinoDepositoId(tramo.getDestinoDepositoId());
         dto.setOrigenLat(tramo.getOrigenLat());

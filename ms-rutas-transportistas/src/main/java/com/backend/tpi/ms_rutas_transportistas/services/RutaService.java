@@ -2,7 +2,10 @@ package com.backend.tpi.ms_rutas_transportistas.services;
 
 import com.backend.tpi.ms_rutas_transportistas.dtos.CreateRutaDTO;
 import com.backend.tpi.ms_rutas_transportistas.dtos.RutaDTO;
+import com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO;
+import com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO;
 import com.backend.tpi.ms_rutas_transportistas.models.Ruta;
+import com.backend.tpi.ms_rutas_transportistas.models.Tramo;
 import com.backend.tpi.ms_rutas_transportistas.repositories.RutaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +32,18 @@ public class RutaService {
     
     @Autowired
     private TramoService tramoService;
+    
+    @Autowired
+    private RutaTentativaService rutaTentativaService;
 
     // Manual mapping - ModelMapper removed
 
     /**
      * Crea una nueva ruta para una solicitud
-     * @param createRutaDTO Datos de la ruta a crear (incluye idSolicitud)
+     * Si se proporcionan IDs de depósitos (origen, destino y opcionalmente intermedios),
+     * automáticamente calcula la ruta tentativa y crea los tramos correspondientes.
+     * 
+     * @param createRutaDTO Datos de la ruta a crear (incluye idSolicitud y datos de depósitos)
      * @return DTO de la ruta creada
      * @throws IllegalArgumentException si los datos son inválidos o ya existe una ruta para la solicitud
      */
@@ -62,6 +71,61 @@ public class RutaService {
         ruta.setIdSolicitud(createRutaDTO.getIdSolicitud());
         ruta = rutaRepository.save(ruta);
         logger.info("Ruta creada exitosamente con ID: {} para solicitud ID: {}", ruta.getId(), createRutaDTO.getIdSolicitud());
+        
+        // Si se proporcionaron depósitos, calcular ruta tentativa y crear tramos automáticamente
+        if (createRutaDTO.getOrigenDepositoId() != null && createRutaDTO.getDestinoDepositoId() != null) {
+            logger.info("Depósitos especificados - calculando ruta tentativa automáticamente");
+            try {
+                // Calcular la mejor ruta (con o sin variantes)
+                boolean calcularVariantes = createRutaDTO.getCalcularRutaOptima() != null && 
+                                           createRutaDTO.getCalcularRutaOptima();
+                
+                RutaTentativaDTO rutaTentativa = rutaTentativaService.calcularMejorRuta(
+                        createRutaDTO.getOrigenDepositoId(),
+                        createRutaDTO.getDestinoDepositoId(),
+                        createRutaDTO.getDepositosIntermediosIds(),
+                        calcularVariantes
+                );
+                
+                if (rutaTentativa.getExitoso() && rutaTentativa.getTramos() != null) {
+                    logger.info("Ruta tentativa calculada: {} km, {} tramos - creando tramos automáticamente",
+                            rutaTentativa.getDistanciaTotal(), rutaTentativa.getNumeroTramos());
+                    
+                    // Crear tramos basados en la ruta calculada
+                    for (TramoTentativoDTO tramoTentativo : rutaTentativa.getTramos()) {
+                        Tramo tramo = new Tramo();
+                        tramo.setRuta(ruta);
+                        tramo.setOrden(tramoTentativo.getOrden());
+                        tramo.setOrigenDepositoId(tramoTentativo.getOrigenDepositoId());
+                        tramo.setDestinoDepositoId(tramoTentativo.getDestinoDepositoId());
+                        tramo.setDistancia(tramoTentativo.getDistanciaKm());
+                        tramo.setDuracionHoras(tramoTentativo.getDuracionHoras());
+                        tramo.setGeneradoAutomaticamente(true); // Marcar como generado automáticamente
+                        
+                        // Buscar y asignar estado PENDIENTE
+                        // Por ahora dejamos estado null - debería buscarse de la BD
+                        
+                        tramoService.save(tramo);
+                        logger.debug("Tramo {} creado: {} -> {} ({} km)", 
+                                tramo.getOrden(),
+                                tramoTentativo.getOrigenDepositoNombre(),
+                                tramoTentativo.getDestinoDepositoNombre(),
+                                tramoTentativo.getDistanciaKm());
+                    }
+                    
+                    logger.info("Creados {} tramos automáticamente para la ruta ID: {}", 
+                            rutaTentativa.getNumeroTramos(), ruta.getId());
+                } else {
+                    logger.warn("No se pudo calcular ruta tentativa: {}", rutaTentativa.getMensaje());
+                }
+            } catch (Exception e) {
+                logger.error("Error al calcular y crear tramos automáticos: {}", e.getMessage(), e);
+                // No lanzamos excepción - la ruta se creó exitosamente, solo falló la creación de tramos
+            }
+        } else {
+            logger.info("No se especificaron depósitos - ruta creada sin tramos automáticos");
+        }
+        
         return toDto(ruta);
     }
 

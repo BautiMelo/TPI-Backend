@@ -82,4 +82,34 @@ public class DepositoController {
         logger.info("PATCH /api/v1/depositos/{} - Respuesta: 200 - Depósito actualizado", id);
         return result;
     }
+
+    /**
+     * GET /api/v1/depositos/{id}/coordenadas - Obtiene las coordenadas de un depósito
+     * Requiere rol RESPONSABLE o ADMIN
+     * @param id ID del depósito
+     * @return Coordenadas del depósito (latitud y longitud)
+     */
+    @GetMapping("/{id}/coordenadas")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    public org.springframework.http.ResponseEntity<java.util.Map<String, Object>> getCoordenadasDeposito(@PathVariable Long id) {
+        logger.info("GET /api/v1/depositos/{}/coordenadas - Consultando coordenadas", id);
+        try {
+            DepositoDTO deposito = depositoService.findById(id);
+            if (deposito.getLatitud() == null || deposito.getLongitud() == null) {
+                logger.warn("GET /api/v1/depositos/{}/coordenadas - Respuesta: 404 - Depósito sin coordenadas", id);
+                return org.springframework.http.ResponseEntity.notFound().build();
+            }
+            java.util.Map<String, Object> coordenadas = new java.util.HashMap<>();
+            coordenadas.put("depositoId", id);
+            coordenadas.put("nombre", deposito.getNombre());
+            coordenadas.put("latitud", deposito.getLatitud());
+            coordenadas.put("longitud", deposito.getLongitud());
+            logger.info("GET /api/v1/depositos/{}/coordenadas - Respuesta: 200 - lat={}, lon={}", 
+                    id, deposito.getLatitud(), deposito.getLongitud());
+            return org.springframework.http.ResponseEntity.ok(coordenadas);
+        } catch (RuntimeException e) {
+            logger.warn("GET /api/v1/depositos/{}/coordenadas - Respuesta: 404 - Depósito no encontrado: {}", id, e.getMessage());
+            return org.springframework.http.ResponseEntity.notFound().build();
+        }
+    }
 }

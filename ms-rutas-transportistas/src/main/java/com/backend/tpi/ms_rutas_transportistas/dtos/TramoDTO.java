@@ -6,6 +6,9 @@ import lombok.Data;
 public class TramoDTO {
     private Long id;
     private Long idRuta;
+    private Integer orden;
+    private Boolean generadoAutomaticamente;
+    private Double duracionHoras;
     private Long origenDepositoId;
     private Long destinoDepositoId;
     private Double distancia;

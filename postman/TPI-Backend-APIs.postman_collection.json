@@ -486,39 +486,6 @@
 					"name": "Clientes",
 					"item": [
 						{
-							"name": "Registro Público de Cliente",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"nombre\": \"María González\",\n  \"email\": \"maria.gonzalez@example.com\",\n  \"telefono\": \"1166778899\",\n  \"username\": \"mariagonzalez\",\n  \"password\": \"password123\"\n}"
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/v1/clientes/registro",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"clientes",
-										"registro"
-									]
-								},
-								"description": "Endpoint PÚBLICO para registrar nuevos clientes. No requiere autenticación.\n\nCrea un usuario en Keycloak con rol CLIENTE y guarda los datos en la base de datos.\n\nCampos requeridos:\n- nombre: Entre 2 y 100 caracteres\n- email: Email válido y único\n- telefono: Entre 8 y 20 caracteres\n- username: Entre 3 y 50 caracteres, único\n- password: Mínimo 4 caracteres"
-							},
-							"response": []
-						},
-						{
 							"name": "Listar Clientes",
 							"request": {
 								"method": "GET",
@@ -1888,6 +1855,228 @@
 				}
 			]
 		}
+	,
+		{
+			"name": "Quick Role Switch",
+			"description": "Click en cualquier request para obtener token con ese rol automáticamente (sin modificar variables manualmente).",
+			"item": [
+				{
+					"name": "🔑 Login como CLIENTE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set('access_token', json.access_token);",
+									"  pm.collectionVariables.set('refresh_token', json.refresh_token);",
+									"  console.log('✅ Token guardado como CLIENTE (cliente1)');",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "grant_type", "value": "password", "type": "text" },
+								{ "key": "client_id", "value": "postman-test", "type": "text" },
+								{ "key": "client_secret", "value": "secret-postman-123", "type": "text" },
+								{ "key": "username", "value": "cliente1", "type": "text" },
+								{ "key": "password", "value": "1234", "type": "text" }
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": ["{{keycloak_url}}"],
+							"path": ["realms","tpi-backend","protocol","openid-connect","token"]
+						},
+						"description": "Obtiene token con rol CLIENTE (usuario: cliente1)"
+					},
+					"response": []
+				},
+				{
+					"name": "🔑 Login como RESPONSABLE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set('access_token', json.access_token);",
+									"  pm.collectionVariables.set('refresh_token', json.refresh_token);",
+									"  console.log('✅ Token guardado como RESPONSABLE (responsable1)');",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "grant_type", "value": "password", "type": "text" },
+								{ "key": "client_id", "value": "postman-test", "type": "text" },
+								{ "key": "client_secret", "value": "secret-postman-123", "type": "text" },
+								{ "key": "username", "value": "responsable1", "type": "text" },
+								{ "key": "password", "value": "1234", "type": "text" }
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": ["{{keycloak_url}}"],
+							"path": ["realms","tpi-backend","protocol","openid-connect","token"]
+						},
+						"description": "Obtiene token con rol RESPONSABLE (usuario: responsable1)"
+					},
+					"response": []
+				},
+				{
+					"name": "🔑 Login como TRANSPORTISTA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set('access_token', json.access_token);",
+									"  pm.collectionVariables.set('refresh_token', json.refresh_token);",
+									"  console.log('✅ Token guardado como TRANSPORTISTA (transportista1)');",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "grant_type", "value": "password", "type": "text" },
+								{ "key": "client_id", "value": "postman-test", "type": "text" },
+								{ "key": "client_secret", "value": "secret-postman-123", "type": "text" },
+								{ "key": "username", "value": "transportista1", "type": "text" },
+								{ "key": "password", "value": "1234", "type": "text" }
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": ["{{keycloak_url}}"],
+							"path": ["realms","tpi-backend","protocol","openid-connect","token"]
+						},
+						"description": "Obtiene token con rol TRANSPORTISTA (usuario: transportista1)"
+					},
+					"response": []
+				},
+				{
+					"name": "🔑 Login como OPERADOR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set('access_token', json.access_token);",
+									"  pm.collectionVariables.set('refresh_token', json.refresh_token);",
+									"  console.log('✅ Token guardado como OPERADOR (operador1)');",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "grant_type", "value": "password", "type": "text" },
+								{ "key": "client_id", "value": "postman-test", "type": "text" },
+								{ "key": "client_secret", "value": "secret-postman-123", "type": "text" },
+								{ "key": "username", "value": "operador1", "type": "text" },
+								{ "key": "password", "value": "1234", "type": "text" }
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": ["{{keycloak_url}}"],
+							"path": ["realms","tpi-backend","protocol","openid-connect","token"]
+						},
+						"description": "Obtiene token con rol OPERADOR (usuario: operador1)"
+					},
+					"response": []
+				},
+				{
+					"name": "🔑 Login como ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set('access_token', json.access_token);",
+									"  pm.collectionVariables.set('refresh_token', json.refresh_token);",
+									"  console.log('✅ Token guardado como ADMIN (tester)');",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "grant_type", "value": "password", "type": "text" },
+								{ "key": "client_id", "value": "postman-test", "type": "text" },
+								{ "key": "client_secret", "value": "secret-postman-123", "type": "text" },
+								{ "key": "username", "value": "tester", "type": "text" },
+								{ "key": "password", "value": "1234", "type": "text" }
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_url}}/realms/tpi-backend/protocol/openid-connect/token",
+							"host": ["{{keycloak_url}}"],
+							"path": ["realms","tpi-backend","protocol","openid-connect","token"]
+						},
+						"description": "Obtiene token con rol ADMIN (usuario: tester - tiene todos los roles)"
+					},
+					"response": []
+				}
+			]
+			}
 	],
 	"variable": [
 		{
@@ -1922,6 +2111,23 @@
 		},
 		{
 			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+		,
+		{
+			"key": "role",
+			"value": "CLIENTE",
+			"type": "string",
+			"description": "Role to use with Quick Role Switch: CLIENTE, RESPONSABLE, TRANSPORTISTA, OPERADOR, ADMIN"
+		},
+		{
+			"key": "token_username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token_password",
 			"value": "",
 			"type": "string"
 		}

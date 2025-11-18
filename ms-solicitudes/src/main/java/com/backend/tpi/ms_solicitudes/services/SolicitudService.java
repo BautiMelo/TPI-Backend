@@ -269,11 +269,46 @@ public class SolicitudService {
             Solicitud solicitud = optionalSolicitud.get();
 
             // Call calculos to compute distance (via RestClient)
+            // Prioridad: coordenadas > dirección de texto
             Map<String, String> distanciaReq = new HashMap<>();
-            distanciaReq.put("origen", solicitud.getDireccionOrigen());
-            distanciaReq.put("destino", solicitud.getDireccionDestino());
+            
+            // Determinar origen
+            String origen;
+            if (solicitud.getOrigenLat() != null && solicitud.getOrigenLong() != null) {
+                // Usar coordenadas en formato "lat,lon"
+                origen = solicitud.getOrigenLat() + "," + solicitud.getOrigenLong();
+                logger.debug("Usando coordenadas de origen: {}", origen);
+            } else if (solicitud.getDireccionOrigen() != null) {
+                // Fallback: usar dirección de texto (legacy - puede no funcionar)
+                origen = solicitud.getDireccionOrigen();
+                logger.warn("Solicitud {} sin coordenadas de origen - usando dirección texto (puede fallar): {}", 
+                        solicitudId, origen);
+            } else {
+                logger.error("Solicitud {} no tiene ni coordenadas ni dirección de origen", solicitudId);
+                throw new IllegalArgumentException("Solicitud no tiene información de origen");
+            }
+            
+            // Determinar destino
+            String destino;
+            if (solicitud.getDestinoLat() != null && solicitud.getDestinoLong() != null) {
+                // Usar coordenadas en formato "lat,lon"
+                destino = solicitud.getDestinoLat() + "," + solicitud.getDestinoLong();
+                logger.debug("Usando coordenadas de destino: {}", destino);
+            } else if (solicitud.getDireccionDestino() != null) {
+                // Fallback: usar dirección de texto (legacy - puede no funcionar)
+                destino = solicitud.getDireccionDestino();
+                logger.warn("Solicitud {} sin coordenadas de destino - usando dirección texto (puede fallar): {}", 
+                        solicitudId, destino);
+            } else {
+                logger.error("Solicitud {} no tiene ni coordenadas ni dirección de destino", solicitudId);
+                throw new IllegalArgumentException("Solicitud no tiene información de destino");
+            }
+            
+            distanciaReq.put("origen", origen);
+            distanciaReq.put("destino", destino);
 
-            logger.debug("Calculando distancia para solicitud ID: {}", solicitudId);
+            logger.debug("Calculando distancia para solicitud ID: {} - origen: {}, destino: {}", 
+                    solicitudId, origen, destino);
             Map<String, Object> distanciaResp = null;
             String token = extractBearerToken();
             ResponseEntity<Map<String, Object>> distanciaEntity = calculosClient.post()

@@ -1,10 +1,8 @@
 package com.backend.tpi.ms_rutas_transportistas.controllers;
 
-import com.backend.tpi.ms_rutas_transportistas.dtos.CreateRutaDTO;
-import com.backend.tpi.ms_rutas_transportistas.dtos.RutaDTO;
-import com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO;
-import com.backend.tpi.ms_rutas_transportistas.dtos.TramoRequestDTO;
+import com.backend.tpi.ms_rutas_transportistas.dtos.*;
 import com.backend.tpi.ms_rutas_transportistas.services.RutaService;
+import com.backend.tpi.ms_rutas_transportistas.services.RutaTentativaService;
 import com.backend.tpi.ms_rutas_transportistas.services.TramoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +31,9 @@ public class RutaController {
 
     @Autowired
     private TramoService tramoService;
+    
+    @Autowired
+    private RutaTentativaService rutaTentativaService;
 
     /**
      * Crea una nueva ruta para una solicitud de transporte
@@ -202,5 +203,53 @@ public class RutaController {
         }
         logger.info("POST /api/v1/rutas/{}/tramos/{}/finalizar - Respuesta: 200 - Tramo finalizado", id, tramoId);
         return ResponseEntity.ok(tramo);
+    }
+    
+    /**
+     * Calcula una ruta tentativa entre dos depósitos, opcionalmente con depósitos intermedios
+     * @param origenDepositoId ID del depósito origen
+     * @param destinoDepositoId ID del depósito destino
+     * @param intermedios IDs de depósitos intermedios separados por comas (opcional)
+     * @return Ruta tentativa calculada con distancias y duraciones
+     */
+    @GetMapping("/tentativa")
+    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    @Operation(summary = "Calcular ruta tentativa entre depósitos",
+            description = "Calcula una ruta tentativa con distancias reales usando OSRM. " +
+                         "Permite especificar depósitos intermedios en orden.")
+    public ResponseEntity<RutaTentativaDTO> calcularRutaTentativa(
+            @RequestParam Long origenDepositoId,
+            @RequestParam Long destinoDepositoId,
+            @RequestParam(required = false) String intermedios) {
+        
+        logger.info("GET /api/v1/rutas/tentativa - Calculando ruta tentativa: origen={}, destino={}, intermedios={}", 
+                origenDepositoId, destinoDepositoId, intermedios);
+        
+        // Parsear depósitos intermedios si existen
+        List<Long> depositosIntermedios = null;
+        if (intermedios != null && !intermedios.trim().isEmpty()) {
+            try {
+                depositosIntermedios = java.util.Arrays.stream(intermedios.split(","))
+                        .map(String::trim)
+                        .map(Long::parseLong)
+                        .toList();
+                logger.debug("Depósitos intermedios parseados: {}", depositosIntermedios);
+            } catch (NumberFormatException e) {
+                logger.warn("GET /api/v1/rutas/tentativa - Error parseando intermedios: {}", e.getMessage());
+                return ResponseEntity.badRequest().build();
+            }
+        }
+        
+        RutaTentativaDTO resultado = rutaTentativaService.calcularRutaTentativa(
+                origenDepositoId, destinoDepositoId, depositosIntermedios);
+        
+        if (!resultado.getExitoso()) {
+            logger.warn("GET /api/v1/rutas/tentativa - Error: {}", resultado.getMensaje());
+            return ResponseEntity.status(500).body(resultado);
+        }
+        
+        logger.info("GET /api/v1/rutas/tentativa - Respuesta: 200 - Ruta calculada: {} km, {} tramos", 
+                resultado.getDistanciaTotal(), resultado.getNumeroTramos());
+        return ResponseEntity.ok(resultado);
     }
 }

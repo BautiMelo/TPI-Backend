@@ -14,6 +14,14 @@ El proyecto está organizado en una arquitectura de microservicios con un API Ga
 
 ## Características Principales
 
+### 🚀 **NUEVO: Sistema de Rutas Tentativas**
+El sistema ahora soporta el cálculo de **rutas tentativas** considerando depósitos intermedios:
+- ✅ Cálculo de distancias reales entre depósitos usando OSRM
+- ✅ Rutas con múltiples depósitos intermedios
+- ✅ Optimización de tramos con métricas detalladas
+- ✅ Consulta de coordenadas de depósitos
+- 📖 Ver [Documentación de Rutas Tentativas](docs/RUTAS-TENTATIVAS.md)
+
 ### 🗺️ Integración OSRM
 El microservicio `ms-rutas-transportistas` ahora incluye integración con **OSRM (Open Source Routing Machine)** para:
 - Cálculo de distancias precisas entre coordenadas

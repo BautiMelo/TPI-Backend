@@ -1,6 +1,7 @@
 package com.backend.tpi.ms_gestion_calculos.services;
 
 import com.backend.tpi.ms_gestion_calculos.dtos.CoordenadaDTO;
+import com.backend.tpi.ms_gestion_calculos.dtos.DepositoDTO;
 import com.backend.tpi.ms_gestion_calculos.dtos.DistanciaRequestDTO;
 import com.backend.tpi.ms_gestion_calculos.dtos.DistanciaResponseDTO;
 import org.slf4j.Logger;
@@ -11,9 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Servicio de negocio para cálculo de Distancias
@@ -30,23 +28,11 @@ public class CalculoService {
     @Autowired
     private RestClient rutasClient;
     
+    @Autowired
+    private DepositoService depositoService;
+    
     @Value("${app.osrm.base-url:http://osrm:5000}")
     private String osrmBaseUrl;
-    
-    // Mapa de ciudades con sus coordenadas para el geocoding básico
-    private static final Map<String, CoordenadaDTO> CIUDADES = new HashMap<>();
-    
-    static {
-        CIUDADES.put("Buenos Aires", new CoordenadaDTO(-34.6037, -58.3816));
-        CIUDADES.put("Rosario", new CoordenadaDTO(-32.9445, -60.6500));
-        CIUDADES.put("Córdoba", new CoordenadaDTO(-31.4201, -64.1888));
-        CIUDADES.put("Mendoza", new CoordenadaDTO(-32.8895, -68.8458));
-        CIUDADES.put("La Plata", new CoordenadaDTO(-34.9215, -57.9545));
-        CIUDADES.put("Mar del Plata", new CoordenadaDTO(-38.0055, -57.5426));
-        CIUDADES.put("Tucumán", new CoordenadaDTO(-26.8083, -65.2176));
-        CIUDADES.put("Salta", new CoordenadaDTO(-24.7859, -65.4117));
-        CIUDADES.put("Santa Fe", new CoordenadaDTO(-31.6333, -60.7000));
-    }
 
     /**
      * Calcula la distancia entre dos ubicaciones
@@ -107,32 +93,95 @@ public class CalculoService {
     
 
     /**
-     * Geocodifica una dirección (nombre de ciudad) a coordenadas lat/long
-     * Usa un mapa estático de ciudades argentinas principales
-     * @param direccion Nombre de la ciudad
-     * @return Coordenadas de la ciudad, o null si no se encuentra
+     * Geocodifica una dirección a coordenadas lat/long
+     * Soporta solo dos formatos:
+     * 1. ID de depósito (número): consulta la base de datos
+     * 2. Coordenadas directas en formato "lat,lon"
+     * @param direccion ID de depósito o coordenadas
+     * @return Coordenadas encontradas, o null si no se encuentra
+     * @throws IllegalArgumentException si el formato no es válido
      */
     private CoordenadaDTO geocodificar(String direccion) {
-        if (direccion == null) {
-            return null;
+        if (direccion == null || direccion.trim().isEmpty()) {
+            logger.error("La dirección no puede ser null o vacía");
+            throw new IllegalArgumentException("La dirección es obligatoria");
         }
         
-        // Buscar coincidencia exacta
-        if (CIUDADES.containsKey(direccion)) {
-            logger.debug("Ciudad encontrada en mapa estático: {}", direccion);
-            return CIUDADES.get(direccion);
+        direccion = direccion.trim();
+        
+        // 1. Verificar si es un ID de depósito (número)
+        if (esNumeroEntero(direccion)) {
+            Long depositoId = Long.parseLong(direccion);
+            logger.debug("Detectado ID de depósito: {}", depositoId);
+            return consultarCoordenadasDeposito(depositoId);
         }
         
-        // Buscar coincidencia parcial (case-insensitive)
-        for (Map.Entry<String, CoordenadaDTO> entry : CIUDADES.entrySet()) {
-            if (direccion.toLowerCase().contains(entry.getKey().toLowerCase())) {
-                logger.debug("Ciudad encontrada por coincidencia parcial: {} -> {}", direccion, entry.getKey());
-                return entry.getValue();
+        // 2. Verificar si son coordenadas en formato "lat,lon"
+        if (direccion.contains(",")) {
+            try {
+                String[] partes = direccion.split(",");
+                if (partes.length == 2) {
+                    double lat = Double.parseDouble(partes[0].trim());
+                    double lon = Double.parseDouble(partes[1].trim());
+                    
+                    // Validar rangos de coordenadas
+                    if (lat < -90 || lat > 90) {
+                        throw new IllegalArgumentException("Latitud fuera de rango: " + lat + " (debe estar entre -90 y 90)");
+                    }
+                    if (lon < -180 || lon > 180) {
+                        throw new IllegalArgumentException("Longitud fuera de rango: " + lon + " (debe estar entre -180 y 180)");
+                    }
+                    
+                    logger.debug("Coordenadas parseadas directamente: lat={}, lon={}", lat, lon);
+                    return new CoordenadaDTO(lat, lon);
+                }
+            } catch (NumberFormatException e) {
+                logger.error("Error al parsear coordenadas: {}", direccion);
+                throw new IllegalArgumentException("Formato de coordenadas inválido. Use: 'latitud,longitud'");
             }
         }
         
-        logger.warn("No se encontró la ciudad en el mapa de geocodificación: {}", direccion);
-        return null;
+        logger.error("Formato de dirección no reconocido: {}. Use ID de depósito o coordenadas 'lat,lon'", direccion);
+        throw new IllegalArgumentException("Formato inválido. Use: ID de depósito (ej: '1') o coordenadas (ej: '-34.6037,-58.3816')");
+    }
+    
+    /**
+     * Verifica si una cadena es un número entero válido
+     * @param str Cadena a verificar
+     * @return true si es un número entero, false en caso contrario
+     */
+    private boolean esNumeroEntero(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        try {
+            Long.parseLong(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Consulta las coordenadas de un depósito desde la base de datos
+     * @param depositoId ID del depósito
+     * @return Coordenadas del depósito
+     * @throws RuntimeException si el depósito no existe o no tiene coordenadas
+     */
+    private CoordenadaDTO consultarCoordenadasDeposito(Long depositoId) {
+        logger.debug("Consultando coordenadas del depósito ID: {}", depositoId);
+        
+        DepositoDTO deposito = depositoService.findById(depositoId);
+        
+        if (deposito.getLatitud() == null || deposito.getLongitud() == null) {
+            logger.error("El depósito ID: {} no tiene coordenadas configuradas", depositoId);
+            throw new RuntimeException("El depósito ID " + depositoId + " no tiene coordenadas configuradas");
+        }
+        
+        logger.info("Coordenadas del depósito '{}' (ID: {}): lat={}, lon={}", 
+                deposito.getNombre(), depositoId, deposito.getLatitud(), deposito.getLongitud());
+        
+        return new CoordenadaDTO(deposito.getLatitud(), deposito.getLongitud());
     }
 
     /**
