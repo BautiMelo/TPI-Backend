@@ -31,11 +31,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/clientes/registro").permitAll()
-                        .anyRequest().authenticated()
-                ).oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt ->
-                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+            .authorizeHttpRequests(authorize -> authorize
+                // permitir registro público y la documentación OpenAPI/Swagger
+                .requestMatchers("/api/v1/clientes/registro").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/v3/api-docs", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                .anyRequest().authenticated()
+            ).oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt ->
+                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
     }
 

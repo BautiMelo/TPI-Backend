@@ -1,0 +1,564 @@
+[
+  {
+    "step": "solicitud_creada",
+    "timestamp": "2025-11-19T12:08:54.446000",
+    "solicitud": {
+      "id": 1,
+      "contenedor": null,
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": null,
+      "tarifa_id": 1
+    },
+    "ruta": null,
+    "ruta_opciones": null,
+    "camion": null
+  },
+  {
+    "step": "solicitud_creada",
+    "timestamp": "2025-11-19T12:08:54.449575",
+    "solicitud": {
+      "id": 1,
+      "contenedor": null,
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": null,
+      "tarifa_id": 1
+    },
+    "ruta": null,
+    "ruta_opciones": null,
+    "camion": null
+  },
+  {
+    "step": "contenedor_asignado",
+    "timestamp": "2025-11-19T12:08:54.451719",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": null,
+      "tarifa_id": 1
+    },
+    "ruta": null,
+    "ruta_opciones": null,
+    "camion": null
+  },
+  {
+    "step": "opciones_generadas",
+    "timestamp": "2025-11-19T12:08:54.455021",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": null,
+    "ruta_opciones": [
+      {
+        "id": 1,
+        "ruta_id": 1,
+        "opcion_index": 0,
+        "distancia_total": 280.0,
+        "duracion_total_horas": 4.8,
+        "tramos_json": "[{\"id\": 1, \"orden\": 1, \"origen_deposito_id\": 101, \"destino_deposito_id\": 102, \"origen_lat\": \"-34.6\", \"origen_long\": \"-58.4\", \"destino_lat\": \"-34.7\", \"destino_long\": \"-58.5\", \"distancia\": 100.0, \"duracion_horas\": 1.8, \"camion_dominio\": null, \"costo_aproximado\": \"800.00\", \"costo_real\": null, \"fecha_hora_inicio_real\": null, \"fecha_hora_fin_real\": null}, {\"id\": 2, \"orden\": 2, \"origen_deposito_id\": 102, \"destino_deposito_id\": 103, \"origen_lat\": \"-34.7\", \"origen_long\": \"-58.5\", \"destino_lat\": \"-35.0\", \"destino_long\": \"-58.7\", \"distancia\": 180.0, \"duracion_horas\": 3.0, \"camion_dominio\": null, \"costo_aproximado\": \"1440.00\", \"costo_real\": null, \"fecha_hora_inicio_real\": null, \"fecha_hora_fin_real\": null}]"
+      },
+      {
+        "id": 2,
+        "ruta_id": 1,
+        "opcion_index": 1,
+        "distancia_total": 360.0,
+        "duracion_total_horas": 4.300000000000001,
+        "tramos_json": "[{\"id\": 3, \"orden\": 1, \"origen_deposito_id\": 101, \"destino_deposito_id\": 104, \"origen_lat\": \"-34.6\", \"origen_long\": \"-58.4\", \"destino_lat\": \"-34.8\", \"destino_long\": \"-58.45\", \"distancia\": 140.0, \"duracion_horas\": 1.6, \"camion_dominio\": null, \"costo_aproximado\": \"1120.00\", \"costo_real\": null, \"fecha_hora_inicio_real\": null, \"fecha_hora_fin_real\": null}, {\"id\": 4, \"orden\": 2, \"origen_deposito_id\": 104, \"destino_deposito_id\": 103, \"origen_lat\": \"-34.8\", \"origen_long\": \"-58.45\", \"destino_lat\": \"-35.0\", \"destino_long\": \"-58.7\", \"distancia\": 220.0, \"duracion_horas\": 2.7, \"camion_dominio\": null, \"costo_aproximado\": \"1760.00\", \"costo_real\": null, \"fecha_hora_inicio_real\": null, \"fecha_hora_fin_real\": null}]"
+      }
+    ],
+    "camion": null
+  },
+  {
+    "step": "opcion_seleccionada",
+    "timestamp": "2025-11-19T12:08:54.457390",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": {
+      "id": 1,
+      "tramos": [
+        {
+          "id": 3,
+          "orden": 1,
+          "origen_deposito_id": 101,
+          "destino_deposito_id": 104,
+          "origen_lat": "-34.6",
+          "origen_long": "-58.4",
+          "destino_lat": "-34.8",
+          "destino_long": "-58.45",
+          "distancia": 140.0,
+          "duracion_horas": 1.6,
+          "camion_dominio": null,
+          "costo_aproximado": "1120.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        },
+        {
+          "id": 4,
+          "orden": 2,
+          "origen_deposito_id": 104,
+          "destino_deposito_id": 103,
+          "origen_lat": "-34.8",
+          "origen_long": "-58.45",
+          "destino_lat": "-35.0",
+          "destino_long": "-58.7",
+          "distancia": 220.0,
+          "duracion_horas": 2.7,
+          "camion_dominio": null,
+          "costo_aproximado": "1760.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        }
+      ]
+    },
+    "ruta_opciones": null,
+    "camion": null
+  },
+  {
+    "step": "camion_creado",
+    "timestamp": "2025-11-19T12:08:54.459934",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": {
+      "id": 1,
+      "tramos": [
+        {
+          "id": 3,
+          "orden": 1,
+          "origen_deposito_id": 101,
+          "destino_deposito_id": 104,
+          "origen_lat": "-34.6",
+          "origen_long": "-58.4",
+          "destino_lat": "-34.8",
+          "destino_long": "-58.45",
+          "distancia": 140.0,
+          "duracion_horas": 1.6,
+          "camion_dominio": null,
+          "costo_aproximado": "1120.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        },
+        {
+          "id": 4,
+          "orden": 2,
+          "origen_deposito_id": 104,
+          "destino_deposito_id": 103,
+          "origen_lat": "-34.8",
+          "origen_long": "-58.45",
+          "destino_lat": "-35.0",
+          "destino_long": "-58.7",
+          "distancia": 220.0,
+          "duracion_horas": 2.7,
+          "camion_dominio": null,
+          "costo_aproximado": "1760.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        }
+      ]
+    },
+    "ruta_opciones": null,
+    "camion": {
+      "id": 1,
+      "dominio": "ABC123",
+      "capacidad_peso_max": "20000",
+      "capacidad_volumen_max": "50",
+      "costo_por_km": "10.00",
+      "consumo_combustible_promedio": "0.2",
+      "disponible": true,
+      "activo": true
+    }
+  },
+  {
+    "step": "camion_asignado",
+    "timestamp": "2025-11-19T12:08:54.461858",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": {
+      "id": 1,
+      "tramos": [
+        {
+          "id": 3,
+          "orden": 1,
+          "origen_deposito_id": 101,
+          "destino_deposito_id": 104,
+          "origen_lat": "-34.6",
+          "origen_long": "-58.4",
+          "destino_lat": "-34.8",
+          "destino_long": "-58.45",
+          "distancia": 140.0,
+          "duracion_horas": 1.6,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1120.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        },
+        {
+          "id": 4,
+          "orden": 2,
+          "origen_deposito_id": 104,
+          "destino_deposito_id": 103,
+          "origen_lat": "-34.8",
+          "origen_long": "-58.45",
+          "destino_lat": "-35.0",
+          "destino_long": "-58.7",
+          "distancia": 220.0,
+          "duracion_horas": 2.7,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1760.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        }
+      ]
+    },
+    "ruta_opciones": null,
+    "camion": {
+      "id": 1,
+      "dominio": "ABC123",
+      "capacidad_peso_max": "20000",
+      "capacidad_volumen_max": "50",
+      "costo_por_km": "10.00",
+      "consumo_combustible_promedio": "0.2",
+      "disponible": true,
+      "activo": true
+    }
+  },
+  {
+    "step": "tramo_1_finalizado",
+    "timestamp": "2025-11-19T12:08:54.465829",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": {
+      "id": 1,
+      "tramos": [
+        {
+          "id": 3,
+          "orden": 1,
+          "origen_deposito_id": 101,
+          "destino_deposito_id": 104,
+          "origen_lat": "-34.6",
+          "origen_long": "-58.4",
+          "destino_lat": "-34.8",
+          "destino_long": "-58.45",
+          "distancia": 140.0,
+          "duracion_horas": 1.6,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1120.00",
+          "costo_real": "1433.60",
+          "fecha_hora_inicio_real": "2025-11-19 12:08:54.464808",
+          "fecha_hora_fin_real": "2025-11-19 13:44:54.464808"
+        },
+        {
+          "id": 4,
+          "orden": 2,
+          "origen_deposito_id": 104,
+          "destino_deposito_id": 103,
+          "origen_lat": "-34.8",
+          "origen_long": "-58.45",
+          "destino_lat": "-35.0",
+          "destino_long": "-58.7",
+          "distancia": 220.0,
+          "duracion_horas": 2.7,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1760.00",
+          "costo_real": null,
+          "fecha_hora_inicio_real": null,
+          "fecha_hora_fin_real": null
+        }
+      ]
+    },
+    "ruta_opciones": null,
+    "camion": {
+      "id": 1,
+      "dominio": "ABC123",
+      "capacidad_peso_max": "20000",
+      "capacidad_volumen_max": "50",
+      "costo_por_km": "10.00",
+      "consumo_combustible_promedio": "0.2",
+      "disponible": true,
+      "activo": true
+    }
+  },
+  {
+    "step": "tramo_2_finalizado",
+    "timestamp": "2025-11-19T12:08:54.468088",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": null,
+      "tiempo_estimado": "5.0",
+      "tiempo_real": null,
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": {
+      "id": 1,
+      "tramos": [
+        {
+          "id": 3,
+          "orden": 1,
+          "origen_deposito_id": 101,
+          "destino_deposito_id": 104,
+          "origen_lat": "-34.6",
+          "origen_long": "-58.4",
+          "destino_lat": "-34.8",
+          "destino_long": "-58.45",
+          "distancia": 140.0,
+          "duracion_horas": 1.6,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1120.00",
+          "costo_real": "1433.60",
+          "fecha_hora_inicio_real": "2025-11-19 12:08:54.464808",
+          "fecha_hora_fin_real": "2025-11-19 13:44:54.464808"
+        },
+        {
+          "id": 4,
+          "orden": 2,
+          "origen_deposito_id": 104,
+          "destino_deposito_id": 103,
+          "origen_lat": "-34.8",
+          "origen_long": "-58.45",
+          "destino_lat": "-35.0",
+          "destino_long": "-58.7",
+          "distancia": 220.0,
+          "duracion_horas": 2.7,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1760.00",
+          "costo_real": "2252.80",
+          "fecha_hora_inicio_real": "2025-11-19 17:44:54.464808",
+          "fecha_hora_fin_real": "2025-11-19 20:26:54.464808"
+        }
+      ]
+    },
+    "ruta_opciones": null,
+    "camion": {
+      "id": 1,
+      "dominio": "ABC123",
+      "capacidad_peso_max": "20000",
+      "capacidad_volumen_max": "50",
+      "costo_por_km": "10.00",
+      "consumo_combustible_promedio": "0.2",
+      "disponible": true,
+      "activo": true
+    }
+  },
+  {
+    "step": "ruta_finalizada",
+    "timestamp": "2025-11-19T12:08:54.470193",
+    "solicitud": {
+      "id": 1,
+      "contenedor": {
+        "id": 1,
+        "peso": "1000.0",
+        "volumen": "10.5"
+      },
+      "cliente_id": 10,
+      "origen_lat": "-34.6037",
+      "origen_long": "-58.3816",
+      "destino_lat": "-34.5875861",
+      "destino_long": "-58.412268",
+      "direccion_origen": "Av. Ejemplo 123, CABA",
+      "direccion_destino": "Av. Santa Fe 567, CABA",
+      "costo_estimado": "2000.00",
+      "costo_final": "3786.40",
+      "tiempo_estimado": "5.0",
+      "tiempo_real": "4.300000000000001",
+      "ruta_id": 1,
+      "tarifa_id": 1
+    },
+    "ruta": {
+      "id": 1,
+      "tramos": [
+        {
+          "id": 3,
+          "orden": 1,
+          "origen_deposito_id": 101,
+          "destino_deposito_id": 104,
+          "origen_lat": "-34.6",
+          "origen_long": "-58.4",
+          "destino_lat": "-34.8",
+          "destino_long": "-58.45",
+          "distancia": 140.0,
+          "duracion_horas": 1.6,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1120.00",
+          "costo_real": "1433.60",
+          "fecha_hora_inicio_real": "2025-11-19 12:08:54.464808",
+          "fecha_hora_fin_real": "2025-11-19 13:44:54.464808"
+        },
+        {
+          "id": 4,
+          "orden": 2,
+          "origen_deposito_id": 104,
+          "destino_deposito_id": 103,
+          "origen_lat": "-34.8",
+          "origen_long": "-58.45",
+          "destino_lat": "-35.0",
+          "destino_long": "-58.7",
+          "distancia": 220.0,
+          "duracion_horas": 2.7,
+          "camion_dominio": "ABC123",
+          "costo_aproximado": "1760.00",
+          "costo_real": "2252.80",
+          "fecha_hora_inicio_real": "2025-11-19 17:44:54.464808",
+          "fecha_hora_fin_real": "2025-11-19 20:26:54.464808"
+        }
+      ]
+    },
+    "ruta_opciones": null,
+    "camion": {
+      "id": 1,
+      "dominio": "ABC123",
+      "capacidad_peso_max": "20000",
+      "capacidad_volumen_max": "50",
+      "costo_por_km": "10.00",
+      "consumo_combustible_promedio": "0.2",
+      "disponible": true,
+      "activo": true
+    }
+  }
+]

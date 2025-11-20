@@ -33,7 +33,7 @@ public class OSRMController {
      * @return Ruta calculada con distancia, duración y geometría
      */
     @PostMapping("/ruta")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'TRANSPORTISTA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'TRANSPORTISTA', 'ADMIN')")
     @Operation(summary = "Calcular ruta entre dos puntos",
             description = "Calcula la distancia y duración de una ruta entre dos coordenadas usando OSRM")
     public ResponseEntity<RutaCalculadaDTO> calcularRuta(@RequestBody RutaRequest request) {
@@ -59,7 +59,7 @@ public class OSRMController {
      * @return Ruta calculada que conecta todos los puntos
      */
     @PostMapping("/ruta-multiple")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'TRANSPORTISTA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'TRANSPORTISTA', 'ADMIN')")
     @Operation(summary = "Calcular ruta con múltiples waypoints",
             description = "Calcula una ruta que pasa por múltiples puntos (mínimo 2)")
     public ResponseEntity<RutaCalculadaDTO> calcularRutaMultiple(@RequestBody RutaMultipleRequest request) {
@@ -94,7 +94,7 @@ public class OSRMController {
      * @return Ruta calculada con distancia y duración
      */
     @GetMapping("/ruta-simple")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'TRANSPORTISTA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'TRANSPORTISTA', 'ADMIN')")
     @Operation(summary = "Calcular ruta (GET con query params)",
             description = "Alternativa GET para calcular ruta entre dos puntos")
     public ResponseEntity<RutaCalculadaDTO> calcularRutaSimple(
@@ -124,7 +124,7 @@ public class OSRMController {
      * @return Distancia en km y duración en minutos
      */
     @GetMapping("/distancia")
-    @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','OPERADOR')")
+    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN')")
     @Operation(summary = "Calcular distancia y duración entre dos puntos",
             description = "Calcula distancia usando OSRM - Compatible con endpoint legacy /maps/distancia")
     public ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.DistanciaResponseDTO> getDistancia(

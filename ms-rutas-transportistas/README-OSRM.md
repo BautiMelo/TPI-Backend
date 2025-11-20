@@ -191,7 +191,7 @@ Write-Host "Duración total: $($resultado.duracionMinutos) minutos"
 
 ## 🔐 Roles Requeridos
 
-- **RESPONSABLE**: Puede calcular rutas
+- **OPERADOR**: Puede calcular rutas
 - **TRANSPORTISTA**: Puede calcular rutas
 - **ADMIN**: Acceso completo
 

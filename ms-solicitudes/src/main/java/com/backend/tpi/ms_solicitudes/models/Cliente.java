@@ -21,4 +21,7 @@ public class Cliente {
     private String email;
 
     private String telefono;
+    
+    @Column(name = "keycloak_user_id")
+    private String keycloakUserId;
 }

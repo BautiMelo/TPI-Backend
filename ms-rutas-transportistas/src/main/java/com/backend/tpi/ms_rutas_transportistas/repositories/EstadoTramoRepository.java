@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EstadoTramoRepository extends JpaRepository<EstadoTramo, Long> {
+	java.util.Optional<EstadoTramo> findByNombre(String nombre);
 }

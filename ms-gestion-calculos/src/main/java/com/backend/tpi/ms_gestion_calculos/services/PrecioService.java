@@ -149,8 +149,10 @@ public class PrecioService {
         // Fallback: estimación por defecto
         logger.warn("Usando cálculo fallback para solicitud ID: {}", solicitudId);
         CostoRequestDTO fallback = new CostoRequestDTO();
-        fallback.setOrigen("Buenos Aires");
-        fallback.setDestino("Rosario");
+        // No usar nombres de ciudades como valor por defecto; dejar campos vacíos
+        // para que la lógica superior maneje la ausencia de coordenadas.
+        fallback.setOrigen("");
+        fallback.setDestino("");
         fallback.setPeso(1000.0);
         fallback.setVolumen(10.0);
         CostoResponseDTO resp = calcularCostoEstimado(fallback);

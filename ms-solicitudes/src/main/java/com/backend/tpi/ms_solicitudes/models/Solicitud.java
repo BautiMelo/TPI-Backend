@@ -2,8 +2,11 @@ package com.backend.tpi.ms_solicitudes.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * Solicitud de transporte
@@ -19,11 +22,20 @@ public class Solicitud {
     @Column(name = "id_solicitud")
     private Long id;
 
-    @Column(name = "contenedor_id")
-    private Long contenedorId;
+    @ManyToOne
+    @JoinColumn(name = "contenedor_id")
+    private Contenedor contenedor;
 
     @Column(name = "cliente_id")
     private Long clienteId;
+    
+    @CreationTimestamp
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDateTime fechaCreacion;
+    
+    @UpdateTimestamp
+    @Column(name = "fecha_modificacion")
+    private LocalDateTime fechaModificacion;
 
     @Column(name = "origen_lat")
     private BigDecimal origenLat;

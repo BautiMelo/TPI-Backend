@@ -95,6 +95,14 @@ public class ContenedorService {
         }
         
         log.info("Guardando contenedor para cliente ID: {}", contenedor.getClienteId());
+        // Asignar estado por defecto LIBRE si no se proporcionó
+        try {
+            if (contenedor.getEstado() == null && estadoContenedorRepository != null) {
+                estadoContenedorRepository.findByNombre("LIBRE").ifPresent(contenedor::setEstado);
+            }
+        } catch (Exception e) {
+            log.warn("No se pudo asignar estado por defecto al contenedor: {}", e.getMessage());
+        }
         return contenedorRepository.save(contenedor);
     }
 
@@ -183,7 +191,7 @@ public class ContenedorService {
         }
         
         // Buscar la solicitud activa más reciente del contenedor
-        Optional<Solicitud> solicitudOpt = solicitudRepository.findFirstByContenedorIdOrderByIdDesc(id);
+        Optional<Solicitud> solicitudOpt = solicitudRepository.findFirstByContenedor_IdOrderByIdDesc(id);
         
         if (solicitudOpt.isPresent()) {
             Solicitud solicitud = solicitudOpt.get();

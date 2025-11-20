@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CamionRepository extends JpaRepository<Camion, Long> {
+	java.util.Optional<Camion> findByDominio(String dominio);
 }

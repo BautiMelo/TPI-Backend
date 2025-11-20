@@ -35,5 +35,5 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
 	 * @param contenedorId ID del contenedor
 	 * @return Solicitud activa del contenedor
 	 */
-	java.util.Optional<Solicitud> findFirstByContenedorIdOrderByIdDesc(Long contenedorId);
+	java.util.Optional<Solicitud> findFirstByContenedor_IdOrderByIdDesc(Long contenedorId);
 }

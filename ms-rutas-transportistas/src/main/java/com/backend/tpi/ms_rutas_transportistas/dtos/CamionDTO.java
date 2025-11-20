@@ -13,6 +13,7 @@ public class CamionDTO {
     private String nombreTransportista;
     private Double costoBase;
     private Double costoPorKm;
+    private Double consumoCombustiblePromedio;
     private Integer numeroTransportistas;
     private Boolean disponible; // Estado operativo
     private Boolean activo; // Activo en sistema

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 @Configuration
 public class RestMicroservicoConfig {
@@ -17,8 +19,9 @@ public class RestMicroservicoConfig {
     }
 
     // Cliente para ms-gestion-calculos. Configurar en application.yml como app.calculos.base-url
-    @Bean("calculosClientDefault")
-    public RestClient calculosClientDefault(@Value("${app.calculos.base-url:http://localhost:8081}") String baseUrl) {
+    // Bean principal nombrado "calculosClient" para inyección por nombre
+    @Bean("calculosClient")
+    public RestClient calculosClient(@Value("${app.calculos.base-url:http://localhost:8081}") String baseUrl) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
                 .build();

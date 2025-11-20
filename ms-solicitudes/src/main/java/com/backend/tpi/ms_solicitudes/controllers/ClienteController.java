@@ -57,12 +57,12 @@ public class ClienteController {
     /**
      * GET /api/v1/clientes - Lista todos los clientes o busca por email
      * Si se proporciona parámetro email, busca un cliente específico
-     * Requiere rol RESPONSABLE o ADMIN
+    * Requiere rol OPERADOR o ADMIN
      * @param email Email del cliente (opcional)
      * @return Lista de clientes o cliente específico
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Listar todos los clientes o buscar por email")
     public ResponseEntity<?> getAllClientes(@RequestParam(required = false) String email) {
         if (email != null && !email.isEmpty()) {
@@ -79,12 +79,12 @@ public class ClienteController {
 
     /**
      * GET /api/v1/clientes/{id} - Obtiene un cliente por ID
-     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+    * Requiere rol CLIENTE, OPERADOR o ADMIN
      * @param id ID del cliente
      * @return Cliente encontrado
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENTE', 'OPERADOR', 'ADMIN')")
     @Operation(summary = "Obtener cliente por ID")
     public ResponseEntity<Cliente> getClienteById(@PathVariable Long id) {
         logger.info("GET /api/v1/clientes/{} - Buscando cliente por ID", id);
@@ -95,12 +95,12 @@ public class ClienteController {
 
     /**
      * POST /api/v1/clientes - Crea un nuevo cliente
-     * Requiere rol RESPONSABLE o ADMIN
+    * Requiere rol OPERADOR o ADMIN
      * @param cliente Datos del cliente a crear
      * @return Cliente creado con código 201
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Crear nuevo cliente")
     public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente) {
         logger.info("POST /api/v1/clientes - Creando nuevo cliente");
@@ -110,14 +110,14 @@ public class ClienteController {
     }
 
     /**
-     * PUT /api/v1/clientes/{id} - Actualiza un cliente existente
-     * Requiere rol RESPONSABLE o ADMIN
+    * PUT /api/v1/clientes/{id} - Actualiza un cliente existente
+    * Requiere rol OPERADOR o ADMIN
      * @param id ID del cliente a actualizar
      * @param cliente Datos actualizados del cliente
      * @return Cliente actualizado
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Actualizar cliente existente")
     public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
         logger.info("PUT /api/v1/clientes/{} - Actualizando cliente", id);

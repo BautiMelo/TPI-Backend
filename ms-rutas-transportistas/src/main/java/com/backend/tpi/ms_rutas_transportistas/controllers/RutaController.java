@@ -34,6 +34,12 @@ public class RutaController {
     
     @Autowired
     private RutaTentativaService rutaTentativaService;
+    
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.services.RutaOpcionService rutaOpcionService;
+
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.RutaOpcionRepository rutaOpcionRepository;
 
     /**
      * Crea una nueva ruta para una solicitud de transporte
@@ -41,12 +47,171 @@ public class RutaController {
      * @return Ruta creada
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
-    public ResponseEntity<RutaDTO> create(@RequestBody CreateRutaDTO createRutaDTO) {
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<Object> create(@RequestBody CreateRutaDTO createRutaDTO) {
         logger.info("POST /api/v1/rutas - Creando nueva ruta para solicitud ID: {}", createRutaDTO.getIdSolicitud());
-        RutaDTO result = rutaService.create(createRutaDTO);
-        logger.info("POST /api/v1/rutas - Respuesta: 200 - Ruta creada con ID: {}", result.getId());
-        return ResponseEntity.ok(result);
+        try {
+            // If called only with solicitudId and no deposit IDs, generate tentative options instead of persisting
+            if (createRutaDTO != null && createRutaDTO.getIdSolicitud() != null
+                    && createRutaDTO.getOrigenDepositoId() == null && createRutaDTO.getDestinoDepositoId() == null) {
+                java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO> variantes = rutaService.generateOptionsForSolicitud(createRutaDTO.getIdSolicitud());
+                return ResponseEntity.ok(variantes);
+            }
+            RutaDTO result = rutaService.create(createRutaDTO);
+            logger.info("POST /api/v1/rutas - Respuesta: 200 - Ruta creada con ID: {}", result.getId());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            logger.error("POST /api/v1/rutas - Error: {}", e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * Genera y persiste opciones (tentativas) para una solicitud sin crear una Ruta definitiva
+     * POST /api/v1/solicitudes/{solicitudId}/opciones
+     */
+    @PostMapping("/solicitudes/{solicitudId}/opciones")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> createOptionsForSolicitud(@PathVariable Long solicitudId) {
+        logger.info("POST /api/v1/solicitudes/{}/opciones - Generando y persistiendo opciones para solicitud", solicitudId);
+        try {
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO> variantes = rutaService.generateOptionsForSolicitud(solicitudId);
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> saved = rutaOpcionService.saveOptionsForSolicitud(solicitudId, variantes);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            logger.error("Error generando opciones para solicitud {}: {}", solicitudId, e.getMessage(), e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * Lista opciones persistidas para una solicitud
+     * GET /api/v1/solicitudes/{solicitudId}/opciones
+     */
+    @GetMapping("/solicitudes/{solicitudId}/opciones")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
+    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> listOptionsForSolicitud(@PathVariable Long solicitudId) {
+        logger.info("GET /api/v1/solicitudes/{}/opciones - Listando opciones persistidas", solicitudId);
+        try {
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> opciones = rutaOpcionService.listOptionsForSolicitud(solicitudId);
+            return ResponseEntity.ok(opciones);
+        } catch (Exception e) {
+            logger.error("Error listando opciones para solicitud {}: {}", solicitudId, e.getMessage(), e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * Confirma una opción persistida para una solicitud: crea la Ruta definitiva y borra/archiva las otras opciones
+     * POST /api/v1/solicitudes/{solicitudId}/opciones/{opcionId}/confirmar
+     */
+    @PostMapping("/solicitudes/{solicitudId}/opciones/{opcionId}/confirmar")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<RutaDTO> confirmarOpcionPersistida(@PathVariable Long solicitudId, @PathVariable Long opcionId) {
+        logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Confirmando opción", solicitudId, opcionId);
+        try {
+            com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion opcion = rutaOpcionService.findById(opcionId);
+            if (opcion == null) return ResponseEntity.notFound().build();
+            if (opcion.getSolicitudId() == null || !opcion.getSolicitudId().equals(solicitudId)) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            // Convertir tramosJson a RutaTentativaDTO
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO rutaTentativa = mapper.readValue(opcion.getTramosJson(), com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO.class);
+
+            // Crear Ruta definitiva usando RutaService
+            RutaDTO rutaDto = rutaService.createFromTentativa(solicitudId, rutaTentativa);
+
+            // Borrar las opciones relacionadas con esta solicitud
+            rutaOpcionService.deleteBySolicitudId(solicitudId);
+
+            return ResponseEntity.ok(rutaDto);
+        } catch (IllegalArgumentException e) {
+            logger.warn("Confirmación inválida: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            logger.error("Error confirmando opción: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * POST /api/v1/rutas/{id}/opciones - Calcula y guarda variantes de ruta (opciones)
+     */
+    @PostMapping("/{id}/opciones")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> createOptions(@PathVariable Long id,
+                                                                                                                 @RequestParam(required = false) Boolean calcularVariantes) {
+        logger.info("POST /api/v1/rutas/{}/opciones - Calculando y guardando opciones de ruta (calcularVariantes={})", id, calcularVariantes);
+        try {
+            // Obtener ruta para extraer depósitos si es que existen en tramos actuales
+            // For now, require that route creation includes origen/destino depósitos via query params or rely on existing tramos
+            // We'll attempt to derive origin/destination from existing tramos if present
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.Tramo> tramos = tramoService.findByRutaId(id).stream()
+                    .map(t -> {
+                        com.backend.tpi.ms_rutas_transportistas.models.Tramo tr = new com.backend.tpi.ms_rutas_transportistas.models.Tramo();
+                        tr.setOrigenDepositoId(t.getOrigenDepositoId());
+                        tr.setDestinoDepositoId(t.getDestinoDepositoId());
+                        return tr;
+                    }).toList();
+
+            if (tramos == null || tramos.isEmpty()) {
+                logger.warn("No hay tramos en la ruta {} para generar opciones", id);
+                return ResponseEntity.badRequest().build();
+            }
+
+            Long origen = tramos.get(0).getOrigenDepositoId();
+            Long destino = tramos.get(tramos.size() - 1).getDestinoDepositoId();
+
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO> variantes = rutaTentativaService.calcularVariantes(origen, destino);
+            if (variantes == null || variantes.isEmpty()) {
+                logger.warn("No se pudieron calcular variantes para ruta {}", id);
+                return ResponseEntity.status(500).build();
+            }
+
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> saved = rutaOpcionService.saveOptionsForRuta(id, variantes);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            logger.error("Error generando opciones de ruta para {}: {}", id, e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * GET /api/v1/rutas/{id}/opciones - Lista las opciones persistidas para una ruta
+     */
+    @GetMapping("/{id}/opciones")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
+    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> listOptions(@PathVariable Long id) {
+        logger.info("GET /api/v1/rutas/{}/opciones - Listando opciones guardadas", id);
+        try {
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> opciones = rutaOpcionService.listOptionsForRuta(id);
+            return ResponseEntity.ok(opciones);
+        } catch (Exception e) {
+            logger.error("Error listando opciones para ruta {}: {}", id, e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * POST /api/v1/rutas/{id}/opciones/{opcionId}/seleccionar - Selecciona una opción y reemplaza tramos
+     */
+    @PostMapping("/{id}/opciones/{opcionId}/seleccionar")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<RutaDTO> selectOption(@PathVariable Long id, @PathVariable Long opcionId) {
+        logger.info("POST /api/v1/rutas/{}/opciones/{}/seleccionar - Seleccionando opción", id, opcionId);
+        try {
+            com.backend.tpi.ms_rutas_transportistas.models.Ruta ruta = rutaOpcionService.selectOption(id, opcionId);
+            RutaDTO dto = rutaService.findById(ruta.getId());
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException e) {
+            logger.warn("Selección inválida: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            logger.error("Error al seleccionar opción: {}", e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
@@ -54,7 +219,7 @@ public class RutaController {
      * @return Lista de rutas
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN','TRANSPORTISTA')")
     public ResponseEntity<List<RutaDTO>> findAll() {
         logger.info("GET /api/v1/rutas - Listando todas las rutas");
         List<RutaDTO> result = rutaService.findAll();
@@ -68,7 +233,7 @@ public class RutaController {
      * @return Ruta encontrada o 404 si no existe
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN','TRANSPORTISTA')")
     public ResponseEntity<RutaDTO> findById(@PathVariable Long id) {
         logger.info("GET /api/v1/rutas/{} - Buscando ruta por ID", id);
         RutaDTO rutaDTO = rutaService.findById(id);
@@ -81,12 +246,38 @@ public class RutaController {
     }
 
     /**
+     * POST /api/v1/rutas/confirmar - Crea la ruta definitiva a partir de una opción seleccionada (ruta tentativa)
+     * Body: { "solicitudId": 123, "rutaTentativa": { ... } }
+     */
+    @PostMapping("/confirmar")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<RutaDTO> confirmarRuta(@RequestBody java.util.Map<String, Object> body) {
+        logger.info("POST /api/v1/rutas/confirmar - Confirmando ruta");
+        try {
+            if (body == null || !body.containsKey("solicitudId") || !body.containsKey("rutaTentativa")) {
+                logger.warn("POST /api/v1/rutas/confirmar - Bad request, missing fields");
+                return ResponseEntity.badRequest().build();
+            }
+            Long solicitudId = ((Number) body.get("solicitudId")).longValue();
+            Object rutaTentativaObj = body.get("rutaTentativa");
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO rutaTentativa = mapper.convertValue(rutaTentativaObj, com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO.class);
+
+            com.backend.tpi.ms_rutas_transportistas.dtos.RutaDTO rutaDto = rutaService.createFromTentativa(solicitudId, rutaTentativa);
+            return ResponseEntity.ok(rutaDto);
+        } catch (Exception e) {
+            logger.error("Error confirming route: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
      * Elimina una ruta del sistema
      * @param id ID de la ruta a eliminar
      * @return Respuesta sin contenido
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         logger.info("DELETE /api/v1/rutas/{} - Eliminando ruta", id);
         rutaService.delete(id);
@@ -103,7 +294,7 @@ public class RutaController {
      * @return Resultado de la asignación
      */
     @PostMapping("/{id}/asignar-transportista")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     public ResponseEntity<Object> asignarTransportista(@PathVariable Long id, @RequestParam Long transportistaId) {
         logger.info("POST /api/v1/rutas/{}/asignar-transportista - Asignando transportista ID: {}", id, transportistaId);
         Object result = rutaService.assignTransportista(id, transportistaId);
@@ -117,7 +308,7 @@ public class RutaController {
      * @return Ruta asociada a la solicitud
      */
     @GetMapping("/por-solicitud/{solicitudId}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
     public ResponseEntity<Object> findBySolicitud(@PathVariable Long solicitudId) {
         logger.info("GET /api/v1/rutas/por-solicitud/{} - Buscando ruta por solicitud", solicitudId);
         Object result = rutaService.findBySolicitudId(solicitudId);
@@ -132,7 +323,7 @@ public class RutaController {
      * @return Tramo creado
      */
     @PostMapping("/{id}/tramos")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @Operation(summary = "Agregar un nuevo tramo a una ruta")
     public ResponseEntity<TramoDTO> agregarTramo(
             @PathVariable Long id,
@@ -155,7 +346,7 @@ public class RutaController {
      * @return Tramo iniciado
      */
     @PostMapping("/{id}/tramos/{tramoId}/iniciar")
-    @PreAuthorize("hasAnyRole('TRANSPORTISTA','RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('TRANSPORTISTA','OPERADOR','ADMIN')")
     @Operation(summary = "Marcar el inicio de un tramo de transporte")
     public ResponseEntity<TramoDTO> iniciarTramo(
             @PathVariable Long id,
@@ -178,7 +369,7 @@ public class RutaController {
      * @return Tramo finalizado
      */
     @PostMapping("/{id}/tramos/{tramoId}/finalizar")
-    @PreAuthorize("hasAnyRole('TRANSPORTISTA','RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('TRANSPORTISTA','OPERADOR','ADMIN')")
     @Operation(summary = "Marcar la finalización de un tramo de transporte")
     public ResponseEntity<TramoDTO> finalizarTramo(
             @PathVariable Long id,
@@ -213,7 +404,7 @@ public class RutaController {
      * @return Ruta tentativa calculada con distancias y duraciones
      */
     @GetMapping("/tentativa")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
     @Operation(summary = "Calcular ruta tentativa entre depósitos",
             description = "Calcula una ruta tentativa con distancias reales usando OSRM. " +
                          "Permite especificar depósitos intermedios en orden.")
@@ -259,7 +450,7 @@ public class RutaController {
      * @return Resultado del cálculo con distancias y duraciones actualizadas
      */
     @PostMapping("/{id}/calcular-distancias")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @Operation(summary = "Calcular distancias y duraciones de todos los tramos",
             description = "Usa OSRM para calcular las distancias y duraciones reales de cada tramo de la ruta")
     public ResponseEntity<java.util.Map<String, Object>> calcularDistancias(@PathVariable Long id) {
@@ -290,7 +481,7 @@ public class RutaController {
      * @return Resultado del cálculo con el costo total y costos por tramo
      */
     @PostMapping("/{id}/calcular-costos")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @Operation(summary = "Calcular costos de todos los tramos de la ruta",
             description = "Calcula el costo de cada tramo basado en su distancia y la tarifa por km configurada")
     public ResponseEntity<java.util.Map<String, Object>> calcularCostos(@PathVariable Long id) {
@@ -321,7 +512,7 @@ public class RutaController {
      * @return Resultado combinado con distancias, duraciones y costos
      */
     @PostMapping("/{id}/calcular-completo")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @Operation(summary = "Calcular distancias y costos completos de la ruta",
             description = "Calcula las distancias de todos los tramos usando OSRM y luego calcula los costos basados en esas distancias")
     public ResponseEntity<java.util.Map<String, Object>> calcularCompleto(@PathVariable Long id) {

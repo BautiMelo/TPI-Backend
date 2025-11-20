@@ -16,6 +16,7 @@ public class Camion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(name = "dominio", nullable = false, unique = true)
     private String dominio; // Patente/dominio del camión
     private String marca;
     private String modelo;
@@ -34,6 +35,9 @@ public class Camion {
     
     @Column(name = "costo_por_km")
     private Double costoPorKm;
+    
+    @Column(name = "consumo_combustible_promedio")
+    private Double consumoCombustiblePromedio; // Litros por km
     
     @Column(name = "numero_transportistas")
     private Integer numeroTransportistas;

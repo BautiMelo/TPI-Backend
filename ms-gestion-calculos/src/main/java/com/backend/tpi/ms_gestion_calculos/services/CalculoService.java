@@ -1,7 +1,7 @@
 package com.backend.tpi.ms_gestion_calculos.services;
 
 import com.backend.tpi.ms_gestion_calculos.dtos.CoordenadaDTO;
-import com.backend.tpi.ms_gestion_calculos.dtos.DepositoDTO;
+// import com.backend.tpi.ms_gestion_calculos.dtos.DepositoDTO; // ya no se usa
 import com.backend.tpi.ms_gestion_calculos.dtos.DistanciaRequestDTO;
 import com.backend.tpi.ms_gestion_calculos.dtos.DistanciaResponseDTO;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 /**
  * Servicio de negocio para cálculo de Distancias
  * Calcula distancias entre ubicaciones usando OSRM (servicio externo) o fórmula de Haversine como fallback
- * Incluye geocodificación básica de ciudades argentinas
  */
 @Service
 public class CalculoService {
@@ -28,8 +27,7 @@ public class CalculoService {
     @Autowired
     private RestClient rutasClient;
     
-    @Autowired
-    private DepositoService depositoService;
+    // Nota: ya no usamos búsqueda por depósitos en la geocodificación; eliminada.
     
     @Value("${app.osrm.base-url:http://osrm:5000}")
     private String osrmBaseUrl;
@@ -90,6 +88,15 @@ public class CalculoService {
             return new DistanciaResponseDTO(distancia, null);
         }
     }
+
+    /**
+     * Método público expuesto a controladores para geocodificar una dirección de texto o coordenadas
+     * @param direccion texto o coordenadas
+     * @return CoordenadaDTO o null si no se pudo geocodificar
+     */
+    public CoordenadaDTO geocodificarPublic(String direccion) {
+        return geocodificar(direccion);
+    }
     
 
     /**
@@ -108,81 +115,88 @@ public class CalculoService {
         }
         
         direccion = direccion.trim();
-        
-        // 1. Verificar si es un ID de depósito (número)
-        if (esNumeroEntero(direccion)) {
-            Long depositoId = Long.parseLong(direccion);
-            logger.debug("Detectado ID de depósito: {}", depositoId);
-            return consultarCoordenadasDeposito(depositoId);
-        }
-        
-        // 2. Verificar si son coordenadas en formato "lat,lon"
+        // 1. Verificar si son coordenadas en formato "lat,lon"
         if (direccion.contains(",")) {
             try {
                 String[] partes = direccion.split(",");
                 if (partes.length == 2) {
                     double lat = Double.parseDouble(partes[0].trim());
                     double lon = Double.parseDouble(partes[1].trim());
-                    
+
                     // Validar rangos de coordenadas
                     if (lat < -90 || lat > 90) {
-                        throw new IllegalArgumentException("Latitud fuera de rango: " + lat + " (debe estar entre -90 y 90)");
+                        logger.debug("Latitud fuera de rango al parsear coordenadas: {}", lat);
+                    } else if (lon < -180 || lon > 180) {
+                        logger.debug("Longitud fuera de rango al parsear coordenadas: {}", lon);
+                    } else {
+                        logger.debug("Coordenadas parseadas directamente: lat={}, lon={}", lat, lon);
+                        return new CoordenadaDTO(lat, lon);
                     }
-                    if (lon < -180 || lon > 180) {
-                        throw new IllegalArgumentException("Longitud fuera de rango: " + lon + " (debe estar entre -180 y 180)");
-                    }
-                    
-                    logger.debug("Coordenadas parseadas directamente: lat={}, lon={}", lat, lon);
-                    return new CoordenadaDTO(lat, lon);
                 }
             } catch (NumberFormatException e) {
-                logger.error("Error al parsear coordenadas: {}", direccion);
-                throw new IllegalArgumentException("Formato de coordenadas inválido. Use: 'latitud,longitud'");
+                // No tratar como error: la dirección contiene comas pero no son coordenadas numéricas.
+                logger.debug("Cadena con coma pero no es coordenadas numéricas: {} - continuando como texto", direccion);
             }
         }
         
-        logger.error("Formato de dirección no reconocido: {}. Use ID de depósito o coordenadas 'lat,lon'", direccion);
-        throw new IllegalArgumentException("Formato inválido. Use: ID de depósito (ej: '1') o coordenadas (ej: '-34.6037,-58.3816')");
-    }
-    
-    /**
-     * Verifica si una cadena es un número entero válido
-     * @param str Cadena a verificar
-     * @return true si es un número entero, false en caso contrario
-     */
-    private boolean esNumeroEntero(String str) {
-        if (str == null || str.isEmpty()) {
-            return false;
-        }
+        // 2. Intentar geocodificación externa (Nominatim) COMO PRIMERA OPCIÓN
         try {
-            Long.parseLong(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            String q = java.net.URLEncoder.encode(direccion, java.nio.charset.StandardCharsets.UTF_8);
+            String url = "https://nominatim.openstreetmap.org/search?q=" + q + "&format=json&limit=1&addressdetails=0";
+            logger.debug("Intentando geocodificación externa (Nominatim) para: {}", direccion);
+
+            java.net.http.HttpClient http = java.net.http.HttpClient.newBuilder().build();
+            java.net.http.HttpRequest req = java.net.http.HttpRequest.newBuilder()
+                    .uri(java.net.URI.create(url))
+                    .header("User-Agent", "TPI-Backend-Geocoder/1.0 (contacto@dominio.example)")
+                    .GET()
+                    .build();
+            java.net.http.HttpResponse<String> resp = http.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+            if (resp.statusCode() == 200) {
+                String body = resp.body();
+                java.util.regex.Pattern pLat = java.util.regex.Pattern.compile("\\\"lat\\\"\\s*:\\s*\\\"([0-9+\\-\\.]+)\\\"");
+                java.util.regex.Pattern pLon = java.util.regex.Pattern.compile("\\\"lon\\\"\\s*:\\s*\\\"([0-9+\\-\\.]+)\\\"");
+                java.util.regex.Matcher mLat = pLat.matcher(body);
+                java.util.regex.Matcher mLon = pLon.matcher(body);
+                if (mLat.find() && mLon.find()) {
+                    double lat = Double.parseDouble(mLat.group(1));
+                    double lon = Double.parseDouble(mLon.group(1));
+                    logger.info("Geocodificación externa exitosa para '{}': lat={}, lon={}", direccion, lat, lon);
+                    return new CoordenadaDTO(lat, lon);
+                }
+            } else {
+                logger.debug("Nominatim respondió con status {}", resp.statusCode());
+            }
+        } catch (Exception e) {
+            logger.debug("Error en geocodificación externa: {}", e.getMessage());
         }
+
+        // 3. Si la geocodificación externa no devuelve resultado, aplicar SOLO
+        // heurística por nombre de ciudad como fallback.
+        String lower = direccion.toLowerCase();
+        if (lower.contains("caba") || lower.contains("buenos") || lower.contains("b.a.s.a")) {
+            logger.info("Heurística por ciudad aplicada: CABA para '{}'", direccion);
+            return new CoordenadaDTO(-34.6037, -58.3816);
+        }
+        if (lower.contains("rosario")) {
+            logger.info("Heurística por ciudad aplicada: Rosario para '{}'", direccion);
+            return new CoordenadaDTO(-32.9445, -60.6500);
+        }
+        if (lower.contains("cordoba")) {
+            logger.info("Heurística por ciudad aplicada: Córdoba para '{}'", direccion);
+            return new CoordenadaDTO(-31.4167, -64.1833);
+        }
+        if (lower.contains("mendoza")) {
+            logger.info("Heurística por ciudad aplicada: Mendoza para '{}'", direccion);
+            return new CoordenadaDTO(-32.8908, -68.8272);
+        }
+
+        logger.warn("No se pudo geocodificar la dirección de texto (sin resultados externos ni heurística de ciudad): {}", direccion);
+        return null;
     }
     
-    /**
-     * Consulta las coordenadas de un depósito desde la base de datos
-     * @param depositoId ID del depósito
-     * @return Coordenadas del depósito
-     * @throws RuntimeException si el depósito no existe o no tiene coordenadas
-     */
-    private CoordenadaDTO consultarCoordenadasDeposito(Long depositoId) {
-        logger.debug("Consultando coordenadas del depósito ID: {}", depositoId);
-        
-        DepositoDTO deposito = depositoService.findById(depositoId);
-        
-        if (deposito.getLatitud() == null || deposito.getLongitud() == null) {
-            logger.error("El depósito ID: {} no tiene coordenadas configuradas", depositoId);
-            throw new RuntimeException("El depósito ID " + depositoId + " no tiene coordenadas configuradas");
-        }
-        
-        logger.info("Coordenadas del depósito '{}' (ID: {}): lat={}, lon={}", 
-                deposito.getNombre(), depositoId, deposito.getLatitud(), deposito.getLongitud());
-        
-        return new CoordenadaDTO(deposito.getLatitud(), deposito.getLongitud());
-    }
+    // Nota: ya no soportamos IDs de depósito como entrada directa para geocodificación
+    // (la lógica que buscaba por ID fue retirada en favor de búsqueda por dirección/texto).
 
     /**
      * Calcula distancia usando fórmula de Haversine entre dos ciudades
@@ -202,12 +216,11 @@ public class CalculoService {
             return calcularDistanciaHaversine(coordOrigen, coordDestino);
         }
         
-        // Fallback: coordenadas por defecto (Buenos Aires - Rosario)
-        logger.warn("Usando coordenadas por defecto para cálculo Haversine");
-        return calcularDistanciaHaversine(
-                new CoordenadaDTO(-34.6037, -58.3816),
-                new CoordenadaDTO(-32.9445, -60.6500)
-        );
+        // Si no se obtuvieron coordenadas para origen/destino, no aplicamos
+        // una suposición mediante ciudades por defecto. Devolvemos 0.0 para
+        // indicar que no se pudo estimar la distancia con la información dada.
+        logger.warn("No se pudieron geocodificar origen o destino para Haversine; devolviendo distancia 0.0");
+        return 0.0;
     }
     
     /**

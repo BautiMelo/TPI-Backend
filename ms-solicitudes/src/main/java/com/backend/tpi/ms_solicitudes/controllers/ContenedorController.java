@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+
+import com.backend.tpi.ms_solicitudes.services.ClienteService;
+import com.backend.tpi.ms_solicitudes.models.Cliente;
 
 import java.util.List;
 
@@ -29,13 +33,16 @@ public class ContenedorController {
     @Autowired
     private ContenedorService contenedorService;
 
+    @Autowired
+    private ClienteService clienteService;
+
     /**
      * GET /api/v1/contenedores - Lista todos los contenedores del sistema
-     * Requiere rol RESPONSABLE o ADMIN
+    * Requiere rol OPERADOR o ADMIN
      * @return Lista de todos los contenedores
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Listar todos los contenedores")
     public ResponseEntity<List<Contenedor>> getAllContenedores() {
         logger.info("GET /api/v1/contenedores - Listando todos los contenedores");
@@ -46,44 +53,86 @@ public class ContenedorController {
 
     /**
      * GET /api/v1/contenedores/{id} - Obtiene un contenedor específico por ID
-     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+    * Requiere rol CLIENTE, OPERADOR o ADMIN
      * @param id ID del contenedor
      * @return Contenedor encontrado
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENTE', 'OPERADOR', 'ADMIN')")
     @Operation(summary = "Obtener contenedor por ID")
     public ResponseEntity<Contenedor> getContenedorById(@PathVariable Long id) {
         logger.info("GET /api/v1/contenedores/{} - Buscando contenedor por ID", id);
         Contenedor contenedor = contenedorService.findById(id);
+        // Si el caller es CLIENTE verificamos propiedad usando claim 'email' (no requiere cambios en entidades)
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getAuthorities() != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"))) {
+            if (auth instanceof JwtAuthenticationToken) {
+                Object emailObj = ((JwtAuthenticationToken) auth).getToken().getClaim("email");
+                String email = emailObj != null ? emailObj.toString() : null;
+                if (email != null) {
+                    try {
+                        Cliente c = clienteService.findByEmail(email);
+                        if (contenedor.getClienteId() == null || !contenedor.getClienteId().equals(c.getId())) {
+                            logger.warn("CLIENTE (email={}) intento acceder a contenedor ajeno: {}", email, id);
+                            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                        }
+                    } catch (Exception ex) {
+                        logger.warn("No se pudo validar cliente por email {}: {}", email, ex.getMessage());
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                    }
+                }
+            }
+        }
+
         logger.info("GET /api/v1/contenedores/{} - Respuesta: 200 - Contenedor encontrado", id);
         return ResponseEntity.ok(contenedor);
     }
 
     /**
-     * GET /api/v1/contenedores/cliente/{clienteId} - Lista contenedores de un cliente
-     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+    * GET /api/v1/contenedores/cliente/{clienteId} - Lista contenedores de un cliente
+    * Requiere rol CLIENTE, OPERADOR o ADMIN
      * @param clienteId ID del cliente
      * @return Lista de contenedores del cliente
      */
     @GetMapping("/cliente/{clienteId}")
-    @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENTE', 'OPERADOR', 'ADMIN')")
     @Operation(summary = "Listar contenedores por cliente")
     public ResponseEntity<List<Contenedor>> getContenedoresByCliente(@PathVariable Long clienteId) {
         logger.info("GET /api/v1/contenedores/cliente/{} - Buscando contenedores del cliente", clienteId);
+        // Si el caller es CLIENTE solo puede pedir sus propios contenedores
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getAuthorities() != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"))) {
+            if (auth instanceof JwtAuthenticationToken) {
+                Object emailObj = ((JwtAuthenticationToken) auth).getToken().getClaim("email");
+                String email = emailObj != null ? emailObj.toString() : null;
+                if (email != null) {
+                    try {
+                        Cliente c = clienteService.findByEmail(email);
+                        if (!c.getId().equals(clienteId)) {
+                            logger.warn("CLIENTE (email={}) intento listar contenedores de otro cliente: {}", email, clienteId);
+                            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                        }
+                    } catch (Exception ex) {
+                        logger.warn("No se pudo validar cliente por email {}: {}", email, ex.getMessage());
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                    }
+                }
+            }
+        }
+
         List<Contenedor> contenedores = contenedorService.findByClienteId(clienteId);
         logger.info("GET /api/v1/contenedores/cliente/{} - Respuesta: 200 - {} contenedores encontrados", clienteId, contenedores.size());
         return ResponseEntity.ok(contenedores);
     }
 
     /**
-     * POST /api/v1/contenedores - Crea un nuevo contenedor
-     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+    * POST /api/v1/contenedores - Crea un nuevo contenedor
+    * Requiere rol CLIENTE, OPERADOR o ADMIN
      * @param contenedor Datos del contenedor a crear
      * @return Contenedor creado con código 201
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENTE', 'OPERADOR', 'ADMIN')")
     @Operation(summary = "Crear nuevo contenedor")
     public ResponseEntity<Contenedor> createContenedor(@RequestBody Contenedor contenedor) {
         logger.info("POST /api/v1/contenedores - Creando nuevo contenedor");
@@ -93,14 +142,14 @@ public class ContenedorController {
     }
 
     /**
-     * PUT /api/v1/contenedores/{id} - Actualiza un contenedor existente
-     * Requiere rol RESPONSABLE o ADMIN
+    * PUT /api/v1/contenedores/{id} - Actualiza un contenedor existente
+    * Requiere rol OPERADOR o ADMIN
      * @param id ID del contenedor a actualizar
      * @param contenedor Datos actualizados del contenedor
      * @return Contenedor actualizado
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Actualizar contenedor existente")
     public ResponseEntity<Contenedor> updateContenedor(@PathVariable Long id, @RequestBody Contenedor contenedor) {
         logger.info("PUT /api/v1/contenedores/{} - Actualizando contenedor", id);
@@ -126,14 +175,14 @@ public class ContenedorController {
     }
 
     /**
-     * PATCH /api/v1/contenedores/{id} - Actualiza el estado de un contenedor
-     * Requiere rol RESPONSABLE o ADMIN
+    * PATCH /api/v1/contenedores/{id} - Actualiza el estado de un contenedor
+    * Requiere rol OPERADOR o ADMIN
      * @param id ID del contenedor
      * @param estadoId ID del nuevo estado
      * @return Contenedor con estado actualizado
      */
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Actualizar estado del contenedor")
     public ResponseEntity<Contenedor> updateEstadoContenedor(@PathVariable Long id, @RequestParam Long estadoId) {
         logger.info("PATCH /api/v1/contenedores/{} - Actualizando estado - nuevoEstadoId: {}", id, estadoId);
@@ -143,13 +192,13 @@ public class ContenedorController {
     }
 
     /**
-     * GET /api/v1/contenedores/{id}/seguimiento - Consulta la ubicación y estado actual de un contenedor
-     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+    * GET /api/v1/contenedores/{id}/seguimiento - Consulta la ubicación y estado actual de un contenedor
+    * Requiere rol CLIENTE, OPERADOR o ADMIN
      * @param id ID del contenedor
      * @return Información de seguimiento del contenedor
      */
     @GetMapping("/{id}/seguimiento")
-    @PreAuthorize("hasAnyRole('CLIENTE', 'RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENTE', 'OPERADOR', 'ADMIN')")
     @Operation(summary = "Consultar seguimiento del contenedor")
     public ResponseEntity<SeguimientoContenedorDTO> getSeguimiento(@PathVariable Long id) {
         logger.info("GET /api/v1/contenedores/{}/seguimiento - Consultando seguimiento", id);
@@ -159,13 +208,13 @@ public class ContenedorController {
     }
 
     /**
-     * GET /api/v1/contenedores/{id}/estados-permitidos - Consulta los estados a los que puede transicionar el contenedor
-     * Requiere rol RESPONSABLE o ADMIN
+    * GET /api/v1/contenedores/{id}/estados-permitidos - Consulta los estados a los que puede transicionar el contenedor
+    * Requiere rol OPERADOR o ADMIN
      * @param id ID del contenedor
      * @return Lista de nombres de estados permitidos
      */
     @GetMapping("/{id}/estados-permitidos")
-    @PreAuthorize("hasAnyRole('RESPONSABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
     @Operation(summary = "Consultar estados permitidos para el contenedor")
     public ResponseEntity<List<String>> getEstadosPermitidos(@PathVariable Long id) {
         logger.info("GET /api/v1/contenedores/{}/estados-permitidos - Consultando transiciones permitidas", id);

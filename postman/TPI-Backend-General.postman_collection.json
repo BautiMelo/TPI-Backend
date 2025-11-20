@@ -1,0 +1,239 @@
+{
+  "info": {
+    "name": "TPI Backend - General API",
+    "_postman_id": "tpi-backend-general-001",
+    "description": "General collection with key endpoints across services: solicitudes, contenedores, gestion (geocode/distancia) and rutas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "keycloakUrl", "value": "http://localhost:8089" },
+    { "key": "client_id", "value": "postman-test" },
+    { "key": "client_secret", "value": "secret-postman-123" },
+    { "key": "access_token", "value": "" }
+  ],
+  "item": [
+        
+          "name": "Get Token - responsable1 (OPERADOR)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/x-www-form-urlencoded" } ],
+            "body": { "mode": "urlencoded", "urlencoded": [ { "key": "grant_type", "value": "password" }, { "key": "client_id", "value": "{{client_id}}" }, { "key": "client_secret", "value": "{{client_secret}}" }, { "key": "username", "value": "responsable1" }, { "key": "password", "value": "1234" } ] },
+            "url": { "raw": "{{keycloakUrl}}/realms/tpi-backend/protocol/openid-connect/token", "host": [ "{{keycloakUrl}}" ], "path": [ "realms", "tpi-backend", "protocol", "openid-connect", "token" ] }
+          },
+          "event": [ { "listen": "test", "script": { "exec": [ "if (pm.response.code === 200) {", "  var token = pm.response.json().access_token;", "  pm.environment.set('access_token', token);", "  pm.collectionVariables.set('access_token', token);", "}" ], "type": "text/javascript" } } ]
+        },
+        {
+          "name": "Get Token - admin (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/x-www-form-urlencoded" } ],
+            "body": { "mode": "urlencoded", "urlencoded": [ { "key": "grant_type", "value": "password" }, { "key": "client_id", "value": "{{client_id}}" }, { "key": "client_secret", "value": "{{client_secret}}" }, { "key": "username", "value": "tester" }, { "key": "password", "value": "1234" } ] },
+            "url": { "raw": "{{keycloakUrl}}/realms/tpi-backend/protocol/openid-connect/token", "host": [ "{{keycloakUrl}}" ], "path": [ "realms", "tpi-backend", "protocol", "openid-connect", "token" ] }
+          },
+          "event": [ { "listen": "test", "script": { "exec": [ "if (pm.response.code === 200) {", "  var token = pm.response.json().access_token;", "  pm.environment.set('access_token', token);", "  pm.collectionVariables.set('access_token', token);", "}" ], "type": "text/javascript" } } ]
+        }
+      ]
+    },
+    {
+      "name": "Gestion",
+      "item": [
+        {
+          "name": "Geocode (GET)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/gestion/geocode?direccion=Av.%20Santa%20Fe%20567,%20CABA", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "gestion", "geocode" ], "query": [ { "key": "direccion", "value": "Av. Santa Fe 567, CABA" } ] }
+          }
+        },
+        {
+          "name": "Distancia (POST)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"latOrigen\": -34.5765,\n  \"lonOrigen\": -58.4314,\n  \"latDestino\": -34.5876,\n  \"lonDestino\": -58.4123\n}" },
+            "url": { "raw": "{{baseUrl}}/api/v1/gestion/distancia", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "gestion", "distancia" ] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contenedores",
+      "item": [
+        {
+          "name": "List Contenedores",
+          "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/contenedores", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores" ] } }
+        },
+        {
+          "name": "Get Contenedor by ID",
+          "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/contenedores/{{contenedorId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores", "{{contenedorId}}" ] } }
+        },
+        {
+          "name": "Create Contenedor",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"peso\": 500.0,\n  \"volumen\": 5.0,\n  \"clienteId\": 10\n}" }, "url": { "raw": "{{baseUrl}}/api/v1/contenedores", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores" ] } }
+        }
+      ]
+    },
+    {
+      "name": "Solicitudes",
+      "item": [
+        { "name": "List Solicitudes", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/solicitudes", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes" ] } } },
+        { "name": "Get Solicitud by ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}" ] } } },
+        { "name": "Create Solicitud", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"direccionOrigen\": \"Av. Santa Fe 567, CABA\",\n  \"direccionDestino\": \"Av. Ejemplo 123, CABA\"\n}" }, "url": { "raw": "{{baseUrl}}/api/v1/solicitudes", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes" ] } } },
+        { "name": "Asignar Contenedor", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/asignar-contenedor?contenedorId={{contenedorId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "asignar-contenedor" ], "query": [ { "key": "contenedorId", "value": "{{contenedorId}}" } ] } },
+        { "name": "Get Seguimiento Solicitud", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/seguimiento", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "seguimiento" ] } },
+        { "name": "Set Solicitud Ruta (PATCH)", "request": { "method": "PATCH", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/ruta?rutaId={{rutaId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "ruta" ], "query": [ { "key": "rutaId", "value": "{{rutaId}}" } ] } }
+      ]
+    },
+    {
+      "name": "Rutas",
+      "item": [
+        {
+          "name": "Create Ruta (for solicitud)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"idSolicitud\": {{solicitudId}}\n}" },
+            "url": { "raw": "{{baseUrl}}/api/v1/rutas", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas" ] }
+          }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    var body = pm.response.json();",
+                  "    if (Array.isArray(body)) {",
+                  "      // Save opciones and auto-confirm the first option by default",
+                  "      pm.collectionVariables.set('opciones', JSON.stringify(body));",
+                  "      pm.collectionVariables.set('opcionIndex', '0');",
+                  "      pm.collectionVariables.set('rutaTentativa', JSON.stringify(body[0]));",
+                  "      // Auto confirm: call POST /rutas/confirmar to create definitive ruta",
+                  "      var req = {",
+                  "        url: pm.collectionVariables.get('baseUrl') + '/api/v1/rutas/confirmar',",
+                  "        method: 'POST',",
+                  "        header: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + pm.collectionVariables.get('access_token') },",
+                  "        body: { mode: 'raw', raw: JSON.stringify({ solicitudId: pm.collectionVariables.get('solicitudId') * 1, rutaTentativa: body[0] }) }",
+                  "      };",
+                  "      pm.sendRequest(req, function (err, res) {",
+                  "        if (err) console.error('Error confirming ruta:', err);",
+                  "        else if (res && res.json) {",
+                  "          var ruta = res.json();",
+                  "          if (ruta && ruta.id) { pm.collectionVariables.set('rutaId', ruta.id); console.log('rutaId saved', ruta.id); }",
+                  "        }",
+                  "      });",
+                  "    } else if (body && body.id) {",
+                  "      pm.collectionVariables.set('rutaId', body.id);",
+                  "    }",
+                  "  } catch (e) { console.error('Error in Create Ruta test script:', e); }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        { "name": "List Rutas", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas" ] } } },
+        { "name": "Get Ruta by ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}" ] } } },
+        { "name": "Get Ruta by Solicitud", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/por-solicitud/{{solicitudId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "por-solicitud", "{{solicitudId}}" ] } } },
+        { "name": "Create Opciones (calcular)", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/opciones?calcularVariantes=true", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "opciones" ], "query": [ { "key": "calcularVariantes", "value": "true" } ] } } },
+        {
+          "name": "Create Opciones for Solicitud (persist)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"calcularVariantes\": true\n}" },
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/opciones", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "opciones" ] }
+          }
+        },
+        {
+          "name": "List Opciones for Solicitud",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/opciones", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "opciones" ] }
+        },
+        {
+          "name": "Confirm Opcion Persistida",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/opciones/{{opcionId}}/confirmar", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "opciones", "{{opcionId}}", "confirmar" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    var body = pm.response.json();",
+                  "    if (body && body.id) {",
+                  "      pm.collectionVariables.set('rutaId', body.id);",
+                  "      console.log('Saved rutaId ->', body.id);",
+                  "      // Patch solicitud to set rutaId as well (keeps services in sync)",
+                  "      var solicitudId = pm.collectionVariables.get('solicitudId');",
+                  "      if (solicitudId) {",
+                  "        var url = pm.collectionVariables.get('baseUrl') + '/api/v1/solicitudes/' + solicitudId + '/ruta?rutaId=' + body.id;",
+                  "        pm.sendRequest({ url: url, method: 'PATCH', header: { 'Authorization': 'Bearer ' + pm.collectionVariables.get('access_token') } }, function (err, res) {",
+                  "          if (err) console.error('Error patching solicitud:', err); else console.log('Patched solicitud', solicitudId, 'status:', res.status);",
+                  "        });",
+                  "      }",
+                  "    }",
+                  "  } catch (e) { console.error('Error in Confirm Opcion test script:', e); }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        { "name": "List Opciones", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/opciones", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "opciones" ] } } },
+        {
+          "name": "Select Opcion",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/opciones/{{opcionId}}/seleccionar", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "opciones", "{{opcionId}}", "seleccionar" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    var json = pm.response.json();",
+                  "    if (json && json.id) {",
+                  "      pm.collectionVariables.set('rutaId', json.id);",
+                  "      console.log('Saved rutaId ->', json.id);",
+                  "    }",
+                  "    // If solicitudId available, patch the solicitud to set rutaId",
+                  "    var solicitudId = pm.collectionVariables.get('solicitudId');",
+                  "    if (solicitudId && json && json.id) {",
+                  "      var url = pm.collectionVariables.get('baseUrl') + '/api/v1/solicitudes/' + solicitudId + '/ruta?rutaId=' + json.id;",
+                  "      pm.sendRequest({ url: url, method: 'PATCH', header: { 'Authorization': 'Bearer ' + pm.collectionVariables.get('access_token') } }, function (err, res) {",
+                  "        if (err) console.error('Error patching solicitud:', err); else console.log('Patched solicitud', solicitudId, 'status:', res.status);",
+                  "      });",
+                  "    }",
+                  "  } catch (e) { console.error('Error in Select Opcion test script:', e); }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        { "name": "Calcular Completo", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/calcular-completo", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "calcular-completo" ] } } },
+        { "name": "Calcular Distancias", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/calcular-distancias", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "calcular-distancias" ] } } },
+        { "name": "Calcular Costos", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/calcular-costos", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "calcular-costos" ] } } },
+        { "name": "Add Tramo to Ruta", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"origenDepositoId\": {{origenDepositoId}},\n  \"destinoDepositoId\": {{destinoDepositoId}}\n}" }, "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "tramos" ] } } },
+        { "name": "List Tramos por Ruta", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/tramos/por-ruta/{{rutaId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "tramos", "por-ruta", "{{rutaId}}" ] } } },
+        { "name": "Iniciar Tramo", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/iniciar", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "iniciar" ] } } },
+        { "name": "Finalizar Tramo", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/finalizar?fechaHoraReal={{fechaHoraReal}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "finalizar" ], "query": [ { "key": "fechaHoraReal", "value": "{{fechaHoraReal}}" } ] } } },
+        { "name": "Assign Tramo - Asignar Transportista", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ], "url": { "raw": "{{baseUrl}}/api/v1/tramos/{{tramoId}}/asignar-transportista?camionId={{camionId}}&dominio={{camionDominio}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "tramos", "{{tramoId}}", "asignar-transportista" ], "query": [ { "key": "camionId", "value": "{{camionId}}" }, { "key": "dominio", "value": "{{camionDominio}}" } ] } } }
+      ]
+    }
+  ]
+}

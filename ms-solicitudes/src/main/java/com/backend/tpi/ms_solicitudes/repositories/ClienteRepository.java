@@ -15,4 +15,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 	 * @return Cliente encontrado (opcional)
 	 */
 	java.util.Optional<Cliente> findByEmail(String email);
+	java.util.Optional<Cliente> findByKeycloakUserId(String keycloakUserId);
 }

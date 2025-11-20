@@ -1,9 +1,6 @@
 package com.backend.tpi.ms_solicitudes.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**
@@ -12,6 +9,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@Table(name = "estado_solicitud")
 public class EstadoSolicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

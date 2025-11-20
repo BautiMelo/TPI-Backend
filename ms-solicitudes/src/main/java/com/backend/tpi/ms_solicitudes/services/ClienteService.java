@@ -46,6 +46,12 @@ public class ClienteService {
                 .orElseThrow(() -> new com.backend.tpi.ms_solicitudes.exceptions.ResourceNotFoundException("Cliente", "email", email));
     }
 
+    @Transactional(readOnly = true)
+    public Cliente findByKeycloakUserId(String keycloakUserId) {
+        return clienteRepository.findByKeycloakUserId(keycloakUserId)
+                .orElseThrow(() -> new com.backend.tpi.ms_solicitudes.exceptions.ResourceNotFoundException("Cliente", "keycloakUserId", keycloakUserId));
+    }
+
     /**
      * Busca un cliente por su ID
      * @param id ID del cliente
@@ -143,7 +149,8 @@ public class ClienteService {
             cliente.setNombre(registroDTO.getNombre());
             cliente.setEmail(registroDTO.getEmail());
             cliente.setTelefono(registroDTO.getTelefono());
-            
+            cliente.setKeycloakUserId(keycloakUserId);
+
             Cliente clienteGuardado = clienteRepository.save(cliente);
             log.info("Cliente guardado en BD con ID: {}", clienteGuardado.getId());
             

@@ -27,13 +27,13 @@ public class PrecioController {
     private PrecioService precioService;
 
     /**
-     * POST /api/v1/precio/estimado - Calcula un precio estimado para un traslado
-     * Requiere rol CLIENTE o RESPONSABLE
+    * POST /api/v1/precio/estimado - Calcula un precio estimado para un traslado
+    * Requiere rol CLIENTE u OPERADOR
      * @param request Datos del origen, destino, peso y volumen
      * @return Costo total estimado y tiempo estimado
      */
     @PostMapping("/estimado")
-    @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE')")
+    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR')")
     public CostoResponseDTO getPrecioEstimado(@RequestBody CostoRequestDTO request) {
         logger.info("POST /api/v1/precio/estimado - Calculando precio estimado");
         CostoResponseDTO result = precioService.calcularCostoEstimado(request);
@@ -57,14 +57,14 @@ public class PrecioController {
     }
 
     /**
-     * POST /api/v1/precio/solicitud/{id}/costo - Calcula el costo para una solicitud específica
-     * Obtiene datos de la solicitud desde ms-solicitudes y calcula el costo
-     * Requiere rol RESPONSABLE o ADMIN
+    * POST /api/v1/precio/solicitud/{id}/costo - Calcula el costo para una solicitud específica
+    * Obtiene datos de la solicitud desde ms-solicitudes y calcula el costo
+    * Requiere rol OPERADOR o ADMIN
      * @param id ID de la solicitud
      * @return Costo total calculado
      */
     @PostMapping("/solicitud/{id}/costo")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     public CostoResponseDTO getCostoPorSolicitud(@PathVariable Long id) {
         logger.info("POST /api/v1/precio/solicitud/{}/costo - Calculando costo para solicitud", id);
         CostoResponseDTO result = precioService.calcularCostoParaSolicitud(id);

@@ -43,7 +43,7 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["CLIENTE", "RESPONSABLE", "TRANSPORTISTA", "OPERADOR", "ADMIN"]
+      "realmRoles": ["CLIENTE", "OPERADOR", "TRANSPORTISTA", "ADMIN"]
     },
     {
       "username": "cliente1",
@@ -61,22 +61,7 @@
       ],
       "realmRoles": ["CLIENTE"]
     },
-    {
-      "username": "responsable1",
-      "enabled": true,
-      "emailVerified": true,
-      "email": "responsable1@example.com",
-      "firstName": "Responsable",
-      "lastName": "Uno",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "1234",
-          "temporary": false
-        }
-      ],
-      "realmRoles": ["RESPONSABLE"]
-    },
+    
     {
       "username": "transportista1",
       "enabled": true,

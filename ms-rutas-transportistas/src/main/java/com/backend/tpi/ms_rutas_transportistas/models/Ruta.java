@@ -26,6 +26,9 @@ public class Ruta {
     @CreationTimestamp
     private LocalDateTime fechaCreacion;
 
+    // Opción de ruta seleccionada por el usuario (si existe)
+    private Long opcionSeleccionadaId;
+
     @OneToMany(mappedBy = "ruta", cascade = CascadeType.ALL)
     private List<Tramo> tramos;
 }

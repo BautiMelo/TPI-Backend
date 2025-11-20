@@ -24,12 +24,12 @@ public class DepositoController {
     private DepositoService depositoService;
 
     /**
-     * GET /api/v1/depositos - Lista todos los depósitos del sistema
-     * Requiere rol CLIENTE, RESPONSABLE o ADMIN
+    * GET /api/v1/depositos - Lista todos los depósitos del sistema
+    * Requiere rol CLIENTE, OPERADOR o ADMIN
      * @return Lista de depósitos
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('CLIENTE','RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN')")
     public List<DepositoDTO> getAllDepositos() {
         logger.info("GET /api/v1/depositos - Listando todos los depósitos");
         List<DepositoDTO> result = depositoService.findAll();
@@ -38,13 +38,13 @@ public class DepositoController {
     }
 
     /**
-     * POST /api/v1/depositos - Crea un nuevo depósito
-     * Requiere rol RESPONSABLE o ADMIN
+    * POST /api/v1/depositos - Crea un nuevo depósito
+    * Requiere rol OPERADOR o ADMIN
      * @param deposito Datos del depósito a crear
      * @return Depósito creado
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     public DepositoDTO createDeposito(@RequestBody DepositoDTO deposito) {
         logger.info("POST /api/v1/depositos - Creando nuevo depósito");
         DepositoDTO result = depositoService.save(deposito);
@@ -53,13 +53,13 @@ public class DepositoController {
     }
 
     /**
-     * GET /api/v1/depositos/{id} - Obtiene un depósito específico por ID
-     * Requiere rol ADMIN, OPERADOR o RESPONSABLE
+    * GET /api/v1/depositos/{id} - Obtiene un depósito específico por ID
+    * Requiere rol ADMIN u OPERADOR
      * @param id ID del depósito
      * @return Depósito encontrado
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR','RESPONSABLE')")
+    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public DepositoDTO getDepositoById(@PathVariable Long id) {
         logger.info("GET /api/v1/depositos/{} - Buscando depósito por ID", id);
         DepositoDTO result = depositoService.findById(id);
@@ -68,14 +68,14 @@ public class DepositoController {
     }
 
     /**
-     * PATCH /api/v1/depositos/{id} - Actualiza un depósito existente
-     * Requiere rol ADMIN, OPERADOR o RESPONSABLE
+    * PATCH /api/v1/depositos/{id} - Actualiza un depósito existente
+    * Requiere rol ADMIN, OPERADOR
      * @param id ID del depósito a actualizar
      * @param depositoDto Nuevos datos del depósito
      * @return Depósito actualizado
      */
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR','RESPONSABLE')")
+    @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public DepositoDTO updateDeposito(@PathVariable Long id, @RequestBody DepositoDTO depositoDto) {
         logger.info("PATCH /api/v1/depositos/{} - Actualizando depósito", id);
         DepositoDTO result = depositoService.update(id, depositoDto);
@@ -84,13 +84,13 @@ public class DepositoController {
     }
 
     /**
-     * GET /api/v1/depositos/{id}/coordenadas - Obtiene las coordenadas de un depósito
-     * Requiere rol RESPONSABLE o ADMIN
+    * GET /api/v1/depositos/{id}/coordenadas - Obtiene las coordenadas de un depósito
+    * Requiere rol OPERADOR o ADMIN
      * @param id ID del depósito
      * @return Coordenadas del depósito (latitud y longitud)
      */
     @GetMapping("/{id}/coordenadas")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN','TRANSPORTISTA')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
     public org.springframework.http.ResponseEntity<java.util.Map<String, Object>> getCoordenadasDeposito(@PathVariable Long id) {
         logger.info("GET /api/v1/depositos/{}/coordenadas - Consultando coordenadas", id);
         try {

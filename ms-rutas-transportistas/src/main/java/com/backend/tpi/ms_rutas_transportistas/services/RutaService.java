@@ -43,7 +43,22 @@ public class RutaService {
     private com.backend.tpi.ms_rutas_transportistas.repositories.TramoRepository tramoRepository;
     
     @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.CamionRepository camionRepository;
+    
+    @Autowired
     private org.springframework.web.client.RestClient calculosClient;
+    
+    @Autowired
+    private org.springframework.web.client.RestClient solicitudesClient;
+
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.TipoTramoRepository tipoTramoRepository;
+
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.EstadoTramoRepository estadoTramoRepository;
+    
+    @org.springframework.beans.factory.annotation.Value("${app.solicitudes.base-url:http://ms-solicitudes:8080}")
+    private String solicitudesBaseUrl;
 
     // Manual mapping - ModelMapper removed
 
@@ -75,6 +90,24 @@ public class RutaService {
             throw new IllegalArgumentException("Ya existe una ruta para la solicitud ID: " + createRutaDTO.getIdSolicitud());
         }
         
+        // If called only with idSolicitud and no deposit IDs, generate tentative options without persisting a Ruta
+        if ((createRutaDTO.getOrigenDepositoId() == null || createRutaDTO.getDestinoDepositoId() == null)
+                && createRutaDTO.getIdSolicitud() != null
+                && (createRutaDTO.getOrigenDepositoId() == null && createRutaDTO.getDestinoDepositoId() == null)) {
+            logger.info("Generando opciones tentativas para solicitud {} sin persistir ruta", createRutaDTO.getIdSolicitud());
+            try {
+                List<RutaTentativaDTO> variantes = generateOptionsForSolicitud(createRutaDTO.getIdSolicitud());
+                // For backward compatibility return the first variant wrapped in a DTO-like map if caller expects RutaDTO
+                // But here we return a RutaDTO with null id and opcionSeleccionadaId unset; callers (ms-solicitudes) should handle response
+                // Instead, throw an exception to signal controller to return variants (controller will handle)
+                // We return null here and the controller will intercept this case.
+                return null;
+            } catch (Exception e) {
+                logger.error("Error generando opciones para solicitud {}: {}", createRutaDTO.getIdSolicitud(), e.getMessage());
+                throw new RuntimeException("Error generando opciones: " + e.getMessage());
+            }
+        }
+
         logger.debug("Creando nueva ruta para solicitud ID: {}", createRutaDTO.getIdSolicitud());
         Ruta ruta = new Ruta();
         ruta.setIdSolicitud(createRutaDTO.getIdSolicitud());
@@ -135,6 +168,19 @@ public class RutaService {
             logger.info("No se especificaron depósitos - ruta creada sin tramos automáticos");
         }
         
+        // Intentar notificar al microservicio de solicitudes para asociar la ruta creada a la solicitud
+        try {
+            String token = extractBearerToken();
+            solicitudesClient.patch()
+                    .uri("/api/v1/solicitudes/" + ruta.getIdSolicitud() + "/ruta?rutaId=" + ruta.getId())
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(Object.class);
+            logger.info("Notificada solicitud {} con rutaId {}", ruta.getIdSolicitud(), ruta.getId());
+        } catch (Exception e) {
+            logger.warn("No se pudo notificar a ms-solicitudes para solicitud {}: {}", ruta.getIdSolicitud(), e.getMessage());
+        }
+
         return toDto(ruta);
     }
 
@@ -191,6 +237,7 @@ public class RutaService {
         dto.setId(ruta.getId());
         dto.setIdSolicitud(ruta.getIdSolicitud());
         dto.setFechaCreacion(ruta.getFechaCreacion());
+        dto.setOpcionSeleccionadaId(ruta.getOpcionSeleccionadaId());
         return dto;
     }
 
@@ -421,62 +468,152 @@ public class RutaService {
             logger.error("No se puede calcular costo - Ruta ID: {} no tiene tramos", rutaId);
             throw new IllegalArgumentException("La ruta no tiene tramos para calcular el costo");
         }
-        
+
+        // Ordenar por orden
+        tramos.sort((t1, t2) -> {
+            Integer orden1 = t1.getOrden() != null ? t1.getOrden() : Integer.MAX_VALUE;
+            Integer orden2 = t2.getOrden() != null ? t2.getOrden() : Integer.MAX_VALUE;
+            return orden1.compareTo(orden2);
+        });
+
         logger.debug("Encontrados {} tramos para calcular costo", tramos.size());
-        
-        // Obtener tarifa por km desde el servicio de cálculos
-        Double tarifaPorKm = obtenerTarifaPorKm();
-        if (tarifaPorKm == null) {
-            logger.warn("No se pudo obtener tarifa por km, usando tarifa por defecto: 100.0");
-            tarifaPorKm = 100.0; // Tarifa por defecto
+
+        // Obtener tarifa (costo base de gestión y valor litro combustible) desde el servicio de cálculos
+        Double valorLitro = null;
+        Double costoBaseGestionFijo = null;
+        try {
+            String token = extractBearerToken();
+            org.springframework.http.ResponseEntity<java.util.List<java.util.Map<String, Object>>> tarifasEntity = calculosClient.get()
+                    .uri("/api/v1/tarifas")
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
+            java.util.List<java.util.Map<String, Object>> tarifas = tarifasEntity != null ? tarifasEntity.getBody() : null;
+            if (tarifas != null && !tarifas.isEmpty()) {
+                Object valorLitroObj = tarifas.get(0).get("valorLitroCombustible");
+                Object costoBaseObj = tarifas.get(0).get("costoBaseGestionFijo");
+                if (valorLitroObj instanceof Number) valorLitro = ((Number) valorLitroObj).doubleValue();
+                if (costoBaseObj instanceof Number) costoBaseGestionFijo = ((Number) costoBaseObj).doubleValue();
+            }
+        } catch (Exception e) {
+            logger.warn("No se pudo obtener tarifas desde ms-gestion-calculos: {}", e.getMessage());
         }
-        
-        logger.debug("Tarifa por km: {}", tarifaPorKm);
-        
-        // Calcular costo de cada tramo
+
+        if (valorLitro == null) {
+            logger.warn("Valor litro no disponible, usando 0.0");
+            valorLitro = 0.0;
+        }
+        if (costoBaseGestionFijo == null) {
+            logger.warn("Costo base de gestión no disponible, usando 0.0");
+            costoBaseGestionFijo = 0.0;
+        }
+
         double costoTotal = 0.0;
         List<Map<String, Object>> costosPorTramo = new java.util.ArrayList<>();
-        int tramosCalculados = 0;
-        
-        for (Tramo tramo : tramos) {
-            if (tramo.getDistancia() != null && tramo.getDistancia() > 0) {
-                double costoTramo = tramo.getDistancia() * tarifaPorKm;
-                
-                // Actualizar costo aproximado del tramo
-                tramo.setCostoAproximado(java.math.BigDecimal.valueOf(costoTramo));
-                tramoRepository.save(tramo);
-                
-                costoTotal += costoTramo;
-                tramosCalculados++;
-                
-                Map<String, Object> infoTramo = new HashMap<>();
-                infoTramo.put("tramoId", tramo.getId());
-                infoTramo.put("orden", tramo.getOrden());
-                infoTramo.put("distancia", tramo.getDistancia());
-                infoTramo.put("costo", Math.round(costoTramo * 100.0) / 100.0);
-                costosPorTramo.add(infoTramo);
-                
-                logger.debug("Tramo {} - Distancia: {} km, Costo: ${}", 
-                    tramo.getOrden(), tramo.getDistancia(), Math.round(costoTramo * 100.0) / 100.0);
-            } else {
-                logger.warn("Tramo {} no tiene distancia calculada, se omite del costo", tramo.getOrden());
+
+        // Costo de gestión total (según requerimiento: valor fijo en base a la cantidad de tramos)
+        double costoGestionTotal = costoBaseGestionFijo * tramos.size();
+
+        for (int i = 0; i < tramos.size(); i++) {
+            Tramo tramo = tramos.get(i);
+            double distancia = tramo.getDistancia() != null ? tramo.getDistancia() : 0.0;
+
+            // Costos por km del camión
+            double costoKmCamion = 0.0;
+            double costoCombustible = 0.0;
+            double costoEstadia = 0.0;
+
+            // Obtener datos del camión por dominio si existe
+            if (tramo.getCamionDominio() != null && !tramo.getCamionDominio().isEmpty()) {
+                try {
+                    java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findByDominio(tramo.getCamionDominio());
+                    if (camionOpt.isPresent()) {
+                        com.backend.tpi.ms_rutas_transportistas.models.Camion camion = camionOpt.get();
+                        if (camion.getCostoPorKm() != null) costoKmCamion = camion.getCostoPorKm() * distancia;
+                        if (camion.getConsumoCombustiblePromedio() != null) {
+                            double consumoLitros = camion.getConsumoCombustiblePromedio() * distancia;
+                            costoCombustible = consumoLitros * valorLitro;
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("No se pudo obtener datos del camión para dominio {}: {}", tramo.getCamionDominio(), e.getMessage());
+                }
             }
+
+            // Calcular costo de estadía para este tramo: el depósito de destino del tramo es el que aplica
+            if (tramo.getDestinoDepositoId() != null) {
+                try {
+                    String token = extractBearerToken();
+                    org.springframework.http.ResponseEntity<java.util.Map<String, Object>> depositoEntity = calculosClient.get()
+                            .uri("/api/v1/depositos/{id}", tramo.getDestinoDepositoId())
+                            .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                            .retrieve()
+                            .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
+                    java.util.Map<String, Object> deposito = depositoEntity != null ? depositoEntity.getBody() : null;
+                    Double costoEstadiaDiario = null;
+                    if (deposito != null) {
+                        Object costoObj = deposito.get("costoEstadiaDiario");
+                        if (costoObj instanceof Number) costoEstadiaDiario = ((Number) costoObj).doubleValue();
+                        else if (deposito.containsKey("costo_estadia_diario") && deposito.get("costo_estadia_diario") instanceof Number)
+                            costoEstadiaDiario = ((Number) deposito.get("costo_estadia_diario")).doubleValue();
+                    }
+
+                    if (costoEstadiaDiario != null) {
+                        // Determinar fecha de fin del tramo actual y fecha inicio del siguiente tramo
+                        java.time.LocalDateTime finActual = tramo.getFechaHoraFinReal() != null ? tramo.getFechaHoraFinReal() : tramo.getFechaHoraFinEstimada();
+                        java.time.LocalDateTime inicioSiguiente = null;
+                        if (i + 1 < tramos.size()) {
+                            Tramo siguiente = tramos.get(i + 1);
+                            inicioSiguiente = siguiente.getFechaHoraInicioReal() != null ? siguiente.getFechaHoraInicioReal() : siguiente.getFechaHoraInicioEstimada();
+                        }
+
+                        if (finActual != null && inicioSiguiente != null) {
+                            long noches = java.time.temporal.ChronoUnit.DAYS.between(finActual.toLocalDate(), inicioSiguiente.toLocalDate());
+                            if (noches < 0) noches = 0;
+                            costoEstadia = noches * costoEstadiaDiario;
+                        } else {
+                            // Si no hay siguiente tramo o fechas, no cobrar estadía
+                            costoEstadia = 0.0;
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("No se pudo obtener datos del depósito {}: {}", tramo.getDestinoDepositoId(), e.getMessage());
+                }
+            }
+
+            double costoTramo = Math.round((costoKmCamion + costoCombustible + costoEstadia) * 100.0) / 100.0;
+
+            // Actualizar costo aproximado del tramo
+            tramo.setCostoAproximado(java.math.BigDecimal.valueOf(costoTramo));
+            tramoRepository.save(tramo);
+
+            Map<String, Object> infoTramo = new HashMap<>();
+            infoTramo.put("tramoId", tramo.getId());
+            infoTramo.put("orden", tramo.getOrden());
+            infoTramo.put("distancia", distancia);
+            infoTramo.put("costoPorKmCamion", Math.round(costoKmCamion * 100.0) / 100.0);
+            infoTramo.put("costoCombustible", Math.round(costoCombustible * 100.0) / 100.0);
+            infoTramo.put("costoEstadia", Math.round(costoEstadia * 100.0) / 100.0);
+            infoTramo.put("costoTotalTramo", costoTramo);
+            costosPorTramo.add(infoTramo);
+
+            costoTotal += costoTramo;
         }
-        
-        // Preparar respuesta
+
+        // Agregar costo de gestión total
+        costoTotal += costoGestionTotal;
+
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("rutaId", rutaId);
         resultado.put("costoTotal", Math.round(costoTotal * 100.0) / 100.0);
-        resultado.put("tarifaPorKm", tarifaPorKm);
+        resultado.put("costoGestionTotal", Math.round(costoGestionTotal * 100.0) / 100.0);
+        resultado.put("valorLitro", valorLitro);
         resultado.put("numeroTramos", tramos.size());
-        resultado.put("tramosCalculados", tramosCalculados);
         resultado.put("costosPorTramo", costosPorTramo);
-        resultado.put("exitoso", tramosCalculados > 0);
-        resultado.put("mensaje", String.format("Costos calculados para %d/%d tramos", tramosCalculados, tramos.size()));
-        
-        logger.info("Cálculo de costos finalizado - Costo total: ${}, Tramos calculados: {}/{}",
-            resultado.get("costoTotal"), tramosCalculados, tramos.size());
-        
+        resultado.put("exitoso", true);
+        resultado.put("mensaje", String.format("Costos calculados para %d tramos", tramos.size()));
+
+        logger.info("Cálculo de costos finalizado - Costo total: {}, Tramos: {}", resultado.get("costoTotal"), tramos.size());
         return resultado;
     }
 
@@ -522,5 +659,146 @@ public class RutaService {
             return ((org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken) auth).getToken().getTokenValue();
         }
         return null;
+    }
+
+    /**
+     * Genera opciones tentativas para una solicitud sin persistir una Ruta.
+     * Consulta ms-solicitudes para obtener coordenadas de origen/destino y busca los depósitos
+     * más cercanos usando ms-gestion-calculos, luego delega a RutaTentativaService.
+     * @param solicitudId id de la solicitud
+     * @return lista de opciones tentativas
+     */
+    public List<RutaTentativaDTO> generateOptionsForSolicitud(Long solicitudId) {
+        logger.info("Generate options for solicitud {}", solicitudId);
+        try {
+            String token = extractBearerToken();
+            // Obtener solicitud desde ms-solicitudes
+            org.springframework.http.ResponseEntity<java.util.Map<String, Object>> solicitudEntity = solicitudesClient.get()
+                    .uri("/api/v1/solicitudes/{id}", solicitudId)
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
+
+            java.util.Map<String, Object> solicitud = solicitudEntity != null ? solicitudEntity.getBody() : null;
+            if (solicitud == null) {
+                throw new IllegalArgumentException("Solicitud not found: " + solicitudId);
+            }
+
+            Double origenLat = null; Double origenLong = null; Double destinoLat = null; Double destinoLong = null;
+            if (solicitud.get("origenLat") instanceof Number) origenLat = ((Number) solicitud.get("origenLat")).doubleValue();
+            if (solicitud.get("origenLong") instanceof Number) origenLong = ((Number) solicitud.get("origenLong")).doubleValue();
+            if (solicitud.get("destinoLat") instanceof Number) destinoLat = ((Number) solicitud.get("destinoLat")).doubleValue();
+            if (solicitud.get("destinoLong") instanceof Number) destinoLong = ((Number) solicitud.get("destinoLong")).doubleValue();
+
+            if (origenLat == null || origenLong == null || destinoLat == null || destinoLong == null) {
+                throw new IllegalArgumentException("Solicitud does not contain coordinates to determine nearest deposits");
+            }
+
+            // Obtener lista de depósitos completos
+            org.springframework.http.ResponseEntity<java.util.List<java.util.Map<String, Object>>> depsResp = calculosClient.get()
+                    .uri("/api/v1/depositos")
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
+
+            java.util.List<java.util.Map<String, Object>> depositos = depsResp != null ? depsResp.getBody() : null;
+            if (depositos == null || depositos.isEmpty()) {
+                throw new IllegalStateException("No deposits available to compute routes");
+            }
+
+            // Encontrar depósito más cercano al origen y al destino
+            Long origenDepotId = null; Long destinoDepotId = null;
+            double minOrigDist = Double.MAX_VALUE; double minDestDist = Double.MAX_VALUE;
+            for (var d : depositos) {
+                if (d.get("latitud") == null || d.get("longitud") == null || d.get("id") == null) continue;
+                double lat = ((Number)d.get("latitud")).doubleValue();
+                double lon = ((Number)d.get("longitud")).doubleValue();
+                double distOrig = distanceKm(origenLat, origenLong, lat, lon);
+                double distDest = distanceKm(destinoLat, destinoLong, lat, lon);
+                Long id = ((Number)d.get("id")).longValue();
+                if (distOrig < minOrigDist) { minOrigDist = distOrig; origenDepotId = id; }
+                if (distDest < minDestDist) { minDestDist = distDest; destinoDepotId = id; }
+            }
+
+            if (origenDepotId == null || destinoDepotId == null) {
+                throw new IllegalStateException("Unable to determine nearest deposits");
+            }
+
+            logger.info("Nearest deposits for solicitud {} -> origen: {}, destino: {}", solicitudId, origenDepotId, destinoDepotId);
+
+            // Delegar a RutaTentativaService
+            List<RutaTentativaDTO> variantes = rutaTentativaService.calcularVariantes(origenDepotId, destinoDepotId);
+            return variantes;
+        } catch (Exception e) {
+            logger.error("Error generating options for solicitud {}: {}", solicitudId, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Haversine formula for approximate distance in km
+    private double distanceKm(double lat1, double lon1, double lat2, double lon2) {
+        double R = 6371; // Earth radius km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    /**
+     * Crea una Ruta persistida a partir de una ruta tentativa (selección confirmada)
+     * @param solicitudId id de la solicitud
+     * @param rutaTentativa ruta tentativa con la lista de tramos
+     * @return RutaDTO de la ruta creada
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public RutaDTO createFromTentativa(Long solicitudId, RutaTentativaDTO rutaTentativa) {
+        logger.info("Creando ruta definitiva para solicitud {} desde ruta tentativa", solicitudId);
+        if (solicitudId == null || rutaTentativa == null) throw new IllegalArgumentException("SolicitudId y rutaTentativa son obligatorios");
+
+        Optional<Ruta> rutaExistente = rutaRepository.findByIdSolicitud(solicitudId);
+        if (rutaExistente.isPresent()) {
+            throw new IllegalArgumentException("Ya existe una ruta para la solicitud: " + solicitudId);
+        }
+
+        Ruta ruta = new Ruta();
+        ruta.setIdSolicitud(solicitudId);
+        ruta = rutaRepository.save(ruta);
+
+        // Persistir tramos desde rutaTentativa
+        List<TramoTentativoDTO> tramos = rutaTentativa.getTramos();
+        int orden = 1;
+        if (tramos != null) {
+            for (TramoTentativoDTO t : tramos) {
+                Tramo tramo = new Tramo();
+                tramo.setRuta(ruta);
+                tramo.setOrden(orden++);
+                tramo.setOrigenDepositoId(t.getOrigenDepositoId());
+                tramo.setDestinoDepositoId(t.getDestinoDepositoId());
+                tramo.setDistancia(t.getDistanciaKm());
+                tramo.setDuracionHoras(t.getDuracionHoras());
+                tramo.setGeneradoAutomaticamente(true);
+                try { tipoTramoRepository.findAll().stream().findFirst().ifPresent(tramo::setTipoTramo); } catch (Exception ex) { logger.warn("No tipoTramo: {}", ex.getMessage()); }
+                try { estadoTramoRepository.findByNombre("PENDIENTE").ifPresent(tramo::setEstado); } catch (Exception ex) { logger.warn("No estadoTramo: {}", ex.getMessage()); }
+                tramoRepository.save(tramo);
+            }
+        }
+
+        // Notificar a ms-solicitudes
+        try {
+            String token = extractBearerToken();
+            solicitudesClient.patch()
+                    .uri("/api/v1/solicitudes/" + solicitudId + "/ruta?rutaId=" + ruta.getId())
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(Object.class);
+            logger.info("Notificada ms-solicitudes: solicitud {} asociada a ruta {}", solicitudId, ruta.getId());
+        } catch (Exception e) {
+            logger.warn("No se pudo notificar a ms-solicitudes para solicitud {}: {}", solicitudId, e.getMessage());
+        }
+
+        return toDto(ruta);
     }
 }

@@ -10,4 +10,5 @@ public class DepositoDTO {
     private Double latitud;
     private Double longitud;
     private Long idCiudad;
+    private Double costoEstadiaDiario;
 }

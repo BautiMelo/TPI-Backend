@@ -48,6 +48,11 @@ public class SolicitudService {
     
     @Autowired
     private GeocodificacionService geocodificacionService;
+    
+    @Autowired
+    private com.backend.tpi.ms_solicitudes.services.ContenedorService contenedorService;
+
+    
 
     // Base URLs for other microservices (provide defaults for local/docker environment)
     @Value("${app.calculos.base-url:http://ms-gestion-calculos:8081}")
@@ -89,6 +94,15 @@ public class SolicitudService {
             // Map fields from DTO to entity
             solicitud.setDireccionOrigen(createSolicitudDTO.getDireccionOrigen());
             solicitud.setDireccionDestino(createSolicitudDTO.getDireccionDestino());
+            // Validación: no permitir que la dirección sea un ID de depósito (se debe enviar dirección de texto o coordenadas)
+            if (geocodificacionService.isDireccionDeposito(createSolicitudDTO.getDireccionOrigen())) {
+                logger.error("No se permiten IDs de depósito en la dirección de origen al crear solicitud: {}", createSolicitudDTO.getDireccionOrigen());
+                throw new IllegalArgumentException("No pasar IDs de depósito en las solicitudes. Enviar dirección de texto o coordenadas.");
+            }
+            if (geocodificacionService.isDireccionDeposito(createSolicitudDTO.getDireccionDestino())) {
+                logger.error("No se permiten IDs de depósito en la dirección de destino al crear solicitud: {}", createSolicitudDTO.getDireccionDestino());
+                throw new IllegalArgumentException("No pasar IDs de depósito en las solicitudes. Enviar dirección de texto o coordenadas.");
+            }
             
             // Geocodificar direcciones a coordenadas
             logger.debug("Geocodificando dirección de origen: {}", createSolicitudDTO.getDireccionOrigen());
@@ -116,6 +130,15 @@ public class SolicitudService {
             }
             
             // other fields (clienteId, contenedorId, etc.) should be set elsewhere
+            // Asignar estado por defecto si existe (PENDIENTE)
+            try {
+                if (estadoSolicitudRepository != null) {
+                    estadoSolicitudRepository.findByNombre("PENDIENTE").ifPresent(solicitud::setEstado);
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudo asignar estado por defecto a la solicitud: {}", e.getMessage());
+            }
+
             solicitud = solicitudRepository.save(solicitud);
             logger.info("Solicitud creada exitosamente con ID: {}", solicitud.getId());
             return toDto(solicitud);
@@ -183,6 +206,17 @@ public class SolicitudService {
         }
 
         /**
+         * Devuelve el clienteId (propietario) de una solicitud, o null si no existe
+         * @param id ID de la solicitud
+         * @return clienteId o null
+         */
+        @org.springframework.transaction.annotation.Transactional(readOnly = true)
+        public Long getClienteIdBySolicitudId(Long id) {
+            Optional<Solicitud> solicitud = solicitudRepository.findById(id);
+            return solicitud.map(Solicitud::getClienteId).orElse(null);
+        }
+
+        /**
          * Actualiza una solicitud existente
          * @param id ID de la solicitud a actualizar
          * @param createSolicitudDTO Nuevos datos de la solicitud
@@ -197,7 +231,15 @@ public class SolicitudService {
                 // manual mapping of updatable fields
                 solicitud.setDireccionOrigen(createSolicitudDTO.getDireccionOrigen());
                 solicitud.setDireccionDestino(createSolicitudDTO.getDireccionDestino());
-                
+                // Validación: no permitir IDs de depósito al actualizar (se debe enviar dirección de texto o coordenadas)
+                if (geocodificacionService.isDireccionDeposito(createSolicitudDTO.getDireccionOrigen())) {
+                    logger.error("No se permiten IDs de depósito en la dirección de origen al actualizar solicitud: {}", createSolicitudDTO.getDireccionOrigen());
+                    throw new IllegalArgumentException("No pasar IDs de depósito en las solicitudes. Enviar dirección de texto o coordenadas.");
+                }
+                if (geocodificacionService.isDireccionDeposito(createSolicitudDTO.getDireccionDestino())) {
+                    logger.error("No se permiten IDs de depósito en la dirección de destino al actualizar solicitud: {}", createSolicitudDTO.getDireccionDestino());
+                    throw new IllegalArgumentException("No pasar IDs de depósito en las solicitudes. Enviar dirección de texto o coordenadas.");
+                }
                 // Geocodificar direcciones a coordenadas
                 logger.debug("Geocodificando dirección de origen actualizada: {}", createSolicitudDTO.getDireccionOrigen());
                 com.backend.tpi.ms_solicitudes.dtos.CoordenadaDTO coordOrigen = geocodificacionService.geocodificar(
@@ -254,10 +296,43 @@ public class SolicitudService {
             dto.setId(solicitud.getId());
             dto.setDireccionOrigen(solicitud.getDireccionOrigen());
             dto.setDireccionDestino(solicitud.getDireccionDestino());
+            // Map coordinates if present
+            if (solicitud.getOrigenLat() != null) dto.setOrigenLat(solicitud.getOrigenLat().doubleValue());
+            if (solicitud.getOrigenLong() != null) dto.setOrigenLong(solicitud.getOrigenLong().doubleValue());
+            if (solicitud.getDestinoLat() != null) dto.setDestinoLat(solicitud.getDestinoLat().doubleValue());
+            if (solicitud.getDestinoLong() != null) dto.setDestinoLong(solicitud.getDestinoLong().doubleValue());
             // estado may be null
             if (solicitud.getEstado() != null) dto.setEstado(solicitud.getEstado().getNombre());
-            // other fields (fechaCreacion, etc.) are not present on entity; left null
+            // exponer contenedorId para integraciones (ms-rutas, ms-gestion-calculos)
+            if (solicitud.getContenedor() != null && solicitud.getContenedor().getId() != null) {
+                dto.setContenedorId(solicitud.getContenedor().getId());
+            }
+            if (solicitud.getRutaId() != null) dto.setRutaId(solicitud.getRutaId());
+            if (solicitud.getTarifaId() != null) dto.setTarifaId(solicitud.getTarifaId());
+            // other fields (fechaCreacion, fechaModificacion)
+            dto.setFechaCreacion(solicitud.getFechaCreacion());
+            dto.setFechaModificacion(solicitud.getFechaModificacion());
             return dto;
+        }
+
+        /**
+         * Establece la referencia de ruta (rutaId) en una solicitud existente
+         * @param solicitudId ID de la solicitud a actualizar
+         * @param rutaId ID de la ruta a asociar
+         * @return DTO de la solicitud actualizada
+         */
+        @org.springframework.transaction.annotation.Transactional
+        public SolicitudDTO setRutaId(Long solicitudId, Long rutaId) {
+            logger.info("Seteando rutaId {} para solicitud {}", rutaId, solicitudId);
+            Solicitud solicitud = solicitudRepository.findById(solicitudId)
+                    .orElseThrow(() -> {
+                        logger.error("No se puede setear rutaId - Solicitud no encontrada con ID: {}", solicitudId);
+                        return new RuntimeException("Solicitud no encontrada con ID: " + solicitudId);
+                    });
+            solicitud.setRutaId(rutaId);
+            solicitud = solicitudRepository.save(solicitud);
+            logger.info("Solicitud ID: {} actualizada con rutaId: {}", solicitudId, rutaId);
+            return toDto(solicitud);
         }
 
         // ----- Integration points (basic implementations) -----
@@ -551,6 +626,26 @@ public class SolicitudService {
     }
 
     /**
+     * Persiste el costo final y tiempo real de la solicitud
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public SolicitudDTO finalizar(Long id, java.math.BigDecimal costoFinal, java.math.BigDecimal tiempoReal) {
+        logger.info("Finalizando solicitud ID: {} con costoFinal: {}, tiempoReal: {}", id, costoFinal, tiempoReal);
+        Solicitud solicitud = solicitudRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("No se puede finalizar - Solicitud no encontrada con ID: {}", id);
+                    return new RuntimeException("Solicitud no encontrada con ID: " + id);
+                });
+
+        if (costoFinal != null) solicitud.setCostoFinal(costoFinal);
+        if (tiempoReal != null) solicitud.setTiempoReal(tiempoReal);
+
+        solicitud = solicitudRepository.save(solicitud);
+        logger.info("Solicitud ID: {} actualizada con costo final y tiempo real", id);
+        return toDto(solicitud);
+    }
+
+    /**
      * Consulta los estados a los que puede transicionar una solicitud desde su estado actual
      * @param id ID de la solicitud
      * @return Lista de nombres de estados permitidos
@@ -573,6 +668,46 @@ public class SolicitudService {
         List<String> permitidos = estadoTransicionService.getEstadosPermitidosSolicitud(estadoActual);
         logger.info("Solicitud ID: {} en estado '{}' puede transicionar a: {}", id, estadoActual, permitidos);
         return permitidos;
+    }
+
+    /**
+     * Asigna un contenedor a una solicitud validando disponibilidad localmente
+     * @param solicitudId ID de la solicitud
+     * @param contenedorId ID del contenedor a asignar
+     * @return DTO de la solicitud actualizada
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public SolicitudDTO assignContenedor(Long solicitudId, Long contenedorId) {
+        logger.info("Asignando contenedor ID: {} a solicitud ID: {}", contenedorId, solicitudId);
+
+        Solicitud solicitud = solicitudRepository.findById(solicitudId)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada con ID: " + solicitudId));
+
+        // Validar contenedor localmente
+        com.backend.tpi.ms_solicitudes.models.Contenedor contenedor = contenedorService.findById(contenedorId);
+        if (contenedor.getEstado() == null || contenedor.getEstado().getNombre() == null ||
+                !contenedor.getEstado().getNombre().equalsIgnoreCase("LIBRE")) {
+            logger.error("Contenedor ID: {} no está disponible (estado: {})", contenedorId,
+                    contenedor.getEstado() != null ? contenedor.getEstado().getNombre() : "null");
+            throw new IllegalStateException("Contenedor no disponible para asignación: " + contenedorId);
+        }
+
+        // Asignar (establecer relación ManyToOne)
+        solicitud.setContenedor(contenedor);
+        solicitud = solicitudRepository.save(solicitud);
+
+        // Actualizar estado del contenedor a ASIGNADO
+        try {
+            com.backend.tpi.ms_solicitudes.models.EstadoContenedor estadoAsignado = estadoTransicionService.getEstadoContenedorByNombre("ASIGNADO");
+            if (estadoAsignado != null && estadoAsignado.getId() != null) {
+                contenedorService.updateEstado(contenedorId, estadoAsignado.getId());
+            }
+        } catch (Exception e) {
+            logger.warn("No se pudo cambiar estado del contenedor {} a ASIGNADO: {}", contenedorId, e.getMessage());
+        }
+
+        logger.info("Contenedor ID: {} asignado a solicitud ID: {} exitosamente", contenedorId, solicitudId);
+        return toDto(solicitud);
     }
 
     /**

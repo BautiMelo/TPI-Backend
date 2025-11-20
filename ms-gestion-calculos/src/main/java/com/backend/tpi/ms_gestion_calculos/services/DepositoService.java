@@ -95,6 +95,10 @@ public class DepositoService {
             logger.debug("Actualizando longitud: {}", dto.getLongitud());
             deposito.setLongitud(java.math.BigDecimal.valueOf(dto.getLongitud()));
         }
+        if (dto.getCostoEstadiaDiario() != null) {
+            logger.debug("Actualizando costoEstadiaDiario: {}", dto.getCostoEstadiaDiario());
+            deposito.setCostoEstadiaDiario(java.math.BigDecimal.valueOf(dto.getCostoEstadiaDiario()));
+        }
         if (dto.getIdCiudad() != null) {
             logger.debug("Actualizando ID ciudad: {}", dto.getIdCiudad());
             // Aquí podrías buscar la ciudad si tienes el repositorio
@@ -123,6 +127,9 @@ public class DepositoService {
         if (deposito.getLongitud() != null) {
             dto.setLongitud(deposito.getLongitud().doubleValue());
         }
+        if (deposito.getCostoEstadiaDiario() != null) {
+            dto.setCostoEstadiaDiario(deposito.getCostoEstadiaDiario().doubleValue());
+        }
         if (deposito.getCiudad() != null) {
             dto.setIdCiudad(deposito.getCiudad().getId());
         }
@@ -145,6 +152,9 @@ public class DepositoService {
         }
         if (dto.getLongitud() != null) {
             deposito.setLongitud(java.math.BigDecimal.valueOf(dto.getLongitud()));
+        }
+        if (dto.getCostoEstadiaDiario() != null) {
+            deposito.setCostoEstadiaDiario(java.math.BigDecimal.valueOf(dto.getCostoEstadiaDiario()));
         }
         return deposito;
     }

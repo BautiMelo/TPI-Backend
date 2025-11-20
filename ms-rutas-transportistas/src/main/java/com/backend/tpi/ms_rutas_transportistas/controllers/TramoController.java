@@ -27,7 +27,7 @@ public class TramoController {
      * @return Tramo creado
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     public ResponseEntity<TramoDTO> create(@RequestBody TramoRequestDTO tramoRequestDTO) {
         logger.info("POST /api/v1/tramos - Creando nuevo tramo para ruta ID: {}", tramoRequestDTO.getIdRuta());
         TramoDTO tramo = tramoService.create(tramoRequestDTO);
@@ -44,7 +44,7 @@ public class TramoController {
      * @return Lista de tramos
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN','CLIENTE')")
+    @PreAuthorize("hasAnyRole('OPERADOR','TRANSPORTISTA','ADMIN','CLIENTE')")
     public List<TramoDTO> getAllTramos() {
         logger.info("GET /api/v1/tramos - Listando todos los tramos");
         List<TramoDTO> result = tramoService.findAll();
@@ -58,7 +58,7 @@ public class TramoController {
      * @return Lista de tramos de la ruta
      */
     @GetMapping("/por-ruta/{rutaId}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN','CLIENTE')")
+    @PreAuthorize("hasAnyRole('OPERADOR','TRANSPORTISTA','ADMIN','CLIENTE')")
     public List<TramoDTO> getByRuta(@PathVariable Long rutaId) {
         logger.info("GET /api/v1/tramos/por-ruta/{} - Buscando tramos de la ruta", rutaId);
         List<TramoDTO> result = tramoService.findByRutaId(rutaId);
@@ -73,12 +73,19 @@ public class TramoController {
      * @return Tramo con camión asignado
      */
     @PostMapping("/{id}/asignar-transportista")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
-    public ResponseEntity<?> asignarTransportista(@PathVariable Long id, @RequestParam Long camionId) {
-        logger.info("POST /api/v1/tramos/{}/asignar-transportista - Asignando camión ID: {}", id, camionId);
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<?> asignarTransportista(@PathVariable Long id,
+                                                 @RequestParam(required = false) Long camionId,
+                                                 @RequestParam(required = false) String dominio) {
+        logger.info("POST /api/v1/tramos/{}/asignar-transportista - Asignando camiónId: {} dominio: {}", id, camionId, dominio);
         
         try {
-            TramoDTO dto = tramoService.assignTransportista(id, camionId);
+            TramoDTO dto;
+            if (dominio != null && !dominio.isEmpty()) {
+                dto = tramoService.assignTransportistaByDominio(id, dominio);
+            } else {
+                dto = tramoService.assignTransportista(id, camionId);
+            }
             if (dto == null) {
                 logger.warn("POST /api/v1/tramos/{}/asignar-transportista - Respuesta: 404 - Tramo no encontrado", id);
                 return ResponseEntity.notFound().build();

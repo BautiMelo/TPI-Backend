@@ -50,10 +50,8 @@ public class CamionService {
             throw new IllegalArgumentException("El dominio del camión es obligatorio");
         }
         
-        // Validar que no exista un camión con el mismo dominio
-        boolean dominioExiste = camionRepository.findAll().stream()
-                .anyMatch(c -> dto.getDominio().equalsIgnoreCase(c.getDominio()));
-        if (dominioExiste) {
+        // Validar que no exista un camión con el mismo dominio (consulta directa)
+        if (camionRepository.findByDominio(dto.getDominio()).isPresent()) {
             logger.error("Ya existe un camión con dominio: {}", dto.getDominio());
             throw new IllegalArgumentException("Ya existe un camión registrado con el dominio: " + dto.getDominio());
         }
@@ -94,15 +92,12 @@ public class CamionService {
     @Transactional(readOnly = true)
     public CamionDTO findByDominio(String dominio) {
         logger.debug("Buscando camión por dominio: {}", dominio);
-        Camion camion = camionRepository.findAll().stream()
-                .filter(c -> dominio.equals(c.getDominio()))
-                .findFirst()
-                .orElseThrow(() -> {
-                    logger.error("Camión no encontrado con dominio: {}", dominio);
-                    return new RuntimeException("Camión no encontrado con dominio: " + dominio);
-                });
-        logger.debug("Camión encontrado con dominio: {}", dominio);
-        return toDto(camion);
+        java.util.Optional<Camion> camionOpt = camionRepository.findByDominio(dominio);
+        if (camionOpt.isEmpty()) {
+            logger.error("Camión no encontrado con dominio: {}", dominio);
+            throw new RuntimeException("Camión no encontrado con dominio: " + dominio);
+        }
+        return toDto(camionOpt.get());
     }
 
     /**
@@ -123,9 +118,7 @@ public class CamionService {
         }
         
         logger.info("Actualizando estado de camión con dominio: {} - disponible: {}, activo: {}", dominio, disponible, activo);
-        Camion camion = camionRepository.findAll().stream()
-                .filter(c -> dominio.equals(c.getDominio()))
-                .findFirst()
+        Camion camion = camionRepository.findByDominio(dominio)
                 .orElseThrow(() -> {
                     logger.error("Camión no encontrado con dominio: {}", dominio);
                     return new RuntimeException("Camión no encontrado con dominio: " + dominio);
@@ -152,9 +145,7 @@ public class CamionService {
     @Transactional
     public CamionDTO asignarTransportista(String dominio, String nombreTransportista) {
         logger.info("Asignando transportista '{}' al camión con dominio: {}", nombreTransportista, dominio);
-        Camion camion = camionRepository.findAll().stream()
-                .filter(c -> dominio.equals(c.getDominio()))
-                .findFirst()
+        Camion camion = camionRepository.findByDominio(dominio)
                 .orElseThrow(() -> {
                     logger.error("Camión no encontrado con dominio: {}", dominio);
                     return new RuntimeException("Camión no encontrado con dominio: " + dominio);
@@ -183,6 +174,7 @@ public class CamionService {
         dto.setNombreTransportista(camion.getNombreTransportista());
         dto.setCostoBase(camion.getCostoBase());
         dto.setCostoPorKm(camion.getCostoPorKm());
+        dto.setConsumoCombustiblePromedio(camion.getConsumoCombustiblePromedio());
         dto.setNumeroTransportistas(camion.getNumeroTransportistas());
         dto.setDisponible(camion.getDisponible());
         dto.setActivo(camion.getActivo());
@@ -206,6 +198,7 @@ public class CamionService {
         camion.setCapacidadVolumenMax(dto.getCapacidadVolumenMax());
         camion.setNombreTransportista(dto.getNombreTransportista());
         camion.setCostoBase(dto.getCostoBase());
+        camion.setConsumoCombustiblePromedio(dto.getConsumoCombustiblePromedio());
         camion.setCostoPorKm(dto.getCostoPorKm());
         camion.setNumeroTransportistas(dto.getNumeroTransportistas());
         camion.setDisponible(dto.getDisponible() != null ? dto.getDisponible() : true);

@@ -6,4 +6,5 @@ import lombok.Data;
 public class CreateSolicitudDTO {
     private String direccionOrigen;
     private String direccionDestino;
+    private Long contenedorId;
 }

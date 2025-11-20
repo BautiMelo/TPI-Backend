@@ -48,6 +48,18 @@ public class RouteConfig {
                 .route("ms-rutas-camiones", spec -> spec.path("/api/v1/camiones/**")
                         .uri("http://ms-rutas-transportistas:8082"))
 
+                // Proxy para Swagger/OpenAPI de los microservicios (no exponer puertos)
+                // Accede desde el gateway en /docs/{servicio}/... y reescribe la ruta hacia el servicio interno
+                .route("docs-solicitudes", spec -> spec.path("/docs/solicitudes/**")
+                        .filters(f -> f.rewritePath("/docs/solicitudes/(?<rem>.*)", "/${rem}"))
+                        .uri("http://ms-solicitudes:8083"))
+                .route("docs-calculos", spec -> spec.path("/docs/gestion/**")
+                        .filters(f -> f.rewritePath("/docs/gestion/(?<rem>.*)", "/${rem}"))
+                        .uri("http://ms-gestion-calculos:8081"))
+                .route("docs-rutas", spec -> spec.path("/docs/rutas/**")
+                        .filters(f -> f.rewritePath("/docs/rutas/(?<rem>.*)", "/${rem}"))
+                        .uri("http://ms-rutas-transportistas:8082"))
+
                 .build();
     }
 

@@ -28,7 +28,7 @@ public class CamionController {
      * @return Lista de camiones
      */
     @GetMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','TRANSPORTISTA','ADMIN')")
     @Operation(summary = "Listar todos los camiones")
     public List<CamionDTO> getAllCamiones() {
         logger.info("GET /api/v1/camiones - Listando todos los camiones");
@@ -43,7 +43,7 @@ public class CamionController {
      * @return Camión encontrado
      */
     @GetMapping("/{dominio}")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','TRANSPORTISTA','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','TRANSPORTISTA','ADMIN')")
     @Operation(summary = "Obtener camión por dominio/patente")
     public ResponseEntity<CamionDTO> getCamionByDominio(@PathVariable String dominio) {
         logger.info("GET /api/v1/camiones/{} - Buscando camión por dominio", dominio);
@@ -58,7 +58,7 @@ public class CamionController {
      * @return Camión registrado
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @Operation(summary = "Registrar nuevo camión con capacidad y costos")
     public CamionDTO createCamion(@RequestBody CamionDTO camion) {
         logger.info("POST /api/v1/camiones - Creando nuevo camión con dominio: {}", camion.getDominio());
@@ -75,7 +75,7 @@ public class CamionController {
      * @return Camión con estado actualizado
      */
     @PostMapping("/{dominio}/estado")
-    @PreAuthorize("hasAnyRole('TRANSPORTISTA','RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('TRANSPORTISTA','OPERADOR','ADMIN')")
     @Operation(summary = "Actualizar estado operativo del camión")
     public ResponseEntity<CamionDTO> updateEstado(
             @PathVariable String dominio,
@@ -95,7 +95,7 @@ public class CamionController {
      * @return Camión con transportista asignado
      */
     @PatchMapping("/{dominio}/asignar")
-    @PreAuthorize("hasAnyRole('RESPONSABLE','ADMIN')")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @Operation(summary = "Asignar camión a un transportista")
     public ResponseEntity<CamionDTO> asignarTransportista(
             @PathVariable String dominio,

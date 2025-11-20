@@ -17,7 +17,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchanges -> exchanges
+                        // permitir registro público y la UI de documentación proxyeada
                         .pathMatchers("/api/v1/clientes/registro").permitAll()
+                        .pathMatchers("/docs/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

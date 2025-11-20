@@ -36,6 +36,12 @@ public class TramoService {
     private org.springframework.web.client.RestClient calculosClient;
     
     @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.TipoTramoRepository tipoTramoRepository;
+
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.EstadoTramoRepository estadoTramoRepository;
+    
+    @Autowired
     private com.backend.tpi.ms_rutas_transportistas.repositories.CamionRepository camionRepository;
     
     @Autowired
@@ -116,6 +122,18 @@ public class TramoService {
             if (distanciaResponse != null) {
                 tramo.setDistancia(distanciaResponse.getDistancia());
                 logger.debug("Distancia calculada para tramo: {} km", distanciaResponse.getDistancia());
+            }
+            // Asignar tipoTramo por defecto si existe
+            try {
+                tipoTramoRepository.findAll().stream().findFirst().ifPresent(tramo::setTipoTramo);
+            } catch (Exception e) {
+                logger.warn("No se pudo asignar tipoTramo por defecto: {}", e.getMessage());
+            }
+            // Asignar estado PENDIENTE por defecto si existe
+            try {
+                estadoTramoRepository.findByNombre("PENDIENTE").ifPresent(tramo::setEstado);
+            } catch (Exception e) {
+                logger.warn("No se pudo asignar estadoTramo por defecto: {}", e.getMessage());
             }
             Tramo saved = tramoRepository.save(tramo);
             logger.info("Tramo creado exitosamente con ID: {}", saved.getId());
@@ -232,59 +250,49 @@ public class TramoService {
             throw new IllegalArgumentException("El camión con dominio " + camion.getDominio() + " no está activo");
         }
         
-        // Obtener datos del contenedor desde la solicitud
         try {
+            // Obtener datos del contenedor desde la solicitud (usando DTOs)
             logger.debug("Obteniendo datos del contenedor para validar capacidad del camión");
             Ruta ruta = tramo.getRuta();
             if (ruta == null || ruta.getIdSolicitud() == null) {
-                logger.warn("No se puede validar capacidad - tramo sin ruta o solicitud asociada");
-                // Permitir asignación sin validación si no hay solicitud
-                asignarCamionSinValidacion(tramo, camion);
-                Tramo saved = tramoRepository.save(tramo);
-                logger.info("Camión asignado sin validación de capacidad al tramo ID: {}", tramoId);
-                return toDto(saved);
+                logger.error("No se puede validar capacidad - tramo sin ruta o solicitud asociada");
+                throw new IllegalArgumentException("No se puede validar capacidad: tramo sin ruta o solicitud asociada");
             }
-            
+
             Long solicitudId = ruta.getIdSolicitud();
             String token = extractBearerToken();
-            
-            // Consultar solicitud para obtener el contenedor
-            ResponseEntity<java.util.Map<String, Object>> solicitudEntity = solicitudesClient.get()
+
+            // Consultar solicitud para obtener el contenedor (map to DTO)
+            ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO> solicitudEntity = solicitudesClient.get()
                     .uri("/api/v1/solicitudes/{id}", solicitudId)
                     .headers(h -> { if (token != null) h.setBearerAuth(token); })
                     .retrieve()
-                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
-            
-            java.util.Map<String, Object> solicitud = solicitudEntity.getBody();
-            if (solicitud == null || !solicitud.containsKey("contenedorId")) {
-                logger.warn("No se puede validar capacidad - solicitud sin contenedor asociado");
-                asignarCamionSinValidacion(tramo, camion);
-                Tramo saved = tramoRepository.save(tramo);
-                logger.info("Camión asignado sin validación de capacidad al tramo ID: {}", tramoId);
-                return toDto(saved);
+                    .toEntity(com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO.class);
+
+            com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO solicitud = solicitudEntity != null ? solicitudEntity.getBody() : null;
+            if (solicitud == null || solicitud.getContenedorId() == null) {
+                logger.error("No se puede validar capacidad - solicitud sin contenedor asociado o no encontrada (id={})", solicitudId);
+                throw new IllegalArgumentException("No se puede validar capacidad - solicitud sin contenedor asociado");
             }
-            
-            Long contenedorId = ((Number) solicitud.get("contenedorId")).longValue();
-            
-            // Consultar contenedor para obtener peso y volumen
-            ResponseEntity<java.util.Map<String, Object>> contenedorEntity = solicitudesClient.get()
+
+            Long contenedorId = solicitud.getContenedorId();
+
+            // Consultar contenedor para obtener peso y volumen (map to DTO)
+            ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.ContenedorIntegrationDTO> contenedorEntity = solicitudesClient.get()
                     .uri("/api/v1/contenedores/{id}", contenedorId)
                     .headers(h -> { if (token != null) h.setBearerAuth(token); })
                     .retrieve()
-                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
-            
-            java.util.Map<String, Object> contenedor = contenedorEntity.getBody();
+                    .toEntity(com.backend.tpi.ms_rutas_transportistas.dtos.ContenedorIntegrationDTO.class);
+
+            com.backend.tpi.ms_rutas_transportistas.dtos.ContenedorIntegrationDTO contenedor = contenedorEntity != null ? contenedorEntity.getBody() : null;
             if (contenedor == null) {
-                logger.warn("No se puede validar capacidad - contenedor no encontrado");
-                asignarCamionSinValidacion(tramo, camion);
-                Tramo saved = tramoRepository.save(tramo);
-                logger.info("Camión asignado sin validación de capacidad al tramo ID: {}", tramoId);
-                return toDto(saved);
+                logger.error("No se puede validar capacidad - contenedor no encontrado (id={})", contenedorId);
+                throw new IllegalArgumentException("No se puede validar capacidad - contenedor no encontrado");
             }
-            
+
             // Extraer peso y volumen del contenedor
-            Double pesoCarga = contenedor.containsKey("peso") ? ((Number) contenedor.get("peso")).doubleValue() : null;
-            Double volumenCarga = contenedor.containsKey("volumen") ? ((Number) contenedor.get("volumen")).doubleValue() : null;
+            Double pesoCarga = contenedor.getPeso() != null ? contenedor.getPeso().doubleValue() : null;
+            Double volumenCarga = contenedor.getVolumen() != null ? contenedor.getVolumen().doubleValue() : null;
             
             logger.debug("Contenedor: peso={} kg, volumen={} m³", pesoCarga, volumenCarga);
             logger.debug("Camión {}: capacidadPeso={} kg, capacidadVolumen={} m³", 
@@ -320,27 +328,19 @@ public class TramoService {
             // Re-lanzar excepciones de validación
             throw e;
         } catch (Exception e) {
-            logger.warn("Error al validar capacidad del camión: {}. Asignando sin validación.", e.getMessage());
+            logger.error("Error al validar capacidad del camión: {}. Bloqueando asignación.", e.getMessage());
             logger.debug("Stack trace de error de validación:", e);
-            // Si hay error al consultar servicios externos, permitir asignación sin validación
+            // Bloquear asignación si ocurre un error al validar datos externos
+            throw new RuntimeException("Error al validar capacidad del camión: " + e.getMessage(), e);
         }
         
-        // Asignar camión al tramo
-        asignarCamionSinValidacion(tramo, camion);
+        // Asignar camión al tramo (ya validado)
+        tramo.setCamionDominio(camion.getDominio());
         Tramo saved = tramoRepository.save(tramo);
         logger.info("Camión {} asignado exitosamente al tramo ID: {}", camion.getDominio(), tramoId);
         return toDto(saved);
     }
     
-    /**
-     * Asigna el camión al tramo sin validaciones adicionales
-     * @param tramo Tramo al que asignar el camión
-     * @param camion Camión a asignar
-     */
-    private void asignarCamionSinValidacion(Tramo tramo, com.backend.tpi.ms_rutas_transportistas.models.Camion camion) {
-        tramo.setCamionDominio(camion.getDominio());
-        logger.debug("Camión con dominio {} asignado al tramo ID: {}", camion.getDominio(), tramo.getId());
-    }
 
     /**
      * Marca el inicio de un tramo, registrando la fecha y hora actual
@@ -378,6 +378,12 @@ public class TramoService {
         }
         
         tramo.setFechaHoraInicioReal(java.time.LocalDateTime.now());
+        // Actualizar estado a EN_PROCESO
+        try {
+            estadoTramoRepository.findByNombre("EN_PROCESO").ifPresent(tramo::setEstado);
+        } catch (Exception e) {
+            logger.warn("No se pudo actualizar estadoTramo a EN_PROCESO: {}", e.getMessage());
+        }
         Tramo saved = tramoRepository.save(tramo);
         logger.info("Tramo ID: {} iniciado exitosamente a las {}", tramoId, saved.getFechaHoraInicioReal());
         return toDto(saved);
@@ -428,9 +434,299 @@ public class TramoService {
         }
         
         tramo.setFechaHoraFinReal(fechaFin);
+        // Actualizar estado a FINALIZADO
+        try {
+            estadoTramoRepository.findByNombre("FINALIZADO").ifPresent(tramo::setEstado);
+        } catch (Exception e) {
+            logger.warn("No se pudo actualizar estadoTramo a FINALIZADO: {}", e.getMessage());
+        }
         Tramo saved = tramoRepository.save(tramo);
         logger.info("Tramo ID: {} finalizado exitosamente a las {}", tramoId, saved.getFechaHoraFinReal());
+
+        // Calcular y persistir costo real del tramo al finalizar
+        try {
+            computeAndSaveCostoRealForTramo(saved);
+        } catch (Exception e) {
+            logger.warn("No se pudo calcular costo real para tramo ID {}: {}", tramoId, e.getMessage());
+        }
+
+        // Si todos los tramos de la ruta están finalizados, calcular costo final de la ruta y notificar a solicitudes
+        try {
+            Long rutaIdAssociated = saved.getRuta() != null ? saved.getRuta().getId() : null;
+            if (rutaIdAssociated != null) {
+                java.util.List<Tramo> tramosRuta = tramoRepository.findByRutaId(rutaIdAssociated);
+                boolean todosFinalizados = tramosRuta.stream().allMatch(t -> t.getFechaHoraFinReal() != null);
+                if (todosFinalizados) {
+                    double sumaTramos = 0.0;
+                    for (Tramo t : tramosRuta) {
+                        if (t.getCostoReal() != null) sumaTramos += t.getCostoReal().doubleValue();
+                        else if (t.getCostoAproximado() != null) sumaTramos += t.getCostoAproximado().doubleValue();
+                    }
+
+                    // Obtener costo base de gestion
+                    Double costoBaseGestionFijo = null;
+                    try {
+                        String token = extractBearerToken();
+                        org.springframework.http.ResponseEntity<java.util.List<java.util.Map<String, Object>>> tarifasEntity = calculosClient.get()
+                                .uri("/api/v1/tarifas")
+                                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                                .retrieve()
+                                .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
+                        java.util.List<java.util.Map<String, Object>> tarifas = tarifasEntity != null ? tarifasEntity.getBody() : null;
+                        if (tarifas != null && !tarifas.isEmpty()) {
+                            Object costoBaseObj = tarifas.get(0).get("costoBaseGestionFijo");
+                            if (costoBaseObj instanceof Number) costoBaseGestionFijo = ((Number) costoBaseObj).doubleValue();
+                        }
+                    } catch (Exception ex) {
+                        logger.warn("No se pudo obtener tarifas para cálculo final de ruta: {}", ex.getMessage());
+                    }
+                    if (costoBaseGestionFijo == null) costoBaseGestionFijo = 0.0;
+
+                    double costoGestionTotal = costoBaseGestionFijo * tramosRuta.size();
+                    double costoFinal = Math.round((sumaTramos + costoGestionTotal) * 100.0) / 100.0;
+
+                    // Calcular tiempo real total (sumar duracionHoras si está disponible)
+                    double tiempoRealHoras = tramosRuta.stream()
+                            .mapToDouble(t -> t.getDuracionHoras() != null ? t.getDuracionHoras() : 0.0)
+                            .sum();
+
+                    // Notificar a ms-solicitudes para persistir costo final y tiempo real
+                    try {
+                        Long solicitudId = saved.getRuta() != null ? saved.getRuta().getIdSolicitud() : null;
+                        if (solicitudId != null) {
+                            String token = extractBearerToken();
+                            String uri = String.format("/api/v1/solicitudes/%d/finalizar?costoFinal=%.2f&tiempoReal=%.2f",
+                                    solicitudId, costoFinal, tiempoRealHoras);
+                            calculosClient.patch()
+                                    .uri(uri)
+                                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                                    .retrieve()
+                                    .toEntity(Object.class);
+                            logger.info("Notificada ms-solicitudes: solicitud {} finalizada con costo {} y tiempo {} horas", solicitudId, costoFinal, tiempoRealHoras);
+                        }
+                    } catch (Exception e) {
+                        logger.warn("No se pudo notificar a ms-solicitudes sobre finalización de ruta: {}", e.getMessage());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Error comprobando finalización de ruta para tramo ID {}: {}", tramoId, e.getMessage());
+        }
+
         return toDto(saved);
+    }
+
+    /**
+     * Asigna un camión a un tramo usando el dominio del camión
+     */
+    public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO assignTransportistaByDominio(Long tramoId, String dominio) {
+        logger.info("Asignando camión dominio: {} al tramo ID: {}", dominio, tramoId);
+
+        if (dominio == null || dominio.trim().isEmpty()) {
+            logger.warn("No se puede asignar camión - dominio es null o vacío");
+            throw new IllegalArgumentException("El dominio del camión no puede ser null o vacío");
+        }
+
+        Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
+        if (optionalTramo.isEmpty()) {
+            logger.warn("No se pudo asignar camión - Tramo no encontrado con ID: {}", tramoId);
+            return null;
+        }
+        Tramo tramo = optionalTramo.get();
+
+        java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> maybeCamion = camionRepository.findByDominio(dominio);
+        if (maybeCamion.isEmpty()) {
+            logger.error("Camión no encontrado con dominio: {}", dominio);
+            throw new IllegalArgumentException("Camión no encontrado con dominio: " + dominio);
+        }
+
+        com.backend.tpi.ms_rutas_transportistas.models.Camion camion = maybeCamion.get();
+
+        // Validaciones de disponibilidad/actividad se mantienen
+        if (camion.getDisponible() != null && !camion.getDisponible()) {
+            logger.error("El camión {} no está disponible", camion.getDominio());
+            throw new IllegalArgumentException("El camión con dominio " + camion.getDominio() + " no está disponible");
+        }
+        if (camion.getActivo() != null && !camion.getActivo()) {
+            logger.error("El camión {} no está activo", camion.getDominio());
+            throw new IllegalArgumentException("El camión con dominio " + camion.getDominio() + " no está activo");
+        }
+
+        // Reuse existing validation logic by mimicking external contenedor lookup
+        try {
+            // Obtener datos del contenedor desde la solicitud (usando DTOs)
+            logger.debug("Obteniendo datos del contenedor para validar capacidad del camión");
+            Ruta ruta = tramo.getRuta();
+            if (ruta == null || ruta.getIdSolicitud() == null) {
+                logger.error("No se puede validar capacidad - tramo sin ruta o solicitud asociada");
+                throw new IllegalArgumentException("No se puede validar capacidad: tramo sin ruta o solicitud asociada");
+            }
+
+            Long solicitudId = ruta.getIdSolicitud();
+            String token = extractBearerToken();
+
+            ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO> solicitudEntity = solicitudesClient.get()
+                    .uri("/api/v1/solicitudes/{id}", solicitudId)
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO.class);
+
+            com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO solicitud = solicitudEntity != null ? solicitudEntity.getBody() : null;
+            if (solicitud == null || solicitud.getContenedorId() == null) {
+                logger.error("No se puede validar capacidad - solicitud sin contenedor asociado o no encontrada (id={})", solicitudId);
+                throw new IllegalArgumentException("No se puede validar capacidad - solicitud sin contenedor asociado");
+            }
+
+            Long contenedorId = solicitud.getContenedorId();
+
+            ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.ContenedorIntegrationDTO> contenedorEntity = solicitudesClient.get()
+                    .uri("/api/v1/contenedores/{id}", contenedorId)
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(com.backend.tpi.ms_rutas_transportistas.dtos.ContenedorIntegrationDTO.class);
+
+            com.backend.tpi.ms_rutas_transportistas.dtos.ContenedorIntegrationDTO contenedor = contenedorEntity != null ? contenedorEntity.getBody() : null;
+            if (contenedor == null) {
+                logger.error("No se puede validar capacidad - contenedor no encontrado (id={})", contenedorId);
+                throw new IllegalArgumentException("No se puede validar capacidad - contenedor no encontrado");
+            }
+
+            Double pesoCarga = contenedor.getPeso() != null ? contenedor.getPeso().doubleValue() : null;
+            Double volumenCarga = contenedor.getVolumen() != null ? contenedor.getVolumen().doubleValue() : null;
+
+            if (pesoCarga != null && camion.getCapacidadPesoMax() != null) {
+                if (pesoCarga > camion.getCapacidadPesoMax()) {
+                    String mensaje = String.format(
+                            "Camión insuficiente: el peso del contenedor (%.2f kg) excede la capacidad máxima del camión %s (%.2f kg)",
+                            pesoCarga, camion.getDominio(), camion.getCapacidadPesoMax()
+                    );
+                    logger.error(mensaje);
+                    throw new IllegalArgumentException(mensaje);
+                }
+            }
+            if (volumenCarga != null && camion.getCapacidadVolumenMax() != null) {
+                if (volumenCarga > camion.getCapacidadVolumenMax()) {
+                    String mensaje = String.format(
+                            "Camión insuficiente: el volumen del contenedor (%.2f m³) excede la capacidad máxima del camión %s (%.2f m³)",
+                            volumenCarga, camion.getDominio(), camion.getCapacidadVolumenMax()
+                    );
+                    logger.error(mensaje);
+                    throw new IllegalArgumentException(mensaje);
+                }
+            }
+
+            logger.info("Validación de capacidad exitosa - Camión {} es compatible con la carga", camion.getDominio());
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error al validar capacidad del camión: {}. Bloqueando asignación.", e.getMessage());
+            logger.debug("Stack trace de error de validación:", e);
+            throw new RuntimeException("Error al validar capacidad del camión: " + e.getMessage(), e);
+        }
+
+        tramo.setCamionDominio(camion.getDominio());
+        Tramo saved2 = tramoRepository.save(tramo);
+        logger.info("Camión {} asignado exitosamente al tramo ID: {}", camion.getDominio(), tramoId);
+        return toDto(saved2);
+    }
+
+    /**
+     * Calcula y persiste el costo real de un tramo (costo por km del camión + combustible + estadía)
+     */
+    private void computeAndSaveCostoRealForTramo(Tramo tramo) {
+        if (tramo == null) return;
+
+        double distancia = tramo.getDistancia() != null ? tramo.getDistancia() : 0.0;
+        double costoKmCamion = 0.0;
+        double costoCombustible = 0.0;
+        double costoEstadia = 0.0;
+
+        // Obtener tarifas (valor litro)
+        Double valorLitro = null;
+        try {
+            String token = extractBearerToken();
+            org.springframework.http.ResponseEntity<java.util.List<java.util.Map<String, Object>>> tarifasEntity = calculosClient.get()
+                    .uri("/api/v1/tarifas")
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
+            java.util.List<java.util.Map<String, Object>> tarifas = tarifasEntity != null ? tarifasEntity.getBody() : null;
+            if (tarifas != null && !tarifas.isEmpty()) {
+                Object valorLitroObj = tarifas.get(0).get("valorLitroCombustible");
+                if (valorLitroObj instanceof Number) valorLitro = ((Number) valorLitroObj).doubleValue();
+            }
+        } catch (Exception e) {
+            logger.warn("No se pudo obtener valor litro para cálculo de costo real: {}", e.getMessage());
+        }
+        if (valorLitro == null) valorLitro = 0.0;
+
+        // Obtener datos del camión
+        if (tramo.getCamionDominio() != null && !tramo.getCamionDominio().isEmpty()) {
+            try {
+                java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findByDominio(tramo.getCamionDominio());
+                if (camionOpt.isPresent()) {
+                    com.backend.tpi.ms_rutas_transportistas.models.Camion camion = camionOpt.get();
+                    if (camion.getCostoPorKm() != null) costoKmCamion = camion.getCostoPorKm() * distancia;
+                    if (camion.getConsumoCombustiblePromedio() != null) {
+                        double consumoLitros = camion.getConsumoCombustiblePromedio() * distancia;
+                        costoCombustible = consumoLitros * valorLitro;
+                    }
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudieron obtener datos del camión {}: {}", tramo.getCamionDominio(), e.getMessage());
+            }
+        }
+
+        // Calcular costo de estadía para este tramo (si corresponde)
+        if (tramo.getDestinoDepositoId() != null) {
+            try {
+                String token = extractBearerToken();
+                org.springframework.http.ResponseEntity<java.util.Map<String, Object>> depositoEntity = calculosClient.get()
+                        .uri("/api/v1/depositos/{id}", tramo.getDestinoDepositoId())
+                        .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                        .retrieve()
+                        .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
+                java.util.Map<String, Object> deposito = depositoEntity != null ? depositoEntity.getBody() : null;
+                Double costoEstadiaDiario = null;
+                if (deposito != null) {
+                    Object costoObj = deposito.get("costoEstadiaDiario");
+                    if (costoObj instanceof Number) costoEstadiaDiario = ((Number) costoObj).doubleValue();
+                    else if (deposito.containsKey("costo_estadia_diario") && deposito.get("costo_estadia_diario") instanceof Number)
+                        costoEstadiaDiario = ((Number) deposito.get("costo_estadia_diario")).doubleValue();
+                }
+
+                if (costoEstadiaDiario != null) {
+                    // Si hay siguiente tramo, usar sus fechas para calcular noches
+                    Long rutaId = tramo.getRuta() != null ? tramo.getRuta().getId() : null;
+                    java.time.LocalDateTime inicioSiguiente = null;
+                    if (rutaId != null) {
+                        java.util.List<Tramo> tramosRuta = tramoRepository.findByRutaId(rutaId);
+                        tramosRuta.sort((a,b) -> java.util.Comparator.nullsLast(java.lang.Integer::compareTo).compare(a.getOrden(), b.getOrden()));
+                        for (int i=0;i<tramosRuta.size();i++){
+                            Tramo t = tramosRuta.get(i);
+                            if (t.getId().equals(tramo.getId()) && i+1 < tramosRuta.size()) {
+                                Tramo siguiente = tramosRuta.get(i+1);
+                                inicioSiguiente = siguiente.getFechaHoraInicioReal() != null ? siguiente.getFechaHoraInicioReal() : siguiente.getFechaHoraInicioEstimada();
+                                break;
+                            }
+                        }
+                    }
+
+                    java.time.LocalDateTime finActual = tramo.getFechaHoraFinReal() != null ? tramo.getFechaHoraFinReal() : tramo.getFechaHoraFinEstimada();
+                    if (finActual != null && inicioSiguiente != null) {
+                        long noches = java.time.temporal.ChronoUnit.DAYS.between(finActual.toLocalDate(), inicioSiguiente.toLocalDate());
+                        if (noches < 0) noches = 0;
+                        costoEstadia = noches * costoEstadiaDiario;
+                    }
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudo obtener datos del depósito {}: {}", tramo.getDestinoDepositoId(), e.getMessage());
+            }
+        }
+
+        double total = Math.round((costoKmCamion + costoCombustible + costoEstadia) * 100.0) / 100.0;
+        tramo.setCostoReal(java.math.BigDecimal.valueOf(total));
+        tramoRepository.save(tramo);
     }
 
     /**

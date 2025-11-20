@@ -129,6 +129,32 @@ public class RutaTentativaService {
                     .build();
         }
     }
+
+    /**
+     * Calcula múltiples variantes de ruta (sin elegir la mejor) y devuelve la lista de opciones
+     */
+    public List<RutaTentativaDTO> calcularVariantes(Long origenDepositoId, Long destinoDepositoId) {
+        List<RutaTentativaDTO> variantes = new ArrayList<>();
+        try {
+            // Variante directa
+            RutaTentativaDTO directa = calcularRutaTentativa(origenDepositoId, destinoDepositoId, null);
+            if (directa.getExitoso()) variantes.add(directa);
+
+            List<Long> todosDepositos = obtenerTodosDepositosIds();
+            todosDepositos.remove(origenDepositoId);
+            todosDepositos.remove(destinoDepositoId);
+            int maxIntermediarios = Math.min(3, todosDepositos.size());
+            for (int i = 0; i < Math.min(maxIntermediarios, todosDepositos.size()); i++) {
+                Long depositoIntermedio = todosDepositos.get(i);
+                List<Long> intermedios = List.of(depositoIntermedio);
+                RutaTentativaDTO rutaConIntermedio = calcularRutaTentativa(origenDepositoId, destinoDepositoId, intermedios);
+                if (rutaConIntermedio.getExitoso()) variantes.add(rutaConIntermedio);
+            }
+        } catch (Exception e) {
+            logger.error("Error al calcular variantes: {}", e.getMessage());
+        }
+        return variantes;
+    }
     
     /**
      * Obtiene lista de todos los IDs de depósitos disponibles
