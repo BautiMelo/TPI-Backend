@@ -27,4 +27,10 @@ public class RestMicroservicoConfig {
                 .build();
     }
 
+    // RestTemplate bean para compatibilidad con código legacy
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
 }

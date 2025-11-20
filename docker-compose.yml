@@ -1,7 +1,8 @@
 services:
   gateway:
     build:
-      context: ./api-gateway
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     container_name: gateway
     ports:
       - "8080:8080"
@@ -22,7 +23,8 @@ services:
 
   ms-solicitudes:
     build:
-      context: ./ms-solicitudes
+      context: .
+      dockerfile: ./ms-solicitudes/Dockerfile
     container_name: ms-solicitudes
     expose:
       - "8083"
@@ -50,7 +52,8 @@ services:
 
   ms-gestion-calculos:
     build:
-      context: ./ms-gestion-calculos
+      context: .
+      dockerfile: ./ms-gestion-calculos/Dockerfile
     container_name: ms-gestion-calculos
     expose:
       - "8081"
@@ -58,6 +61,7 @@ services:
       - backend-net
     depends_on:
       - postgres
+      - osrm
     volumes:
       - ./logs/ms-gestion-calculos:/app/logs
     environment:
@@ -69,12 +73,14 @@ services:
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8089/realms/tpi-backend
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
       - APP_RUTAS_BASE_URL=http://ms-rutas-transportistas:8082
+      - APP_SOLICITUDES_BASE_URL=http://ms-solicitudes:8083
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   ms-rutas-transportistas:
     build:
-      context: ./ms-rutas-transportistas
+      context: .
+      dockerfile: ./ms-rutas-transportistas/Dockerfile
     container_name: ms-rutas-transportistas
     expose:
       - "8082"
@@ -82,6 +88,7 @@ services:
       - backend-net
     depends_on:
       - postgres
+      - osrm
     volumes:
       - ./logs/ms-rutas-transportistas:/app/logs
     environment:
@@ -96,8 +103,21 @@ services:
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/tpi-backend/protocol/openid-connect/certs
       - APP_SOLICITUDES_BASE_URL=http://ms-solicitudes:8083
       - APP_CALCULOS_BASE_URL=http://ms-gestion-calculos:8081
+      - APP_OSRM_BASE_URL=http://osrm:5000
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  osrm:
+    image: osrm/osrm-backend:latest
+    container_name: osrm
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./osrm-data:/data
+    command: osrm-routed /data/argentina-251114.osrm
+    restart: unless-stopped
+    networks:
+      - backend-net
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3
