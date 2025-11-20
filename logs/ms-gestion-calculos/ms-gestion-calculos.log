@@ -1,42 +1,5 @@
-2025-11-19T23:53:40.688Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
-2025-11-19T23:53:40.699Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
-2025-11-19T23:53:45.739Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-19T23:53:46.094Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 337 ms. Found 4 JPA repository interfaces.
-2025-11-19T23:53:49.010Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
-2025-11-19T23:53:49.128Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-19T23:53:49.135Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
-2025-11-19T23:53:49.326Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-11-19T23:53:49.333Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8311 ms
-2025-11-19T23:53:52.564Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-19T23:53:52.738Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-11-19T23:53:53.644Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6550ce46
-2025-11-19T23:53:53.655Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-11-19T23:53:53.810Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-11-19T23:53:57.344Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-19T23:53:59.852Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-19T23:54:02.088Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
-2025-11-19T23:54:02.113Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 23.601 seconds (process running for 26.507)
-2025-11-19T23:54:31.619Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-11-19T23:54:31.626Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-11-19T23:54:31.647Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2025-11-19T23:54:39.465Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
-2025-11-19T23:54:39.478Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
-2025-11-19T23:54:43.099Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-19T23:54:43.488Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 373 ms. Found 4 JPA repository interfaces.
-2025-11-19T23:54:45.989Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
-2025-11-19T23:54:46.049Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-19T23:54:46.062Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
-2025-11-19T23:54:46.151Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-11-19T23:54:46.155Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6508 ms
-2025-11-19T23:54:49.638Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-19T23:54:49.714Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-11-19T23:54:50.227Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2b8cf049
-2025-11-19T23:54:50.234Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-11-19T23:54:50.313Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-11-19T23:54:53.100Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-19T23:54:55.063Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-19T23:54:56.450Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
-2025-11-19T23:54:57.577Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 19.425 seconds (process running for 23.036)
-2025-11-19T23:57:46.443Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-11-19T23:57:46.461Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-11-19T23:57:46.476Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-20T03:19:04.772Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-20T03:19:05.634Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 567, CABA
+2025-11-20T03:19:07.395Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 567, CABA': lat=-34.5765392, lon=-58.4314883
+2025-11-20T03:19:07.871Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Ejemplo 123, CABA
+2025-11-20T03:19:08.761Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.CalculoService          : Heurística por ciudad aplicada: CABA para 'Av. Ejemplo 123, CABA'

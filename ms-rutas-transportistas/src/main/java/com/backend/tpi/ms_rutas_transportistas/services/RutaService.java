@@ -56,6 +56,7 @@ public class RutaService {
 
     @Autowired
     private com.backend.tpi.ms_rutas_transportistas.repositories.EstadoTramoRepository estadoTramoRepository;
+
     
     @org.springframework.beans.factory.annotation.Value("${app.solicitudes.base-url:http://ms-solicitudes:8080}")
     private String solicitudesBaseUrl;
@@ -183,6 +184,15 @@ public class RutaService {
 
         return toDto(ruta);
     }
+
+    /**
+     * Calcula el número de noches entre el fin de un tramo y el inicio del siguiente.
+     * Se usa para computar el costo de estadía en el depósito destino del tramo actual.
+     * @param actual Tramo actual (se toma su fecha de fin real o estimada)
+     * @param siguiente Tramo siguiente (se toma su fecha de inicio real o estimada)
+     * @return número de noches (>= 0)
+     */
+    // Delegated to TramoService.calculateNightsBetween
 
     /**
      * Obtiene todas las rutas del sistema
@@ -560,21 +570,24 @@ public class RutaService {
 
                     if (costoEstadiaDiario != null) {
                         // Determinar fecha de fin del tramo actual y fecha inicio del siguiente tramo
-                        java.time.LocalDateTime finActual = tramo.getFechaHoraFinReal() != null ? tramo.getFechaHoraFinReal() : tramo.getFechaHoraFinEstimada();
-                        java.time.LocalDateTime inicioSiguiente = null;
+                        long noches = 0;
                         if (i + 1 < tramos.size()) {
-                            Tramo siguiente = tramos.get(i + 1);
-                            inicioSiguiente = siguiente.getFechaHoraInicioReal() != null ? siguiente.getFechaHoraInicioReal() : siguiente.getFechaHoraInicioEstimada();
+                            // Para cálculo aproximado usamos únicamente las fechas estimadas
+                            java.time.LocalDateTime finActualEst = tramo.getFechaHoraFinEstimada();
+                            java.time.LocalDateTime inicioSiguienteEst = tramos.get(i + 1).getFechaHoraInicioEstimada();
+                            if (finActualEst != null && inicioSiguienteEst != null) {
+                                long n = java.time.temporal.ChronoUnit.DAYS.between(finActualEst.toLocalDate(), inicioSiguienteEst.toLocalDate());
+                                noches = Math.max(0L, n);
+                            } else {
+                                noches = 0;
+                            }
+                        } else {
+                            // No hay siguiente tramo --> no se considera estadía entre tramos
+                            noches = 0;
                         }
 
-                        if (finActual != null && inicioSiguiente != null) {
-                            long noches = java.time.temporal.ChronoUnit.DAYS.between(finActual.toLocalDate(), inicioSiguiente.toLocalDate());
-                            if (noches < 0) noches = 0;
-                            costoEstadia = noches * costoEstadiaDiario;
-                        } else {
-                            // Si no hay siguiente tramo o fechas, no cobrar estadía
-                            costoEstadia = 0.0;
-                        }
+                        if (noches < 0) noches = 0;
+                        costoEstadia = noches * costoEstadiaDiario;
                     }
                 } catch (Exception e) {
                     logger.warn("No se pudo obtener datos del depósito {}: {}", tramo.getDestinoDepositoId(), e.getMessage());
@@ -747,46 +760,49 @@ public class RutaService {
         return R * c;
     }
 
+    // createFromTentativa removed: this method was only used by the deprecated controller
+    // flow that has been removed. Use the persisted opciones + confirmar flow under
+    // `/api/v1/solicitudes/{id}/opciones` and `confirmar` which delegates to existing
+    // service methods that remain.
+
     /**
-     * Crea una Ruta persistida a partir de una ruta tentativa (selección confirmada)
-     * @param solicitudId id de la solicitud
-     * @param rutaTentativa ruta tentativa con la lista de tramos
-     * @return RutaDTO de la ruta creada
+     * Crea una Ruta definitiva a partir de una RutaTentativa (usada por la confirmación de opción persistida)
+     * @param solicitudId id de la solicitud asociada
+     * @param rutaTentativa datos de la ruta tentativa (tramos, distancias, duraciones)
+     * @return DTO de la Ruta creada
      */
     @org.springframework.transaction.annotation.Transactional
     public RutaDTO createFromTentativa(Long solicitudId, RutaTentativaDTO rutaTentativa) {
-        logger.info("Creando ruta definitiva para solicitud {} desde ruta tentativa", solicitudId);
-        if (solicitudId == null || rutaTentativa == null) throw new IllegalArgumentException("SolicitudId y rutaTentativa son obligatorios");
+        if (solicitudId == null) throw new IllegalArgumentException("SolicitudId is required");
+        if (rutaTentativa == null) throw new IllegalArgumentException("RutaTentativa is required");
 
+        // Verificar si ya existe una ruta para esta solicitud
         Optional<Ruta> rutaExistente = rutaRepository.findByIdSolicitud(solicitudId);
         if (rutaExistente.isPresent()) {
-            throw new IllegalArgumentException("Ya existe una ruta para la solicitud: " + solicitudId);
+            throw new IllegalArgumentException("Ya existe una ruta para la solicitud ID: " + solicitudId);
         }
 
         Ruta ruta = new Ruta();
         ruta.setIdSolicitud(solicitudId);
         ruta = rutaRepository.save(ruta);
 
-        // Persistir tramos desde rutaTentativa
-        List<TramoTentativoDTO> tramos = rutaTentativa.getTramos();
-        int orden = 1;
-        if (tramos != null) {
-            for (TramoTentativoDTO t : tramos) {
+        // Crear tramos según la ruta tentativa
+        if (rutaTentativa.getTramos() != null) {
+            for (TramoTentativoDTO t : rutaTentativa.getTramos()) {
                 Tramo tramo = new Tramo();
                 tramo.setRuta(ruta);
-                tramo.setOrden(orden++);
+                tramo.setOrden(t.getOrden());
                 tramo.setOrigenDepositoId(t.getOrigenDepositoId());
                 tramo.setDestinoDepositoId(t.getDestinoDepositoId());
                 tramo.setDistancia(t.getDistanciaKm());
                 tramo.setDuracionHoras(t.getDuracionHoras());
                 tramo.setGeneradoAutomaticamente(true);
-                try { tipoTramoRepository.findAll().stream().findFirst().ifPresent(tramo::setTipoTramo); } catch (Exception ex) { logger.warn("No tipoTramo: {}", ex.getMessage()); }
-                try { estadoTramoRepository.findByNombre("PENDIENTE").ifPresent(tramo::setEstado); } catch (Exception ex) { logger.warn("No estadoTramo: {}", ex.getMessage()); }
-                tramoRepository.save(tramo);
+                // fechas y coordenadas pueden venir vacías en la tentativa
+                tramoService.save(tramo);
             }
         }
 
-        // Notificar a ms-solicitudes
+        // Intentar notificar al microservicio de solicitudes para asociar la ruta creada a la solicitud
         try {
             String token = extractBearerToken();
             solicitudesClient.patch()
@@ -794,7 +810,7 @@ public class RutaService {
                     .headers(h -> { if (token != null) h.setBearerAuth(token); })
                     .retrieve()
                     .toEntity(Object.class);
-            logger.info("Notificada ms-solicitudes: solicitud {} asociada a ruta {}", solicitudId, ruta.getId());
+            logger.info("Notificada solicitud {} con rutaId {} (createFromTentativa)", solicitudId, ruta.getId());
         } catch (Exception e) {
             logger.warn("No se pudo notificar a ms-solicitudes para solicitud {}: {}", solicitudId, e.getMessage());
         }

@@ -60,41 +60,6 @@
           ]
         },
         {
-                    "event": [
-                      {
-                        "listen": "test",
-                        "script": {
-                          "exec": [
-                            "if (pm.response.code >= 200 && pm.response.code < 300) {",
-                            "  try {",
-                            "    var body = pm.response.json();",
-                            "    if (Array.isArray(body)) {",
-                            "      pm.collectionVariables.set('opciones', JSON.stringify(body));",
-                            "      pm.collectionVariables.set('opcionIndex', '0');",
-                            "      pm.collectionVariables.set('rutaTentativa', JSON.stringify(body[0]));",
-                            "      var req = {",
-                            "        url: pm.collectionVariables.get('baseUrl') + '/api/v1/rutas/confirmar',",
-                            "        method: 'POST',",
-                            "        header: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + pm.collectionVariables.get('access_token') },",
-                            "        body: { mode: 'raw', raw: JSON.stringify({ solicitudId: pm.collectionVariables.get('solicitudId') * 1, rutaTentativa: body[0] }) }",
-                            "      };",
-                            "      pm.sendRequest(req, function (err, res) {",
-                            "        if (err) console.error('Error confirming ruta:', err);",
-                            "        else if (res && res.json) {",
-                            "          var ruta = res.json();",
-                            "          if (ruta && ruta.id) { pm.collectionVariables.set('rutaId', ruta.id); console.log('rutaId saved', ruta.id); }",
-                            "        }",
-                            "      });",
-                            "    } else if (body && body.id) {",
-                            "      pm.collectionVariables.set('rutaId', body.id);",
-                            "    }",
-                            "  } catch (e) { console.error('Error in Create Ruta test script:', e); }",
-                            "}"
-                          ],
-                          "type": "text/javascript"
-                        }
-                      }
-                    ]
           "name": "Get Token - responsable1 (OPERADOR)",
           "request": {
             "method": "POST",
@@ -170,11 +135,11 @@
           }
         },
         {
-          "name": "Create Opciones (calcular)",
+          "name": "Create Opciones (calcular) - Solicitud",
           "request": {
             "method": "POST",
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/opciones?calcularVariantes=true", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "opciones" ], "query": [ { "key": "calcularVariantes", "value": "true" } ] }
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/opciones?calcularVariantes=true", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "opciones" ], "query": [ { "key": "calcularVariantes", "value": "true" } ] }
           }
         },
         {
@@ -229,19 +194,19 @@
           ]
         },
         {
-          "name": "List Opciones",
+          "name": "List Opciones (Solicitudes)",
           "request": {
             "method": "GET",
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/opciones", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "opciones" ] }
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/opciones", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "opciones" ] }
           }
         },
         {
-          "name": "Select Opcion",
+          "name": "Select Opcion (confirmar via Solicitud)",
           "request": {
             "method": "POST",
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/opciones/{{opcionId}}/seleccionar", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "opciones", "{{opcionId}}", "seleccionar" ] }
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/opciones/{{opcionId}}/confirmar", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "opciones", "{{opcionId}}", "confirmar" ] }
           },
           "event": [
             {

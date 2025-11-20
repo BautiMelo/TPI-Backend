@@ -386,6 +386,28 @@ public class TramoService {
         }
         Tramo saved = tramoRepository.save(tramo);
         logger.info("Tramo ID: {} iniciado exitosamente a las {}", tramoId, saved.getFechaHoraInicioReal());
+        // After starting this tramo, attempt to compute and persist estadía/costo for the previous tramo
+        try {
+            if (saved.getRuta() != null && saved.getOrden() != null && saved.getOrden() > 1) {
+                Long rutaIdAssociated = saved.getRuta().getId();
+                int prevOrden = saved.getOrden() - 1;
+                java.util.List<Tramo> tramosRuta = tramoRepository.findByRutaId(rutaIdAssociated);
+                for (Tramo t : tramosRuta) {
+                    if (t.getOrden() != null && t.getOrden() == prevOrden) {
+                        try {
+                            computeAndSaveCostoRealForTramo(t);
+                            logger.info("Estadía calculada y costo actualizado para tramo previo ID: {}", t.getId());
+                        } catch (Exception e) {
+                            logger.warn("No se pudo calcular estadía para tramo previo ID {}: {}", t.getId(), e.getMessage());
+                        }
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Error intentando calcular estadía de tramo previo tras iniciar tramo {}: {}", tramoId, e.getMessage());
+        }
+
         return toDto(saved);
     }
 
@@ -706,13 +728,15 @@ public class TramoService {
                             Tramo t = tramosRuta.get(i);
                             if (t.getId().equals(tramo.getId()) && i+1 < tramosRuta.size()) {
                                 Tramo siguiente = tramosRuta.get(i+1);
-                                inicioSiguiente = siguiente.getFechaHoraInicioReal() != null ? siguiente.getFechaHoraInicioReal() : siguiente.getFechaHoraInicioEstimada();
+                                // Only use the real start time for estadía (no fallback to estimated)
+                                inicioSiguiente = siguiente.getFechaHoraInicioReal();
                                 break;
                             }
                         }
                     }
 
-                    java.time.LocalDateTime finActual = tramo.getFechaHoraFinReal() != null ? tramo.getFechaHoraFinReal() : tramo.getFechaHoraFinEstimada();
+                    // For real cost calculation only consider real finish and real next-start
+                    java.time.LocalDateTime finActual = tramo.getFechaHoraFinReal();
                     if (finActual != null && inicioSiguiente != null) {
                         long noches = java.time.temporal.ChronoUnit.DAYS.between(finActual.toLocalDate(), inicioSiguiente.toLocalDate());
                         if (noches < 0) noches = 0;
@@ -727,6 +751,23 @@ public class TramoService {
         double total = Math.round((costoKmCamion + costoCombustible + costoEstadia) * 100.0) / 100.0;
         tramo.setCostoReal(java.math.BigDecimal.valueOf(total));
         tramoRepository.save(tramo);
+    }
+
+    /**
+     * Calcula el número de noches entre el fin de un tramo y el inicio del siguiente.
+     * Reutiliza la misma lógica que se usa internamente en el cálculo de costo real.
+     * @param actual Tramo actual
+     * @param siguiente Tramo siguiente
+     * @return noches >= 0
+     */
+    public long calculateNightsBetween(Tramo actual, Tramo siguiente) {
+        if (actual == null || siguiente == null) return 0L;
+        // For real-night calculation require real timestamps only
+        java.time.LocalDateTime finActual = actual.getFechaHoraFinReal();
+        java.time.LocalDateTime inicioSiguiente = siguiente.getFechaHoraInicioReal();
+        if (finActual == null || inicioSiguiente == null) return 0L;
+        long noches = java.time.temporal.ChronoUnit.DAYS.between(finActual.toLocalDate(), inicioSiguiente.toLocalDate());
+        return Math.max(0L, noches);
     }
 
     /**

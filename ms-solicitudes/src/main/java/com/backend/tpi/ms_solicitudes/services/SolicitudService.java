@@ -52,6 +52,9 @@ public class SolicitudService {
     @Autowired
     private com.backend.tpi.ms_solicitudes.services.ContenedorService contenedorService;
 
+    @Autowired
+    private com.backend.tpi.ms_solicitudes.services.ClienteService clienteService;
+
     
 
     // Base URLs for other microservices (provide defaults for local/docker environment)
@@ -129,11 +132,54 @@ public class SolicitudService {
                 logger.warn("No se pudo geocodificar la dirección de destino: {}", createSolicitudDTO.getDireccionDestino());
             }
             
-            // other fields (clienteId, contenedorId, etc.) should be set elsewhere
-            // Asignar estado por defecto si existe (PENDIENTE)
+            // Manejo de cliente: si se proveen credenciales intentamos registrar en Keycloak,
+            // si no, buscamos por email y si no existe creamos cliente mínimo en BD
+            try {
+                // Buscar cliente por email; si no existe crear un registro mínimo en BD
+                try {
+                    if (createSolicitudDTO.getClienteEmail() != null && !createSolicitudDTO.getClienteEmail().isBlank()) {
+                        try {
+                            com.backend.tpi.ms_solicitudes.models.Cliente found = clienteService.findByEmail(createSolicitudDTO.getClienteEmail());
+                            solicitud.setClienteId(found.getId());
+                        } catch (Exception ex) {
+                            // No existe: crear cliente mínimo (local)
+                            com.backend.tpi.ms_solicitudes.models.Cliente nuevo = new com.backend.tpi.ms_solicitudes.models.Cliente();
+                            nuevo.setEmail(createSolicitudDTO.getClienteEmail());
+                            nuevo.setNombre(createSolicitudDTO.getClienteNombre() != null ? createSolicitudDTO.getClienteNombre() : "Cliente");
+                            nuevo.setTelefono(createSolicitudDTO.getClienteTelefono());
+                            com.backend.tpi.ms_solicitudes.models.Cliente guardado = clienteService.save(nuevo);
+                            solicitud.setClienteId(guardado.getId());
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("No se pudo procesar la información del cliente en la creación de solicitud: {}", e.getMessage());
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudo procesar la información del cliente en la creación de solicitud: {}", e.getMessage());
+            }
+
+            // Manejo de contenedor: si se pasó contenedorId lo asociamos; si no, y se dio identificacion, creamos inline
+            try {
+                if (createSolicitudDTO.getContenedorId() != null) {
+                    com.backend.tpi.ms_solicitudes.models.Contenedor cont = contenedorService.findById(createSolicitudDTO.getContenedorId());
+                    solicitud.setContenedor(cont);
+                } else if (createSolicitudDTO.getContenedorPeso() != null || createSolicitudDTO.getContenedorVolumen() != null) {
+                    com.backend.tpi.ms_solicitudes.models.Contenedor nuevoCont = new com.backend.tpi.ms_solicitudes.models.Contenedor();
+                    nuevoCont.setPeso(createSolicitudDTO.getContenedorPeso());
+                    nuevoCont.setVolumen(createSolicitudDTO.getContenedorVolumen());
+                    // asociado al cliente si fue creado o provisto
+                    if (solicitud.getClienteId() != null) nuevoCont.setClienteId(solicitud.getClienteId());
+                    com.backend.tpi.ms_solicitudes.models.Contenedor contGuardado = contenedorService.save(nuevoCont);
+                    solicitud.setContenedor(contGuardado);
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudo crear/adjuntar contenedor en la creación de solicitud: {}", e.getMessage());
+            }
+
+            // Asignar estado por defecto si existe (BORRADOR)
             try {
                 if (estadoSolicitudRepository != null) {
-                    estadoSolicitudRepository.findByNombre("PENDIENTE").ifPresent(solicitud::setEstado);
+                    estadoSolicitudRepository.findByNombre("BORRADOR").ifPresent(solicitud::setEstado);
                 }
             } catch (Exception e) {
                 logger.warn("No se pudo asignar estado por defecto a la solicitud: {}", e.getMessage());
@@ -342,7 +388,15 @@ public class SolicitudService {
          * @return Respuesta del microservicio de rutas
          */
         public Object requestRoute(Long solicitudId) {
-            logger.info("Solicitando ruta para solicitud ID: {} al microservicio de rutas", solicitudId);
+            return requestRoute(solicitudId, false);
+        }
+
+        /**
+         * Solicita una ruta al microservicio ms-rutas-transportistas para la solicitud indicada
+         * Si persistEstimates=true intentará guardar las estimaciones por tramo en ms-rutas
+         */
+        public Object requestRoute(Long solicitudId, boolean persistEstimates) {
+            logger.info("Solicitando ruta para solicitud ID: {} al microservicio de rutas (persistEstimates={})", solicitudId, persistEstimates);
             Map<String, Object> body = new HashMap<>();
             body.put("idSolicitud", solicitudId);
             try {
@@ -355,7 +409,115 @@ public class SolicitudService {
                     .retrieve()
                     .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
                 logger.info("Ruta solicitada exitosamente para solicitud ID: {}", solicitudId);
-                return rutasResp != null ? rutasResp.getBody() : null;
+
+                Map<String, Object> rutaBody = rutasResp != null ? rutasResp.getBody() : null;
+                // Adjuntar estimaciones de costo/tiempo si es posible
+                try {
+                    Object estimacion = calculatePrice(solicitudId);
+                    if (estimacion != null && rutaBody != null) {
+                        if (estimacion instanceof com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO) {
+                            com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO c = (com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO) estimacion;
+                            rutaBody.put("costoEstimado", c.getCostoTotal());
+                            rutaBody.put("tiempoEstimado", c.getTiempoEstimado());
+                        } else if (estimacion instanceof java.util.Map) {
+                            @SuppressWarnings("unchecked")
+                            java.util.Map<String, Object> m = (java.util.Map<String, Object>) estimacion;
+                            if (m.get("precio") != null) rutaBody.put("costoEstimado", m.get("precio"));
+                            if (m.get("tiempo") != null) rutaBody.put("tiempoEstimado", m.get("tiempo"));
+                            // También soportar claves alternativas
+                            if (m.get("costo") != null) rutaBody.putIfAbsent("costoEstimado", m.get("costo"));
+                            if (m.get("tiempoEstimado") != null) rutaBody.putIfAbsent("tiempoEstimado", m.get("tiempoEstimado"));
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("No se pudo obtener estimación de costo/tiempo para solicitud {}: {}", solicitudId, e.getMessage());
+                }
+
+                // Si la ruta contiene tramos, intentar estimar costo/distancia por cada tramo
+                try {
+                    if (rutaBody != null && rutaBody.get("tramos") instanceof java.util.List) {
+                        @SuppressWarnings("unchecked")
+                        java.util.List<java.util.Map<String, Object>> tramos = (java.util.List<java.util.Map<String, Object>>) rutaBody.get("tramos");
+                        for (java.util.Map<String, Object> tramo : tramos) {
+                            try {
+                                // Intentar extraer origen/destino del tramo en varias formas
+                                String origenStr = null;
+                                String destinoStr = null;
+
+                                // 1) claves lat/lon
+                                if (tramo.get("origenLat") != null && tramo.get("origenLong") != null && tramo.get("destinoLat") != null && tramo.get("destinoLong") != null) {
+                                    origenStr = tramo.get("origenLat").toString() + "," + tramo.get("origenLong").toString();
+                                    destinoStr = tramo.get("destinoLat").toString() + "," + tramo.get("destinoLong").toString();
+                                }
+                                // 2) claves 'origen'/'destino' como strings
+                                if ((origenStr == null || destinoStr == null) && tramo.get("origen") != null && tramo.get("destino") != null) {
+                                    origenStr = tramo.get("origen").toString();
+                                    destinoStr = tramo.get("destino").toString();
+                                }
+                                // 3) keys start/end
+                                if ((origenStr == null || destinoStr == null) && tramo.get("start") != null && tramo.get("end") != null) {
+                                    origenStr = tramo.get("start").toString();
+                                    destinoStr = tramo.get("end").toString();
+                                }
+
+                                if (origenStr != null && destinoStr != null) {
+                                    java.util.Map<String, Object> estimTramo = calculatePriceBetween(origenStr, destinoStr);
+                                    if (estimTramo != null) {
+                                        // adjuntar valores al tramo (respuesta transitoria)
+                                        if (estimTramo.get("precio") != null) tramo.put("costoEstimadoTramo", estimTramo.get("precio"));
+                                        if (estimTramo.get("distancia") != null) tramo.put("distanciaTramo", estimTramo.get("distancia"));
+
+                                        // Persistir en ms-rutas solo si se pidió explícitamente
+                                        if (persistEstimates) {
+                                            try {
+                                                // Intentar persistir usando PATCH /api/v1/tramos/{id}
+                                                Object idObj = tramo.get("id");
+                                                if (idObj != null) {
+                                                    Long tramoId;
+                                                    if (idObj instanceof Number) tramoId = ((Number) idObj).longValue();
+                                                    else tramoId = Long.valueOf(idObj.toString());
+
+                                                    java.util.Map<String, Object> persistBody = new java.util.HashMap<>();
+                                                    if (estimTramo.get("precio") != null) persistBody.put("costoEstimado", estimTramo.get("precio"));
+                                                    if (estimTramo.get("distancia") != null) persistBody.put("distancia", estimTramo.get("distancia"));
+
+                                                    try {
+                                                        rutasClient.patch()
+                                                            .uri("/api/v1/tramos/" + tramoId)
+                                                            .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                                                            .body(persistBody)
+                                                            .retrieve()
+                                                            .toEntity(Object.class);
+                                                    } catch (Exception patchEx) {
+                                                        // Fallback: intentar POST /api/v1/tramos/{id}/estimaciones
+                                                        try {
+                                                            rutasClient.post()
+                                                                .uri("/api/v1/tramos/" + tramoId + "/estimaciones")
+                                                                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                                                                .body(persistBody)
+                                                                .retrieve()
+                                                                .toEntity(Object.class);
+                                                        } catch (Exception postEx) {
+                                                            logger.warn("No se pudo persistir estimaciones para tramo {} en ms-rutas: {} / {}", tramoId, patchEx.getMessage(), postEx.getMessage());
+                                                        }
+                                                    }
+                                                }
+                                            } catch (Exception persistEx) {
+                                                logger.warn("Error persistiendo estimación de tramo para solicitud {}: {}", solicitudId, persistEx.getMessage());
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (Exception exTramo) {
+                                logger.warn("No se pudo estimar tramo en ruta solicitud {}: {}", solicitudId, exTramo.getMessage());
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("Error calculando estimaciones por tramo para solicitud {}: {}", solicitudId, e.getMessage());
+                }
+
+                return rutaBody;
             } catch (Exception e) {
                 logger.error("Error al solicitar ruta para solicitud ID: {} - {}", solicitudId, e.getMessage());
                 throw e;
@@ -610,20 +772,78 @@ public class SolicitudService {
          */
         @org.springframework.transaction.annotation.Transactional
         public SolicitudDTO programar(Long id, java.math.BigDecimal costoEstimado, java.math.BigDecimal tiempoEstimado) {
-            logger.info("Programando solicitud ID: {} con costo: {} y tiempo: {}", id, costoEstimado, tiempoEstimado);
-            Solicitud solicitud = solicitudRepository.findById(id)
-                    .orElseThrow(() -> {
-                        logger.error("No se puede programar - Solicitud no encontrada con ID: {}", id);
-                        return new RuntimeException("Solicitud no encontrada con ID: " + id);
-                    });
-        
-            solicitud.setCostoEstimado(costoEstimado);
-            solicitud.setTiempoEstimado(tiempoEstimado);
-        
-        solicitud = solicitudRepository.save(solicitud);
-        logger.info("Solicitud ID: {} programada exitosamente", id);
-        return toDto(solicitud);
+                logger.info("Programando solicitud ID: {} con costo: {} y tiempo: {}", id, costoEstimado, tiempoEstimado);
+                Solicitud solicitud = solicitudRepository.findById(id)
+                        .orElseThrow(() -> {
+                            logger.error("No se puede programar - Solicitud no encontrada con ID: {}", id);
+                            return new RuntimeException("Solicitud no encontrada con ID: " + id);
+                        });
+
+                // Si no se proporcionó costo o tiempo estimado, intentar calcularlos delegando a ms-gestion-calculos
+                try {
+                    Object precioObj = null;
+                    if (costoEstimado == null || tiempoEstimado == null) {
+                        precioObj = calculatePrice(id);
+                    }
+
+                    if (precioObj != null) {
+                        // Manejar CostoResponseDTO (respuesta típica) o Map como fallback
+                        if (precioObj instanceof com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO) {
+                            com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO costoResp = (com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO) precioObj;
+                            if (costoEstimado == null && costoResp.getCostoTotal() != null) {
+                                solicitud.setCostoEstimado(java.math.BigDecimal.valueOf(costoResp.getCostoTotal()));
+                                logger.debug("Costo estimado calculado y seteado desde calculos: {}", costoResp.getCostoTotal());
+                            }
+                            if (tiempoEstimado == null && costoResp.getTiempoEstimado() != null) {
+                                java.math.BigDecimal horas = parseTiempoEstimadoStringToHours(costoResp.getTiempoEstimado());
+                                if (horas != null) {
+                                    solicitud.setTiempoEstimado(horas);
+                                    logger.debug("Tiempo estimado calculado y seteado (horas): {}", horas);
+                                }
+                            }
+                        } else if (precioObj instanceof java.util.Map) {
+                            @SuppressWarnings("unchecked")
+                            java.util.Map<String, Object> mapa = (java.util.Map<String, Object>) precioObj;
+                            if (costoEstimado == null && mapa.get("precio") instanceof Number) {
+                                solicitud.setCostoEstimado(java.math.BigDecimal.valueOf(((Number) mapa.get("precio")).doubleValue()));
+                                logger.debug("Costo estimado calculado y seteado desde mapa: {}", mapa.get("precio"));
+                            }
+                            // No siempre hay tiempo en el mapa fallback
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("No se pudo calcular precio estimado al programar solicitud {}: {}", id, e.getMessage());
+                }
+
+                // Si se pasaron explícitamente valores, los respetamos (sobrescriben lo calculado)
+                if (costoEstimado != null) solicitud.setCostoEstimado(costoEstimado);
+                if (tiempoEstimado != null) solicitud.setTiempoEstimado(tiempoEstimado);
+
+                solicitud = solicitudRepository.save(solicitud);
+                logger.info("Solicitud ID: {} programada exitosamente (costoEstimado={}, tiempoEstimado={})", id, solicitud.getCostoEstimado(), solicitud.getTiempoEstimado());
+                return toDto(solicitud);
     }
+
+        /**
+         * Parsea un string como "2h 30m" o "1h" a horas en BigDecimal (ej. "2h 30m" -> 2.5)
+         */
+        private java.math.BigDecimal parseTiempoEstimadoStringToHours(String tiempo) {
+            if (tiempo == null) return null;
+            try {
+                String s = tiempo.trim().toLowerCase();
+                int horas = 0;
+                int minutos = 0;
+                java.util.regex.Matcher mH = java.util.regex.Pattern.compile("(\\d+)h").matcher(s);
+                if (mH.find()) horas = Integer.parseInt(mH.group(1));
+                java.util.regex.Matcher mM = java.util.regex.Pattern.compile("(\\d+)m").matcher(s);
+                if (mM.find()) minutos = Integer.parseInt(mM.group(1));
+                double totalHoras = horas + (minutos / 60.0);
+                return java.math.BigDecimal.valueOf(totalHoras).setScale(2, java.math.RoundingMode.HALF_UP);
+            } catch (Exception e) {
+                logger.warn("No se pudo parsear tiempoEstimado='{}' a horas: {}", tiempo, e.getMessage());
+                return null;
+            }
+        }
 
     /**
      * Persiste el costo final y tiempo real de la solicitud
@@ -692,6 +912,8 @@ public class SolicitudService {
             throw new IllegalStateException("Contenedor no disponible para asignación: " + contenedorId);
         }
 
+
+
         // Asignar (establecer relación ManyToOne)
         solicitud.setContenedor(contenedor);
         solicitud = solicitudRepository.save(solicitud);
@@ -719,5 +941,99 @@ public class SolicitudService {
             return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
         }
         return null;
+    }
+
+    /**
+     * Calcula precio y distancia entre dos puntos (origen,destino) usando ms-gestion-calculos
+     * @param origen formato "lat,lon" o dirección de texto
+     * @param destino formato "lat,lon" o dirección de texto
+     * @return mapa con keys: distancia (Double), precio (Double), precioPorKm (Double) o null si falla
+     */
+    private java.util.Map<String, Object> calculatePriceBetween(String origen, String destino) {
+        try {
+            if (origen == null || destino == null) return null;
+            Map<String, String> distanciaReq = new HashMap<>();
+            distanciaReq.put("origen", origen);
+            distanciaReq.put("destino", destino);
+
+            String token = extractBearerToken();
+            ResponseEntity<Map<String, Object>> distanciaEntity = calculosClient.post()
+                .uri("/api/v1/gestion/distancia")
+                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                .body(distanciaReq)
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
+            Map<String, Object> distanciaResp = distanciaEntity != null ? distanciaEntity.getBody() : null;
+            Double distancia = null;
+            if (distanciaResp != null && distanciaResp.get("distancia") instanceof Number) {
+                distancia = ((Number) distanciaResp.get("distancia")).doubleValue();
+            }
+
+            ResponseEntity<java.util.List<java.util.Map<String, Object>>> tarifasEntity = calculosClient.get()
+                .uri("/api/v1/tarifas")
+                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<java.util.List<java.util.Map<String, Object>>>() {});
+            java.util.List<java.util.Map<String, Object>> tarifas = tarifasEntity != null ? tarifasEntity.getBody() : null;
+
+            Double precioPorKm = null;
+            if (tarifas != null && !tarifas.isEmpty()) {
+                Object maybePrecio = tarifas.get(0).get("precioPorKm");
+                if (maybePrecio instanceof Number) precioPorKm = ((Number) maybePrecio).doubleValue();
+            }
+
+            java.util.Map<String, Object> result = new java.util.HashMap<>();
+            result.put("distancia", distancia);
+            if (distancia != null && precioPorKm != null) {
+                result.put("precio", distancia * precioPorKm);
+                result.put("precioPorKm", precioPorKm);
+            } else {
+                result.put("precio", null);
+                result.put("precioPorKm", precioPorKm);
+            }
+            return result;
+        } catch (Exception e) {
+            logger.warn("Error al calcular precio entre {} y {}: {}", origen, destino, e.getMessage());
+            return null;
+        }
+    }
+
+    
+
+    /**
+     * Confirma la selección basada en una opción ya persistida (opcionId).
+     * Asume que la opcionId corresponde a una ruta tentativa en ms-rutas; llama a ms-rutas
+     * para confirmar/convertirla en ruta final y asocia el resultado a la solicitud.
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public Map<String, Object> confirmRouteSelectionByOptionId(Long solicitudId, Long opcionId) {
+        logger.info("Confirmando ruta por opcionId {} para solicitud {}", opcionId, solicitudId);
+        if (opcionId == null) throw new IllegalArgumentException("opcionId no puede ser null");
+        String token = extractBearerToken();
+        Map<String, Object> body = new HashMap<>();
+        body.put("idSolicitud", solicitudId);
+        try {
+            // Intentar confirmar la ruta existente en ms-rutas
+            ResponseEntity<Map<String, Object>> resp = rutasClient.post()
+                .uri(uriBuilder -> uriBuilder.path("/api/v1/rutas/" + opcionId).queryParam("confirm", "true").build())
+                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                .body(body)
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+            Map<String, Object> respBody = resp != null ? resp.getBody() : null;
+            if (respBody != null && respBody.get("id") != null) {
+                Object idObj = respBody.get("id");
+                Long rutaId;
+                if (idObj instanceof Number) rutaId = ((Number) idObj).longValue();
+                else rutaId = Long.valueOf(idObj.toString());
+                try { setRutaId(solicitudId, rutaId); } catch (Exception e) { logger.warn("No se pudo setRutaId: {}", e.getMessage()); }
+            }
+            logger.info("Confirmación por opcionId completada para solicitud {} opcion {}", solicitudId, opcionId);
+            return respBody;
+        } catch (Exception e) {
+            logger.error("Error confirmando por opcionId {} para solicitud {}: {}", opcionId, solicitudId, e.getMessage());
+            throw e;
+        }
     }
 }

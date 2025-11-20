@@ -53,23 +53,9 @@ public class RutaOpcionService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Transactional
-    public List<RutaOpcion> saveOptionsForRuta(Long rutaId, List<RutaTentativaDTO> opciones) throws Exception {
-        List<RutaOpcion> saved = new ArrayList<>();
-        int idx = 1;
-        for (RutaTentativaDTO opcion : opciones) {
-            RutaOpcion ro = new RutaOpcion();
-            ro.setRutaId(rutaId);
-            ro.setOpcionIndex(idx++);
-            ro.setDistanciaTotal(opcion.getDistanciaTotal());
-            ro.setDuracionTotalHoras(opcion.getDuracionTotalHoras());
-            ro.setDepositosIdsJson(objectMapper.writeValueAsString(opcion.getDepositosIds()));
-            ro.setDepositosNombresJson(objectMapper.writeValueAsString(opcion.getDepositosNombres()));
-            ro.setTramosJson(objectMapper.writeValueAsString(opcion.getTramos()));
-            saved.add(rutaOpcionRepository.save(ro));
-        }
-        return saved;
-    }
+    // saveOptionsForRuta removed: route-based opciones persistence is deprecated and callers
+    // should use `saveOptionsForSolicitud` or other canonical flows. Method removed to
+    // avoid unused code while preserving service responsibilities for solicitud-based flows.
 
     @Transactional
     public List<RutaOpcion> saveOptionsForSolicitud(Long solicitudId, List<RutaTentativaDTO> opciones) throws Exception {

@@ -7,12 +7,8 @@ import com.backend.tpi.ms_rutas_transportistas.dtos.osrm.RutaCalculadaDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
+ 
 
 import java.util.*;
 
@@ -27,10 +23,10 @@ public class RutaTentativaService {
     private static final Logger logger = LoggerFactory.getLogger(RutaTentativaService.class);
     
     @Autowired
-    private RestClient calculosClient;
+    private OSRMService osrmService;
     
     @Autowired
-    private OSRMService osrmService;
+    private DepositoService depositoService;
 
     /**
      * Calcula la mejor ruta entre origen y destino
@@ -76,26 +72,19 @@ public class RutaTentativaService {
                 logger.debug("Variante directa: {} km", rutaDirecta.getDistanciaTotal());
             }
             
-            // Variante 2-N: Probar con todos los depósitos disponibles como intermedios
-            // (Para producción, esto debería ser más inteligente - solo depósitos cercanos a la ruta)
-            List<Long> todosDepositos = obtenerTodosDepositosIds();
-            todosDepositos.remove(origenDepositoId);
-            todosDepositos.remove(destinoDepositoId);
-            
-            // Limitar a máximo 3 depósitos intermedios para evitar explosión combinatoria
-            int maxIntermediarios = Math.min(3, todosDepositos.size());
-            
-            for (int i = 0; i < Math.min(maxIntermediarios, todosDepositos.size()); i++) {
-                Long depositoIntermedio = todosDepositos.get(i);
+            // Variante 2-N: Probar con depósitos cercanos al segmento origen-destino (k-nearest)
+            List<Long> candidatos = depositoService.getKNearestToRoute(origenDepositoId, destinoDepositoId, 3);
+            int maxIntermediarios = Math.min(3, candidatos.size());
+            for (int i = 0; i < maxIntermediarios; i++) {
+                Long depositoIntermedio = candidatos.get(i);
                 List<Long> intermedios = List.of(depositoIntermedio);
-                
+
                 RutaTentativaDTO rutaConIntermedio = calcularRutaTentativa(
                         origenDepositoId, destinoDepositoId, intermedios);
-                
+
                 if (rutaConIntermedio.getExitoso()) {
                     variantes.add(rutaConIntermedio);
-                    logger.debug("Variante con depósito {}: {} km", 
-                            depositoIntermedio, rutaConIntermedio.getDistanciaTotal());
+                    logger.debug("Variante con depósito {}: {} km", depositoIntermedio, rutaConIntermedio.getDistanciaTotal());
                 }
             }
             
@@ -139,13 +128,12 @@ public class RutaTentativaService {
             // Variante directa
             RutaTentativaDTO directa = calcularRutaTentativa(origenDepositoId, destinoDepositoId, null);
             if (directa.getExitoso()) variantes.add(directa);
-
-            List<Long> todosDepositos = obtenerTodosDepositosIds();
-            todosDepositos.remove(origenDepositoId);
-            todosDepositos.remove(destinoDepositoId);
-            int maxIntermediarios = Math.min(3, todosDepositos.size());
-            for (int i = 0; i < Math.min(maxIntermediarios, todosDepositos.size()); i++) {
-                Long depositoIntermedio = todosDepositos.get(i);
+            List<Long> candidatos = depositoService.getKNearestToRoute(origenDepositoId, destinoDepositoId, 3);
+            candidatos.remove(origenDepositoId);
+            candidatos.remove(destinoDepositoId);
+            int maxIntermediarios = Math.min(3, candidatos.size());
+            for (int i = 0; i < maxIntermediarios; i++) {
+                Long depositoIntermedio = candidatos.get(i);
                 List<Long> intermedios = List.of(depositoIntermedio);
                 RutaTentativaDTO rutaConIntermedio = calcularRutaTentativa(origenDepositoId, destinoDepositoId, intermedios);
                 if (rutaConIntermedio.getExitoso()) variantes.add(rutaConIntermedio);
@@ -156,29 +144,7 @@ public class RutaTentativaService {
         return variantes;
     }
     
-    /**
-     * Obtiene lista de todos los IDs de depósitos disponibles
-     * @return Lista de IDs de depósitos
-     */
-    private List<Long> obtenerTodosDepositosIds() {
-        try {
-            String token = extractBearerToken();
-            ResponseEntity<List<Map<String, Object>>> response = calculosClient.get()
-                    .uri("/api/v1/depositos")
-                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
-                    .retrieve()
-                    .toEntity(new ParameterizedTypeReference<List<Map<String, Object>>>() {});
-            
-            if (response.getBody() != null) {
-                return response.getBody().stream()
-                        .map(dep -> ((Number) dep.get("id")).longValue())
-                        .toList();
-            }
-        } catch (Exception e) {
-            logger.warn("Error al obtener lista de depósitos: {}", e.getMessage());
-        }
-        return new ArrayList<>();
-    }
+    // obtenerTodosDepositosIds moved to DepositoService
 
     /**
      * Calcula una ruta tentativa entre origen y destino, considerando depósitos intermedios
@@ -206,8 +172,8 @@ public class RutaTentativaService {
             }
             todosDepositosIds.add(destinoDepositoId);
             
-            // Obtener información de todos los depósitos
-            Map<Long, Map<String, Object>> depositosInfo = obtenerInfoDepositos(todosDepositosIds);
+            // Obtener información de todos los depósitos (delegado a DepositoService)
+            Map<Long, Map<String, Object>> depositosInfo = depositoService.getInfoForDepositos(todosDepositosIds);
             
             // Calcular tramos entre depósitos consecutivos
             List<TramoTentativoDTO> tramos = new ArrayList<>();
@@ -285,34 +251,7 @@ public class RutaTentativaService {
         }
     }
     
-    /**
-     * Obtiene información de múltiples depósitos desde ms-gestion-calculos
-     * @param depositosIds Lista de IDs de depósitos
-     * @return Mapa con ID -> información del depósito
-     */
-    private Map<Long, Map<String, Object>> obtenerInfoDepositos(List<Long> depositosIds) {
-        Map<Long, Map<String, Object>> resultado = new HashMap<>();
-        String token = extractBearerToken();
-        
-        for (Long depositoId : depositosIds) {
-            try {
-                ResponseEntity<Map<String, Object>> response = calculosClient.get()
-                        .uri("/api/v1/depositos/{id}/coordenadas", depositoId)
-                        .headers(h -> { if (token != null) h.setBearerAuth(token); })
-                        .retrieve()
-                        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
-                
-                if (response.getBody() != null) {
-                    resultado.put(depositoId, response.getBody());
-                    logger.debug("Información de depósito {} obtenida: {}", depositoId, response.getBody());
-                }
-            } catch (Exception e) {
-                logger.error("Error al obtener información del depósito {}: {}", depositoId, e.getMessage());
-            }
-        }
-        
-        return resultado;
-    }
+    // obtenerInfoDepositos moved to DepositoService
     
     /**
      * Calcula una ruta directa sin depósitos intermedios
@@ -324,14 +263,5 @@ public class RutaTentativaService {
         return calcularRutaTentativa(origenDepositoId, destinoDepositoId, null);
     }
     
-    /**
-     * Helper: extrae token Bearer del SecurityContext si existe
-     */
-    private String extractBearerToken() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof JwtAuthenticationToken) {
-            return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
-        }
-        return null;
-    }
+    // token extraction moved/unused in this service
 }
