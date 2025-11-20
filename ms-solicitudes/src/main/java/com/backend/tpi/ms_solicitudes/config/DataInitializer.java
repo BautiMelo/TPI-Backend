@@ -29,12 +29,14 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Inicializar estados de solicitud si no existen
         if (estadoSolicitudRepository.count() == 0) {
-            EstadoSolicitud p = new EstadoSolicitud(); p.setNombre("PENDIENTE");
-            EstadoSolicitud e = new EstadoSolicitud(); e.setNombre("EN_PROCESO");
-            EstadoSolicitud f = new EstadoSolicitud(); f.setNombre("FINALIZADA");
-            estadoSolicitudRepository.save(p);
-            estadoSolicitudRepository.save(e);
-            estadoSolicitudRepository.save(f);
+            EstadoSolicitud borrador = new EstadoSolicitud(); borrador.setNombre("BORRADOR");
+            EstadoSolicitud programada = new EstadoSolicitud(); programada.setNombre("PROGRAMADA");
+            EstadoSolicitud enTransito = new EstadoSolicitud(); enTransito.setNombre("EN_TRANSITO");
+            EstadoSolicitud entregada = new EstadoSolicitud(); entregada.setNombre("ENTREGADA");
+            estadoSolicitudRepository.save(borrador);
+            estadoSolicitudRepository.save(programada);
+            estadoSolicitudRepository.save(enTransito);
+            estadoSolicitudRepository.save(entregada);
         }
 
         // Inicializar estados de contenedor si no existen

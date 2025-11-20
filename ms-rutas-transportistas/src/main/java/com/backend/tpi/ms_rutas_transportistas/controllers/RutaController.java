@@ -136,47 +136,7 @@ public class RutaController {
         }
     }
 
-    /**
-     * POST /api/v1/rutas/{id}/opciones - Calcula y guarda variantes de ruta (opciones)
-     */
-    @PostMapping("/{id}/opciones")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> createOptions(@PathVariable Long id,
-                                                                                                                 @RequestParam(required = false) Boolean calcularVariantes) {
-        logger.info("POST /api/v1/rutas/{}/opciones - Calculando y guardando opciones de ruta (calcularVariantes={})", id, calcularVariantes);
-        try {
-            // Obtener ruta para extraer depósitos si es que existen en tramos actuales
-            // For now, require that route creation includes origen/destino depósitos via query params or rely on existing tramos
-            // We'll attempt to derive origin/destination from existing tramos if present
-            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.Tramo> tramos = tramoService.findByRutaId(id).stream()
-                    .map(t -> {
-                        com.backend.tpi.ms_rutas_transportistas.models.Tramo tr = new com.backend.tpi.ms_rutas_transportistas.models.Tramo();
-                        tr.setOrigenDepositoId(t.getOrigenDepositoId());
-                        tr.setDestinoDepositoId(t.getDestinoDepositoId());
-                        return tr;
-                    }).toList();
-
-            if (tramos == null || tramos.isEmpty()) {
-                logger.warn("No hay tramos en la ruta {} para generar opciones", id);
-                return ResponseEntity.badRequest().build();
-            }
-
-            Long origen = tramos.get(0).getOrigenDepositoId();
-            Long destino = tramos.get(tramos.size() - 1).getDestinoDepositoId();
-
-            java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO> variantes = rutaTentativaService.calcularVariantes(origen, destino);
-            if (variantes == null || variantes.isEmpty()) {
-                logger.warn("No se pudieron calcular variantes para ruta {}", id);
-                return ResponseEntity.status(500).build();
-            }
-
-            java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> saved = rutaOpcionService.saveOptionsForRuta(id, variantes);
-            return ResponseEntity.ok(saved);
-        } catch (Exception e) {
-            logger.error("Error generando opciones de ruta para {}: {}", id, e.getMessage());
-            return ResponseEntity.status(500).build();
-        }
-    }
+    // Removed deprecated POST /api/v1/rutas/{id}/opciones per deprecation policy
 
     /**
      * GET /api/v1/rutas/{id}/opciones - Lista las opciones persistidas para una ruta
@@ -246,32 +206,6 @@ public class RutaController {
     }
 
     /**
-     * POST /api/v1/rutas/confirmar - Crea la ruta definitiva a partir de una opción seleccionada (ruta tentativa)
-     * Body: { "solicitudId": 123, "rutaTentativa": { ... } }
-     */
-    @PostMapping("/confirmar")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<RutaDTO> confirmarRuta(@RequestBody java.util.Map<String, Object> body) {
-        logger.info("POST /api/v1/rutas/confirmar - Confirmando ruta");
-        try {
-            if (body == null || !body.containsKey("solicitudId") || !body.containsKey("rutaTentativa")) {
-                logger.warn("POST /api/v1/rutas/confirmar - Bad request, missing fields");
-                return ResponseEntity.badRequest().build();
-            }
-            Long solicitudId = ((Number) body.get("solicitudId")).longValue();
-            Object rutaTentativaObj = body.get("rutaTentativa");
-            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-            com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO rutaTentativa = mapper.convertValue(rutaTentativaObj, com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO.class);
-
-            com.backend.tpi.ms_rutas_transportistas.dtos.RutaDTO rutaDto = rutaService.createFromTentativa(solicitudId, rutaTentativa);
-            return ResponseEntity.ok(rutaDto);
-        } catch (Exception e) {
-            logger.error("Error confirming route: {}", e.getMessage(), e);
-            return ResponseEntity.status(500).build();
-        }
-    }
-
-    /**
      * Elimina una ruta del sistema
      * @param id ID de la ruta a eliminar
      * @return Respuesta sin contenido
@@ -314,29 +248,6 @@ public class RutaController {
         Object result = rutaService.findBySolicitudId(solicitudId);
         logger.info("GET /api/v1/rutas/por-solicitud/{} - Respuesta: 200 - Ruta encontrada", solicitudId);
         return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Agrega un nuevo tramo a una ruta existente
-     * @param id ID de la ruta
-     * @param tramoRequest Datos del tramo a agregar
-     * @return Tramo creado
-     */
-    @PostMapping("/{id}/tramos")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    @Operation(summary = "Agregar un nuevo tramo a una ruta")
-    public ResponseEntity<TramoDTO> agregarTramo(
-            @PathVariable Long id,
-            @RequestBody TramoRequestDTO tramoRequest) {
-        logger.info("POST /api/v1/rutas/{}/tramos - Agregando nuevo tramo a ruta", id);
-        tramoRequest.setIdRuta(id); // Asegurar que el tramo se asocie a esta ruta
-        TramoDTO tramo = tramoService.create(tramoRequest);
-        if (tramo == null) {
-            logger.warn("POST /api/v1/rutas/{}/tramos - Respuesta: 400 - Error al crear tramo", id);
-            return ResponseEntity.badRequest().build();
-        }
-        logger.info("POST /api/v1/rutas/{}/tramos - Respuesta: 200 - Tramo creado con ID: {}", id, tramo.getId());
-        return ResponseEntity.ok(tramo);
     }
 
     /**
@@ -394,54 +305,6 @@ public class RutaController {
         }
         logger.info("POST /api/v1/rutas/{}/tramos/{}/finalizar - Respuesta: 200 - Tramo finalizado", id, tramoId);
         return ResponseEntity.ok(tramo);
-    }
-    
-    /**
-     * Calcula una ruta tentativa entre dos depósitos, opcionalmente con depósitos intermedios
-     * @param origenDepositoId ID del depósito origen
-     * @param destinoDepositoId ID del depósito destino
-     * @param intermedios IDs de depósitos intermedios separados por comas (opcional)
-     * @return Ruta tentativa calculada con distancias y duraciones
-     */
-    @GetMapping("/tentativa")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
-    @Operation(summary = "Calcular ruta tentativa entre depósitos",
-            description = "Calcula una ruta tentativa con distancias reales usando OSRM. " +
-                         "Permite especificar depósitos intermedios en orden.")
-    public ResponseEntity<RutaTentativaDTO> calcularRutaTentativa(
-            @RequestParam Long origenDepositoId,
-            @RequestParam Long destinoDepositoId,
-            @RequestParam(required = false) String intermedios) {
-        
-        logger.info("GET /api/v1/rutas/tentativa - Calculando ruta tentativa: origen={}, destino={}, intermedios={}", 
-                origenDepositoId, destinoDepositoId, intermedios);
-        
-        // Parsear depósitos intermedios si existen
-        List<Long> depositosIntermedios = null;
-        if (intermedios != null && !intermedios.trim().isEmpty()) {
-            try {
-                depositosIntermedios = java.util.Arrays.stream(intermedios.split(","))
-                        .map(String::trim)
-                        .map(Long::parseLong)
-                        .toList();
-                logger.debug("Depósitos intermedios parseados: {}", depositosIntermedios);
-            } catch (NumberFormatException e) {
-                logger.warn("GET /api/v1/rutas/tentativa - Error parseando intermedios: {}", e.getMessage());
-                return ResponseEntity.badRequest().build();
-            }
-        }
-        
-        RutaTentativaDTO resultado = rutaTentativaService.calcularRutaTentativa(
-                origenDepositoId, destinoDepositoId, depositosIntermedios);
-        
-        if (!resultado.getExitoso()) {
-            logger.warn("GET /api/v1/rutas/tentativa - Error: {}", resultado.getMensaje());
-            return ResponseEntity.status(500).body(resultado);
-        }
-        
-        logger.info("GET /api/v1/rutas/tentativa - Respuesta: 200 - Ruta calculada: {} km, {} tramos", 
-                resultado.getDistanciaTotal(), resultado.getNumeroTramos());
-        return ResponseEntity.ok(resultado);
     }
 
     /**

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+// No HttpComponentsClientHttpRequestFactory usage to avoid version mismatches
 
 @Configuration
 public class RestMicroservicoConfig {
@@ -27,4 +27,5 @@ public class RestMicroservicoConfig {
                 .build();
     }
 
+    // Proveer un RestTemplate simple para inyección en servicios que lo requieran
 }

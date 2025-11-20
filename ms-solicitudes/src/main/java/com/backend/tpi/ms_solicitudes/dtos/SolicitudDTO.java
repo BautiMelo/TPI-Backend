@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class SolicitudDTO {
     private Long id;
+    private Long clienteId;
     private String direccionOrigen;
     private String direccionDestino;
     private Long contenedorId;

@@ -43,12 +43,32 @@ public class SolicitudController {
      * @return Solicitud creada con código 200
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN')")
-    public ResponseEntity<SolicitudDTO> create(@RequestBody CreateSolicitudDTO createSolicitudDTO) {
+    // Endpoint público para que un cliente pueda registrar una solicitud y crear usuario
+    public ResponseEntity<?> create(@jakarta.validation.Valid @RequestBody CreateSolicitudDTO createSolicitudDTO,
+                                    org.springframework.validation.BindingResult bindingResult) {
         logger.info("POST /api/v1/solicitudes - Creando nueva solicitud");
+
+        // Bean validation errors
+        if (bindingResult.hasErrors()) {
+            java.util.Map<String, String> errors = new java.util.HashMap<>();
+            bindingResult.getFieldErrors().forEach(fe -> errors.put(fe.getField(), fe.getDefaultMessage()));
+            logger.warn("POST /api/v1/solicitudes - Validation errors: {}", errors);
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        // Conditional validation: if no contenedorId provided, require peso and volumen > 0
+        if (createSolicitudDTO.getContenedorId() == null) {
+            if (createSolicitudDTO.getContenedorPeso() == null || createSolicitudDTO.getContenedorVolumen() == null) {
+                return ResponseEntity.badRequest().body(java.util.Map.of("contenedor", "Si no se provee contenedorId, contenedorPeso y contenedorVolumen son obligatorios"));
+            }
+            if (createSolicitudDTO.getContenedorPeso().doubleValue() <= 0 || createSolicitudDTO.getContenedorVolumen().doubleValue() <= 0) {
+                return ResponseEntity.badRequest().body(java.util.Map.of("contenedor", "contenedorPeso y contenedorVolumen deben ser mayores a 0"));
+            }
+        }
+
         SolicitudDTO result = solicitudService.create(createSolicitudDTO);
         logger.info("POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: {}", result.getId());
-        
+
         return ResponseEntity.ok(result);
     }
 
@@ -343,6 +363,27 @@ public class SolicitudController {
         } catch (RuntimeException e) {
             logger.warn("PATCH /api/v1/solicitudes/{}/ruta - Error: {}", id, e.getMessage());
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * POST /api/v1/solicitudes/{solicitudId}/opciones/{opcionId}/confirmar
+     * Confirma la opción seleccionada (body opcional si ya se conoce la estructura de la opción)
+     * Requiere rol OPERADOR o ADMIN
+     */
+    @PostMapping("/{solicitudId}/opciones/{opcionId}/confirmar")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<Object> confirmOpcion(
+            @PathVariable Long solicitudId,
+            @PathVariable Long opcionId) {
+        logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Confirmando opción por opcionId", solicitudId, opcionId);
+        try {
+            java.util.Map<String, Object> resp = solicitudService.confirmRouteSelectionByOptionId(solicitudId, opcionId);
+            logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Opción confirmada", solicitudId, opcionId);
+            return ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            logger.error("Error confirmando opción para solicitud {} opción {}: {}", solicitudId, opcionId, e.getMessage());
+            return ResponseEntity.status(500).body(java.util.Map.of("error", e.getMessage()));
         }
     }
 
