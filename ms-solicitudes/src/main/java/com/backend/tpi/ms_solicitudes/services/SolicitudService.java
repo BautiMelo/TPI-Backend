@@ -162,7 +162,18 @@ public class SolicitudService {
             try {
                 if (createSolicitudDTO.getContenedorId() != null) {
                     com.backend.tpi.ms_solicitudes.models.Contenedor cont = contenedorService.findById(createSolicitudDTO.getContenedorId());
+                    
+                    // Validar que el clienteId del contenedor coincida con el de la solicitud
+                    if (solicitud.getClienteId() != null && cont.getClienteId() != null) {
+                        if (!solicitud.getClienteId().equals(cont.getClienteId())) {
+                            logger.error("El contenedor ID {} pertenece al cliente {}, pero la solicitud es del cliente {}",
+                                cont.getId(), cont.getClienteId(), solicitud.getClienteId());
+                            throw new IllegalArgumentException("El contenedor no pertenece al cliente de la solicitud");
+                        }
+                    }
+                    
                     solicitud.setContenedor(cont);
+                    logger.info("Contenedor existente ID {} asociado a la solicitud", cont.getId());
                 } else if (createSolicitudDTO.getContenedorPeso() != null || createSolicitudDTO.getContenedorVolumen() != null) {
                     com.backend.tpi.ms_solicitudes.models.Contenedor nuevoCont = new com.backend.tpi.ms_solicitudes.models.Contenedor();
                     nuevoCont.setPeso(createSolicitudDTO.getContenedorPeso());
@@ -171,15 +182,17 @@ public class SolicitudService {
                     if (solicitud.getClienteId() != null) nuevoCont.setClienteId(solicitud.getClienteId());
                     com.backend.tpi.ms_solicitudes.models.Contenedor contGuardado = contenedorService.save(nuevoCont);
                     solicitud.setContenedor(contGuardado);
+                    logger.info("Nuevo contenedor creado con ID {} para la solicitud", contGuardado.getId());
                 }
             } catch (Exception e) {
-                logger.warn("No se pudo crear/adjuntar contenedor en la creación de solicitud: {}", e.getMessage());
+                logger.error("Error al crear/adjuntar contenedor en la creación de solicitud: {}", e.getMessage());
+                throw new IllegalArgumentException("Error al procesar el contenedor: " + e.getMessage());
             }
 
-            // Asignar estado por defecto si existe (BORRADOR)
+            // Asignar estado por defecto si existe (PROGRAMADA)
             try {
                 if (estadoSolicitudRepository != null) {
-                    estadoSolicitudRepository.findByNombre("BORRADOR").ifPresent(solicitud::setEstado);
+                    estadoSolicitudRepository.findByNombre("PROGRAMADA").ifPresent(solicitud::setEstado);
                 }
             } catch (Exception e) {
                 logger.warn("No se pudo asignar estado por defecto a la solicitud: {}", e.getMessage());
@@ -340,6 +353,7 @@ public class SolicitudService {
             if (solicitud == null) return null;
             SolicitudDTO dto = new SolicitudDTO();
             dto.setId(solicitud.getId());
+            dto.setClienteId(solicitud.getClienteId());
             dto.setDireccionOrigen(solicitud.getDireccionOrigen());
             dto.setDireccionDestino(solicitud.getDireccionDestino());
             // Map coordinates if present

@@ -87,8 +87,14 @@ public class SolicitudController {
         logger.info("GET /api/v1/solicitudes - Consultando solicitudes con filtros - estado: {}, clienteId: {}", estado, clienteId);
 
         var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities() != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"))) {
-            // Si el caller es CLIENTE, forzamos clienteId al del token
+        boolean isCliente = auth != null && auth.getAuthorities() != null && 
+                           auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"));
+        boolean isAdminOrOperador = auth != null && auth.getAuthorities() != null && 
+                                    auth.getAuthorities().stream().anyMatch(a -> 
+                                        a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_OPERADOR"));
+        
+        if (isCliente && !isAdminOrOperador) {
+            // Si el caller es CLIENTE (sin ser admin/operador), forzamos clienteId al del token
             if (auth instanceof JwtAuthenticationToken) {
                 Object emailObj = ((JwtAuthenticationToken) auth).getToken().getClaim("email");
                 String email = emailObj != null ? emailObj.toString() : null;

@@ -33,19 +33,19 @@ public class EstadoTransicionService {
 
     static {
         // Configurar transiciones válidas de Solicitud
-        TRANSICIONES_SOLICITUD.put("PENDIENTE", Arrays.asList("EN_PROCESO", "CANCELADA"));
-        TRANSICIONES_SOLICITUD.put("EN_PROCESO", Arrays.asList("EN_TRANSITO", "CANCELADA"));
-        TRANSICIONES_SOLICITUD.put("EN_TRANSITO", Arrays.asList("COMPLETADA", "EN_PROCESO"));
+        // Estados oficiales: PROGRAMADA, EN_TRANSITO, COMPLETADA, CANCELADA
+        TRANSICIONES_SOLICITUD.put("PROGRAMADA", Arrays.asList("EN_TRANSITO", "CANCELADA"));
+        TRANSICIONES_SOLICITUD.put("EN_TRANSITO", Arrays.asList("COMPLETADA", "PROGRAMADA"));
         TRANSICIONES_SOLICITUD.put("COMPLETADA", Arrays.asList()); // Estado final
         TRANSICIONES_SOLICITUD.put("CANCELADA", Arrays.asList()); // Estado final
 
         // Configurar transiciones válidas de Contenedor
-        TRANSICIONES_CONTENEDOR.put("LIBRE", Arrays.asList("ASIGNADO", "EN_MANTENIMIENTO"));
+        // Estados oficiales: LIBRE, ASIGNADO, EN_TRANSITO, EN_DEPOSITO, ENTREGADO
+        TRANSICIONES_CONTENEDOR.put("LIBRE", Arrays.asList("ASIGNADO"));
         TRANSICIONES_CONTENEDOR.put("ASIGNADO", Arrays.asList("EN_TRANSITO", "LIBRE"));
         TRANSICIONES_CONTENEDOR.put("EN_TRANSITO", Arrays.asList("EN_DEPOSITO", "ENTREGADO"));
-        TRANSICIONES_CONTENEDOR.put("EN_DEPOSITO", Arrays.asList("LIBRE", "ASIGNADO"));
-        TRANSICIONES_CONTENEDOR.put("ENTREGADO", Arrays.asList("LIBRE", "EN_DEPOSITO"));
-        TRANSICIONES_CONTENEDOR.put("EN_MANTENIMIENTO", Arrays.asList("LIBRE"));
+        TRANSICIONES_CONTENEDOR.put("EN_DEPOSITO", Arrays.asList("EN_TRANSITO"));
+        TRANSICIONES_CONTENEDOR.put("ENTREGADO", Arrays.asList("LIBRE"));
     }
 
     /**

@@ -371,7 +371,7 @@
           "request": {
             "method": "PATCH",
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/contenedores/{{contenedorId}}?estado=EN_TRANSITO", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores", "{{contenedorId}}" ], "query": [ { "key": "estado", "value": "EN_TRANSITO" } ] }
+            "url": { "raw": "{{baseUrl}}/api/v1/contenedores/{{contenedorId}}?estadoNombre=EN_TRANSITO", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores", "{{contenedorId}}" ], "query": [ { "key": "estadoNombre", "value": "EN_TRANSITO" } ] }
           }
         },
         {
@@ -396,13 +396,25 @@
       "name": "Solicitudes",
       "item": [
         {
-          "name": "Create Solicitud",
+          "name": "Create Solicitud (nuevo contenedor)",
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"direccionOrigen\": \"Av. Santa Fe 567, CABA\",\n  \"direccionDestino\": \"Av. Corrientes 123, CABA\",\n  \"clienteEmail\": \"cliente@example.com\",\n  \"clienteNombre\": \"Cliente Test\",\n  \"clienteTelefono\": \"+54911123456\",\n  \"contenedorPeso\": 500.0,\n  \"contenedorVolumen\": 5.0\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes" ] }
+          }
+        },
+        {
+          "name": "Create Solicitud (contenedor existente)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"direccionOrigen\": \"Av. Rivadavia 1000, CABA\",\n  \"direccionDestino\": \"Av. Belgrano 500, CABA\",\n  \"clienteEmail\": \"cliente@example.com\",\n  \"clienteNombre\": \"Cliente Test\",\n  \"clienteTelefono\": \"+54911123456\",\n  \"contenedorId\": {{contenedorId}}\n}"
             },
             "url": { "raw": "{{baseUrl}}/api/v1/solicitudes", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes" ] }
           }
