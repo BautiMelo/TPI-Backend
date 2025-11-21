@@ -170,15 +170,58 @@
       "name": "Usuarios (ADMIN)",
       "item": [
         {
+          "name": "Get All Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "usuarios"
+              ]
+            }
+          }
+        },
+        {
           "name": "Registro Usuario por Admin",
           "request": {
             "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\\n  \\\"nombre\\\": \\\"Pedro Operador\\\",\\n  \\\"email\\\": \\\"operador@example.com\\\",\\n  \\\"telefono\\\": \\\"+54911555666\\\",\\n  \\\"username\\\": \\\"operador1\\\",\\n  \\\"password\\\": \\\"1234\\\",\\n  \\\"rol\\\": \\\"OPERADOR\\\"\\n}"
+              "raw": "{\n  \"nombre\": \"Pedro Operador\",\n  \"email\": \"operador@example.com\",\n  \"telefono\": \"+54911555666\",\n  \"username\": \"operador1\",\n  \"password\": \"1234\",\n  \"rol\": \"OPERADOR\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/v1/usuarios/registro", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "usuarios", "registro" ] }
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/usuarios/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "usuarios",
+                "registro"
+              ]
+            }
           }
         }
       ]
