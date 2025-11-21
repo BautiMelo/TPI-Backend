@@ -63,6 +63,21 @@ public class KeycloakService {
      * @throws RuntimeException si ocurre un error al crear el usuario
      */
     public String crearUsuario(String username, String email, String firstName, String lastName, String password) {
+        return crearUsuarioConRol(username, email, firstName, lastName, password, "CLIENTE");
+    }
+
+    /**
+     * Crea un nuevo usuario en Keycloak con un rol específico
+     * @param username Nombre de usuario
+     * @param email Email del usuario
+     * @param firstName Nombre
+     * @param lastName Apellido
+     * @param password Contraseña
+     * @param rol Rol a asignar (CLIENTE, OPERADOR, TRANSPORTISTA, ADMIN)
+     * @return ID del usuario creado en Keycloak
+     * @throws RuntimeException si ocurre un error al crear el usuario
+     */
+    public String crearUsuarioConRol(String username, String email, String firstName, String lastName, String password, String rol) {
         try {
             Keycloak keycloakInstance = getKeycloakInstance();
             // Usar el realm tpi-backend para crear usuarios, no el realm de autenticación (master)
@@ -98,8 +113,8 @@ public class KeycloakService {
             String userId = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
             log.info("Usuario creado en Keycloak con ID: {}", userId);
 
-            // Asignar rol de CLIENTE
-            asignarRol(userId, "CLIENTE");
+            // Asignar rol especificado
+            asignarRol(userId, rol);
 
             return userId;
 
@@ -170,6 +185,46 @@ public class KeycloakService {
         } catch (Exception e) {
             log.error("Error al verificar existencia de email: {}", email, e);
             return false;
+        }
+    }
+
+    /**
+     * Obtiene todos los usuarios del realm tpi-backend
+     * @return Lista de representaciones de usuarios
+     */
+    public List<UserRepresentation> obtenerTodosLosUsuarios() {
+        try {
+            Keycloak keycloakInstance = getKeycloakInstance();
+            RealmResource realmResource = keycloakInstance.realm("tpi-backend");
+            UsersResource usersResource = realmResource.users();
+            
+            List<UserRepresentation> users = usersResource.list();
+            log.info("Se obtuvieron {} usuarios del realm", users.size());
+            return users;
+        } catch (Exception e) {
+            log.error("Error al obtener todos los usuarios", e);
+            throw new RuntimeException("Error al obtener usuarios: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtiene los roles de un usuario específico
+     * @param userId ID del usuario en Keycloak
+     * @return Lista de nombres de roles
+     */
+    public List<String> obtenerRolesUsuario(String userId) {
+        try {
+            Keycloak keycloakInstance = getKeycloakInstance();
+            RealmResource realmResource = keycloakInstance.realm("tpi-backend");
+            
+            List<RoleRepresentation> roles = realmResource.users().get(userId).roles().realmLevel().listAll();
+            return roles.stream()
+                    .map(RoleRepresentation::getName)
+                    .filter(name -> !name.startsWith("default-") && !name.equals("uma_authorization") && !name.equals("offline_access"))
+                    .toList();
+        } catch (Exception e) {
+            log.error("Error al obtener roles del usuario {}", userId, e);
+            return Collections.emptyList();
         }
     }
 }

@@ -23,6 +23,8 @@ public class RouteConfig {
                         .uri("http://ms-solicitudes:8083"))
                 .route("ms-contenedores", spec -> spec.path("/api/v1/contenedores/**")
                         .uri("http://ms-solicitudes:8083"))
+                .route("ms-usuarios", spec -> spec.path("/api/v1/usuarios/**")
+                        .uri("http://ms-solicitudes:8083"))
 
                 // Microservicio de Gestión y Cálculos (puerto 8081)
                 // Maneja tarifas, precios, depósitos y cálculos de distancia

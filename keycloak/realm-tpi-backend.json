@@ -93,6 +93,54 @@
         }
       ],
       "realmRoles": ["OPERADOR"]
+    },
+    {
+      "username": "carlos.ramirez",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "carlos.ramirez@transporte.com",
+      "firstName": "Carlos",
+      "lastName": "Ramírez",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["TRANSPORTISTA"]
+    },
+    {
+      "username": "laura.fernandez",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "laura.fernandez@logistica.com",
+      "firstName": "Laura",
+      "lastName": "Fernández",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["TRANSPORTISTA"]
+    },
+    {
+      "username": "diego.martinez",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "diego.martinez@fleteargentino.com",
+      "firstName": "Diego",
+      "lastName": "Martínez",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["TRANSPORTISTA"]
     }
   ],
   "roles": {
