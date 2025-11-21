@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * Estado de un contenedor
- * Ej: "Disponible", "En Tránsito", "Entregado", etc.
+ * Estados válidos: LIBRE, ASIGNADO, EN_TRANSITO, EN_DEPOSITO, ENTREGADO
  */
 @Entity
 @Data

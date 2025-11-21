@@ -306,8 +306,24 @@
           "name": "Get Contenedor by ID",
           "request": {
             "method": "GET",
-            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/contenedores/{{contenedorId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores", "{{contenedorId}}" ] }
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contenedores/{{contenedorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contenedores",
+                "{{contenedorId}}"
+              ]
+            }
           }
         },
         {
@@ -325,7 +341,7 @@
             "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": null,\n  \"peso\": 500.0,\n  \"volumen\": 5.0,\n  \"clienteId\": 10,\n  \"estado\": \"DISPONIBLE\"\n}"
+              "raw": "{\n  \"id\": null,\n  \"peso\": 500.0,\n  \"volumen\": 5.0,\n  \"clienteId\": 10,\n  \"estado\": \"LIBRE\"\n}"
             },
             "url": { "raw": "{{baseUrl}}/api/v1/contenedores", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores" ] }
           }
@@ -337,7 +353,7 @@
             "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": {{contenedorId}},\n  \"peso\": 600.0,\n  \"volumen\": 6.0,\n  \"clienteId\": 10,\n  \"estado\": \"DISPONIBLE\"\n}"
+              "raw": "{\n  \"id\": {{contenedorId}},\n  \"peso\": 600.0,\n  \"volumen\": 6.0,\n  \"clienteId\": 10,\n  \"estado\": \"LIBRE\"\n}"
             },
             "url": { "raw": "{{baseUrl}}/api/v1/contenedores/{{contenedorId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "contenedores", "{{contenedorId}}" ] }
           }
