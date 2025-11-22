@@ -308,21 +308,6 @@ public class SolicitudController {
     // ---- Integration endpoints (delegan al service) ----
 
     /**
-    * POST /api/v1/solicitudes/{id}/solicitar-ruta - Solicita una ruta para la solicitud
-    * Requiere rol OPERADOR o ADMIN
-     * @param id ID de la solicitud
-     * @return Respuesta del microservicio de rutas
-     */
-    @PostMapping("/{id}/solicitar-ruta")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<Object> requestRoute(@PathVariable Long id) {
-        logger.info("POST /api/v1/solicitudes/{}/solicitar-ruta - Solicitando ruta", id);
-        Object result = solicitudService.requestRoute(id);
-        logger.info("POST /api/v1/solicitudes/{}/solicitar-ruta - Respuesta: 200 - Ruta solicitada", id);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
     * POST /api/v1/solicitudes/{id}/calcular-precio - Calcula el precio de una solicitud
     * Requiere rol OPERADOR o ADMIN
      * @param id ID de la solicitud
@@ -450,8 +435,8 @@ public class SolicitudController {
     }
 
     /**
-    * GET /api/v1/solicitudes/{id}/estados-permitidos - Consulta los estados a los que puede transicionar la solicitud
-    * Requiere rol OPERADOR o ADMIN
+     * GET /api/v1/solicitudes/{id}/estados-permitidos - Consulta transiciones de estado permitidas
+     * Requiere rol OPERADOR o ADMIN
      * @param id ID de la solicitud
      * @return Lista de nombres de estados permitidos
      */
@@ -462,5 +447,28 @@ public class SolicitudController {
         List<String> estadosPermitidos = solicitudService.getEstadosPermitidos(id);
         logger.info("GET /api/v1/solicitudes/{}/estados-permitidos - Respuesta: 200 - {} estados permitidos", id, estadosPermitidos.size());
         return ResponseEntity.ok(estadosPermitidos);
+    }
+
+    /**
+     * PUT /api/v1/solicitudes/{id}/estado - Cambia el estado de una solicitud
+     * Requiere rol OPERADOR, TRANSPORTISTA o ADMIN
+     * @param id ID de la solicitud
+     * @param nuevoEstado Nombre del nuevo estado (PENDIENTE, PROGRAMADO, EN_RUTA, ENTREGADO, FINALIZADO)
+     * @return Solicitud actualizada
+     */
+    @PutMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('OPERADOR','TRANSPORTISTA','ADMIN')")
+    public ResponseEntity<?> cambiarEstado(
+            @PathVariable Long id,
+            @RequestParam String nuevoEstado) {
+        logger.info("PUT /api/v1/solicitudes/{}/estado - Cambiando estado a: {}", id, nuevoEstado);
+        try {
+            SolicitudDTO solicitud = solicitudService.cambiarEstado(id, nuevoEstado);
+            logger.info("PUT /api/v1/solicitudes/{}/estado - Respuesta: 200 - Estado cambiado", id);
+            return ResponseEntity.ok(solicitud);
+        } catch (RuntimeException e) {
+            logger.error("PUT /api/v1/solicitudes/{}/estado - Respuesta: 404 - {}", id, e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }

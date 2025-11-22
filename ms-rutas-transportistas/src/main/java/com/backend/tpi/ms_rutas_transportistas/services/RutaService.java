@@ -83,31 +83,6 @@ public class RutaService {
             logger.error("IdSolicitud no puede ser null");
             throw new IllegalArgumentException("El ID de la solicitud es obligatorio");
         }
-        
-        // Verificar si ya existe una ruta para esta solicitud
-        Optional<Ruta> rutaExistente = rutaRepository.findByIdSolicitud(createRutaDTO.getIdSolicitud());
-        if (rutaExistente.isPresent()) {
-            logger.error("Ya existe una ruta para la solicitud ID: {}", createRutaDTO.getIdSolicitud());
-            throw new IllegalArgumentException("Ya existe una ruta para la solicitud ID: " + createRutaDTO.getIdSolicitud());
-        }
-        
-        // If called only with idSolicitud and no deposit IDs, generate tentative options without persisting a Ruta
-        if ((createRutaDTO.getOrigenDepositoId() == null || createRutaDTO.getDestinoDepositoId() == null)
-                && createRutaDTO.getIdSolicitud() != null
-                && (createRutaDTO.getOrigenDepositoId() == null && createRutaDTO.getDestinoDepositoId() == null)) {
-            logger.info("Generando opciones tentativas para solicitud {} sin persistir ruta", createRutaDTO.getIdSolicitud());
-            try {
-                List<RutaTentativaDTO> variantes = generateOptionsForSolicitud(createRutaDTO.getIdSolicitud());
-                // For backward compatibility return the first variant wrapped in a DTO-like map if caller expects RutaDTO
-                // But here we return a RutaDTO with null id and opcionSeleccionadaId unset; callers (ms-solicitudes) should handle response
-                // Instead, throw an exception to signal controller to return variants (controller will handle)
-                // We return null here and the controller will intercept this case.
-                return null;
-            } catch (Exception e) {
-                logger.error("Error generando opciones para solicitud {}: {}", createRutaDTO.getIdSolicitud(), e.getMessage());
-                throw new RuntimeException("Error generando opciones: " + e.getMessage());
-            }
-        }
 
         logger.debug("Creando nueva ruta para solicitud ID: {}", createRutaDTO.getIdSolicitud());
         Ruta ruta = new Ruta();
@@ -752,8 +727,10 @@ public class RutaService {
 
             logger.info("Nearest deposits for solicitud {} -> origen: {}, destino: {}", solicitudId, origenDepotId, destinoDepotId);
 
-            // Delegar a RutaTentativaService
-            List<RutaTentativaDTO> variantes = rutaTentativaService.calcularVariantes(origenDepotId, destinoDepotId);
+            // Delegar a RutaTentativaService con coordenadas reales
+            List<RutaTentativaDTO> variantes = rutaTentativaService.calcularVariantesCompletas(
+                origenLat, origenLong, destinoLat, destinoLong, 
+                origenDepotId, destinoDepotId);
             return variantes;
         } catch (Exception e) {
             logger.error("Error generating options for solicitud {}: {}", solicitudId, e.getMessage());

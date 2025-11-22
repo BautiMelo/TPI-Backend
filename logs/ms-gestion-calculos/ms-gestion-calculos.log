@@ -90,3 +90,238 @@ Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "
 2025-11-22T00:51:22.241Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
 2025-11-22T00:51:22.242Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
 2025-11-22T00:51:22.263Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:05:26.275Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Córdoba 1500, CABA, Buenos Aires
+2025-11-22T01:05:27.536Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Córdoba 1500, CABA, Buenos Aires': lat=-34.5994611, lon=-58.3880387
+2025-11-22T01:05:27.553Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 2500, Río Gallegos
+2025-11-22T01:05:28.611Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 2500, Río Gallegos': lat=-51.6472855, lon=-69.2364404
+2025-11-22T01:05:36.846Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:05:36.846Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:05:36.863Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:05:46.393Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:05:46.394Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:05:46.409Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:17:44.363Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:17:44.363Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:17:44.391Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:19:35.676Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:19:35.677Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:19:35.696Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:31:41.484Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:31:41.485Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:31:41.505Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:41:05.546Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:41:05.547Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:41:05.566Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:46:01.085Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:46:01.085Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:46:01.104Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:46:19.559Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:46:19.560Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:46:19.578Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:50:55.663Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:50:55.664Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:50:55.680Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:50:55.760Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T01:50:55.762Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T01:50:55.881Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T01:50:55.960Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T01:50:55.961Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T01:50:55.963Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T01:50:57.232Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T01:50:57.233Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T01:50:57.254Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T01:50:57.273Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T01:50:57.274Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T01:50:57.276Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T01:50:57.298Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-22T01:50:57.299Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-22T01:50:57.302Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.49, lon=-58.55
+2025-11-22T01:50:57.310Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T01:50:57.312Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T01:50:57.314Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T01:50:58.316Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T01:50:58.317Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T01:50:58.321Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T01:50:58.329Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-22T01:50:58.330Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-22T01:50:58.333Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-34.92, lon=-57.95
+2025-11-22T01:50:58.346Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T01:50:58.347Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T01:50:58.351Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T01:51:00.538Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T01:51:00.539Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T01:51:00.542Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T01:51:00.551Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-22T01:51:00.551Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-22T01:51:00.553Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-38.72, lon=-62.27
+2025-11-22T01:51:00.563Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T01:51:00.563Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T01:51:00.571Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:17:34.641Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:17:34.659Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:17:34.799Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:17:34.892Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:17:34.893Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:17:34.901Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:17:34.922Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:17:34.924Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:17:34.928Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:17:36.541Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:17:36.542Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:17:36.565Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:17:36.584Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:17:36.584Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:17:36.588Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:17:36.603Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-22T02:17:36.604Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-22T02:17:36.607Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.49, lon=-58.55
+2025-11-22T02:17:36.633Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:17:36.634Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:17:36.639Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:17:36.858Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:17:36.859Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:17:36.865Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:17:36.881Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-22T02:17:36.883Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-22T02:17:36.889Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-34.92, lon=-57.95
+2025-11-22T02:17:36.906Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:17:36.906Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:17:36.911Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:17:37.205Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:17:37.206Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:17:37.210Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:17:37.228Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-22T02:17:37.229Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-22T02:17:37.233Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-38.72, lon=-62.27
+2025-11-22T02:17:37.243Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:17:37.243Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:17:37.245Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:21:20.424Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Córdoba 1500, CABA, Buenos Aires
+2025-11-22T02:21:22.037Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Córdoba 1500, CABA, Buenos Aires': lat=-34.5994611, lon=-58.3880387
+2025-11-22T02:21:22.074Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 2500, Río Gallegos
+2025-11-22T02:21:24.206Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 2500, Río Gallegos': lat=-51.6472855, lon=-69.2364404
+2025-11-22T02:21:34.955Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:21:34.957Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:21:35.620Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:21:35.681Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:21:35.683Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:21:35.746Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:21:35.756Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:21:35.758Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:21:35.762Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:21:35.824Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:21:35.825Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:21:35.852Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:21:35.884Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:21:35.885Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:21:35.887Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:21:35.900Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-22T02:21:35.902Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-22T02:21:35.904Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.49, lon=-58.55
+2025-11-22T02:21:35.915Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:21:35.916Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:21:35.931Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:21:36.032Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:21:36.032Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:21:36.034Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:21:36.062Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-22T02:21:36.062Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-22T02:21:36.065Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-34.92, lon=-57.95
+2025-11-22T02:21:36.079Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:21:36.082Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:21:36.084Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:21:36.148Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:21:36.149Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:21:36.151Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:21:36.164Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-22T02:21:36.165Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-22T02:21:36.167Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-38.72, lon=-62.27
+2025-11-22T02:21:36.188Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:21:36.189Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:21:36.190Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:26:11.322Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:26:11.323Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:26:11.354Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:26:11.368Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.368Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:26:11.370Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:26:11.380Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.382Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:26:11.386Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:26:11.435Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:26:11.436Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:26:11.451Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:26:11.459Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.460Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:26:11.468Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:26:11.485Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.486Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-22T02:26:11.490Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.49, lon=-58.55
+2025-11-22T02:26:11.500Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.501Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:26:11.504Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:26:11.569Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.570Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:26:11.573Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:26:11.586Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.587Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-22T02:26:11.588Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-34.92, lon=-57.95
+2025-11-22T02:26:11.597Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.597Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:26:11.599Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:26:11.665Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.666Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:26:11.669Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:26:11.676Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.677Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-22T02:26:11.681Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-38.72, lon=-62.27
+2025-11-22T02:26:11.691Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:26:11.692Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:26:11.698Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:28:09.835Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:28:09.836Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:28:09.854Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:28:09.866Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:28:09.867Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:28:09.870Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:28:09.877Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:28:09.877Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:28:09.880Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:28:09.927Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-22T02:28:09.927Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-22T02:28:09.940Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 26 depósitos encontrados
+2025-11-22T02:28:09.953Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:28:09.953Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:28:09.955Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:28:09.964Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-22T02:28:09.964Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-22T02:28:09.966Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.49, lon=-58.55
+2025-11-22T02:28:09.972Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:28:09.972Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:28:09.974Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:28:10.043Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:28:10.043Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:28:10.046Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:28:10.054Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-22T02:28:10.055Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-22T02:28:10.057Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-34.92, lon=-57.95
+2025-11-22T02:28:10.068Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:28:10.068Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:28:10.070Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T02:28:10.144Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-22T02:28:10.145Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-22T02:28:10.148Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.6, lon=-58.39
+2025-11-22T02:28:10.154Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-22T02:28:10.155Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-22T02:28:10.157Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-38.72, lon=-62.27
+2025-11-22T02:28:10.166Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Consultando coordenadas
+2025-11-22T02:28:10.167Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 23
+2025-11-22T02:28:10.174Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/23/coordenadas - Respuesta: 200 - lat=-51.62, lon=-69.22
+2025-11-22T03:03:39.342Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Córdoba 1500, CABA, Buenos Aires
+2025-11-22T03:03:41.343Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Córdoba 1500, CABA, Buenos Aires': lat=-34.5994611, lon=-58.3880387
+2025-11-22T03:03:41.464Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 2500, Río Gallegos
+2025-11-22T03:03:42.621Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 2500, Río Gallegos': lat=-51.6456332, lon=-69.235224
+2025-11-22T03:48:43.044Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 567, CABA
+2025-11-22T03:48:45.251Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 567, CABA': lat=-34.5765392, lon=-58.4314883
+2025-11-22T03:48:45.460Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Corrientes 123, CABA
+2025-11-22T03:48:46.544Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Corrientes 123, CABA': lat=-34.6028098, lon=-58.3693688

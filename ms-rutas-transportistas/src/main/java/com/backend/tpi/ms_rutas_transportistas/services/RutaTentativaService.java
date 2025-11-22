@@ -120,7 +120,50 @@ public class RutaTentativaService {
     }
 
     /**
+     * Calcula múltiples variantes de ruta incluyendo tramos desde/hacia puntos reales
+     * @param origenLat Latitud del punto de origen real
+     * @param origenLon Longitud del punto de origen real
+     * @param destinoLat Latitud del punto de destino real
+     * @param destinoLon Longitud del punto de destino real
+     * @param origenDepositoId ID del depósito más cercano al origen
+     * @param destinoDepositoId ID del depósito más cercano al destino
+     * @return Lista de variantes de ruta completas
+     */
+    public List<RutaTentativaDTO> calcularVariantesCompletas(
+            Double origenLat, Double origenLon,
+            Double destinoLat, Double destinoLon,
+            Long origenDepositoId, Long destinoDepositoId) {
+        List<RutaTentativaDTO> variantes = new ArrayList<>();
+        try {
+            // Variante directa (solo depósitos origen y destino)
+            RutaTentativaDTO directa = calcularRutaTentativaCompleta(
+                origenLat, origenLon, destinoLat, destinoLon,
+                origenDepositoId, destinoDepositoId, null);
+            if (directa.getExitoso()) variantes.add(directa);
+            
+            // Obtener depósitos candidatos intermedios
+            List<Long> candidatos = depositoService.getKNearestToRoute(origenDepositoId, destinoDepositoId, 3);
+            candidatos.remove(origenDepositoId);
+            candidatos.remove(destinoDepositoId);
+            
+            int maxIntermediarios = Math.min(3, candidatos.size());
+            for (int i = 0; i < maxIntermediarios; i++) {
+                Long depositoIntermedio = candidatos.get(i);
+                List<Long> intermedios = List.of(depositoIntermedio);
+                RutaTentativaDTO rutaConIntermedio = calcularRutaTentativaCompleta(
+                    origenLat, origenLon, destinoLat, destinoLon,
+                    origenDepositoId, destinoDepositoId, intermedios);
+                if (rutaConIntermedio.getExitoso()) variantes.add(rutaConIntermedio);
+            }
+        } catch (Exception e) {
+            logger.error("Error al calcular variantes completas: {}", e.getMessage());
+        }
+        return variantes;
+    }
+
+    /**
      * Calcula múltiples variantes de ruta (sin elegir la mejor) y devuelve la lista de opciones
+     * (solo entre depósitos, sin tramos de origen/destino reales)
      */
     public List<RutaTentativaDTO> calcularVariantes(Long origenDepositoId, Long destinoDepositoId) {
         List<RutaTentativaDTO> variantes = new ArrayList<>();
@@ -145,6 +188,183 @@ public class RutaTentativaService {
     }
     
     // obtenerTodosDepositosIds moved to DepositoService
+
+    /**
+     * Calcula una ruta tentativa incluyendo puntos de origen/destino reales y depósitos
+     * @param origenLat Latitud del punto de origen real
+     * @param origenLon Longitud del punto de origen real
+     * @param destinoLat Latitud del punto de destino real
+     * @param destinoLon Longitud del punto de destino real
+     * @param origenDepositoId ID del depósito más cercano al origen
+     * @param destinoDepositoId ID del depósito más cercano al destino
+     * @param depositosIntermediosIds IDs de depósitos intermedios opcionales (en orden)
+     * @return RutaTentativaDTO con la ruta calculada completa
+     */
+    public RutaTentativaDTO calcularRutaTentativaCompleta(
+            Double origenLat, Double origenLon,
+            Double destinoLat, Double destinoLon,
+            Long origenDepositoId, 
+            Long destinoDepositoId,
+            List<Long> depositosIntermediosIds) {
+        
+        logger.info("=== INICIO calcularRutaTentativaCompleta ===");
+        logger.info("Punto origen real: ({}, {}), Punto destino real: ({}, {})", origenLat, origenLon, destinoLat, destinoLon);
+        logger.info("Depósitos: origen={}, destino={}, intermedios={}", origenDepositoId, destinoDepositoId, depositosIntermediosIds);
+        
+        try {
+            // Construir lista completa de depósitos en orden
+            List<Long> todosDepositosIds = new ArrayList<>();
+            todosDepositosIds.add(origenDepositoId);
+            if (depositosIntermediosIds != null && !depositosIntermediosIds.isEmpty()) {
+                todosDepositosIds.addAll(depositosIntermediosIds);
+            }
+            todosDepositosIds.add(destinoDepositoId);
+            
+            // Obtener información de todos los depósitos
+            Map<Long, Map<String, Object>> depositosInfo = depositoService.getInfoForDepositos(todosDepositosIds);
+            logger.info("Depósitos obtenidos: {} de {} solicitados", depositosInfo.size(), todosDepositosIds.size());
+            
+            List<TramoTentativoDTO> tramos = new ArrayList<>();
+            List<String> geometries = new ArrayList<>();
+            double distanciaTotal = 0.0;
+            double duracionTotalHoras = 0.0;
+            int orden = 1;
+            
+            // TRAMO 1: Origen real → Primer depósito
+            Map<String, Object> primerDeposito = depositosInfo.get(origenDepositoId);
+            if (primerDeposito != null) {
+                CoordenadaDTO coordOrigenReal = new CoordenadaDTO(origenLat, origenLon);
+                CoordenadaDTO coordPrimerDeposito = new CoordenadaDTO(
+                    ((Number) primerDeposito.get("latitud")).doubleValue(),
+                    ((Number) primerDeposito.get("longitud")).doubleValue()
+                );
+                
+                logger.info("Tramo {}: Punto origen real ({}, {}) → Depósito {} ({})", 
+                    orden, origenLat, origenLon, origenDepositoId, primerDeposito.get("nombre"));
+                
+                RutaCalculadaDTO ruta1 = osrmService.calcularRuta(coordOrigenReal, coordPrimerDeposito);
+                if (ruta1.isExitoso() && ruta1.getDistanciaKm() != null && ruta1.getDistanciaKm() > 0.0) {
+                    tramos.add(TramoTentativoDTO.builder()
+                        .orden(orden++)
+                        .origenDepositoId(null) // No es un depósito, es el punto real
+                        .origenDepositoNombre("Punto de Origen")
+                        .destinoDepositoId(origenDepositoId)
+                        .destinoDepositoNombre((String) primerDeposito.get("nombre"))
+                        .distanciaKm(ruta1.getDistanciaKm())
+                        .duracionHoras(ruta1.getDuracionHoras())
+                        .build());
+                    distanciaTotal += ruta1.getDistanciaKm();
+                    duracionTotalHoras += ruta1.getDuracionHoras();
+                    if (ruta1.getGeometry() != null) geometries.add(ruta1.getGeometry());
+                }
+            }
+            
+            // TRAMOS INTERMEDIOS: Entre depósitos consecutivos
+            for (int i = 0; i < todosDepositosIds.size() - 1; i++) {
+                Long depOrigen = todosDepositosIds.get(i);
+                Long depDestino = todosDepositosIds.get(i + 1);
+                
+                Map<String, Object> infoOrigen = depositosInfo.get(depOrigen);
+                Map<String, Object> infoDestino = depositosInfo.get(depDestino);
+                
+                if (infoOrigen == null || infoDestino == null) continue;
+                
+                CoordenadaDTO coordOrigen = new CoordenadaDTO(
+                    ((Number) infoOrigen.get("latitud")).doubleValue(),
+                    ((Number) infoOrigen.get("longitud")).doubleValue()
+                );
+                CoordenadaDTO coordDestino = new CoordenadaDTO(
+                    ((Number) infoDestino.get("latitud")).doubleValue(),
+                    ((Number) infoDestino.get("longitud")).doubleValue()
+                );
+                
+                logger.info("Tramo {}: Depósito {} ({}) → Depósito {} ({})",
+                    orden, depOrigen, infoOrigen.get("nombre"), depDestino, infoDestino.get("nombre"));
+                
+                RutaCalculadaDTO rutaCalculada = osrmService.calcularRuta(coordOrigen, coordDestino);
+                if (!rutaCalculada.isExitoso() || rutaCalculada.getDistanciaKm() == null || rutaCalculada.getDistanciaKm() == 0.0) {
+                    logger.error("OSRM no pudo calcular la ruta entre depósito {} y {}", depOrigen, depDestino);
+                    return RutaTentativaDTO.builder()
+                        .exitoso(false)
+                        .mensaje("No se pudo calcular la ruta entre depósitos")
+                        .build();
+                }
+                
+                tramos.add(TramoTentativoDTO.builder()
+                    .orden(orden++)
+                    .origenDepositoId(depOrigen)
+                    .origenDepositoNombre((String) infoOrigen.get("nombre"))
+                    .destinoDepositoId(depDestino)
+                    .destinoDepositoNombre((String) infoDestino.get("nombre"))
+                    .distanciaKm(rutaCalculada.getDistanciaKm())
+                    .duracionHoras(rutaCalculada.getDuracionHoras())
+                    .build());
+                
+                distanciaTotal += rutaCalculada.getDistanciaKm();
+                duracionTotalHoras += rutaCalculada.getDuracionHoras();
+                if (rutaCalculada.getGeometry() != null) geometries.add(rutaCalculada.getGeometry());
+            }
+            
+            // TRAMO FINAL: Último depósito → Destino real
+            Map<String, Object> ultimoDeposito = depositosInfo.get(destinoDepositoId);
+            if (ultimoDeposito != null) {
+                CoordenadaDTO coordUltimoDeposito = new CoordenadaDTO(
+                    ((Number) ultimoDeposito.get("latitud")).doubleValue(),
+                    ((Number) ultimoDeposito.get("longitud")).doubleValue()
+                );
+                CoordenadaDTO coordDestinoReal = new CoordenadaDTO(destinoLat, destinoLon);
+                
+                logger.info("Tramo {}: Depósito {} ({}) → Punto destino real ({}, {})",
+                    orden, destinoDepositoId, ultimoDeposito.get("nombre"), destinoLat, destinoLon);
+                
+                RutaCalculadaDTO rutaFinal = osrmService.calcularRuta(coordUltimoDeposito, coordDestinoReal);
+                if (rutaFinal.isExitoso() && rutaFinal.getDistanciaKm() != null && rutaFinal.getDistanciaKm() > 0.0) {
+                    tramos.add(TramoTentativoDTO.builder()
+                        .orden(orden++)
+                        .origenDepositoId(destinoDepositoId)
+                        .origenDepositoNombre((String) ultimoDeposito.get("nombre"))
+                        .destinoDepositoId(null) // No es un depósito, es el punto real
+                        .destinoDepositoNombre("Punto de Destino")
+                        .distanciaKm(rutaFinal.getDistanciaKm())
+                        .duracionHoras(rutaFinal.getDuracionHoras())
+                        .build());
+                    distanciaTotal += rutaFinal.getDistanciaKm();
+                    duracionTotalHoras += rutaFinal.getDuracionHoras();
+                    if (rutaFinal.getGeometry() != null) geometries.add(rutaFinal.getGeometry());
+                }
+            }
+            
+            List<String> nombresDepositos = todosDepositosIds.stream()
+                .map(id -> depositosInfo.get(id))
+                .filter(Objects::nonNull)
+                .map(info -> (String) info.get("nombre"))
+                .toList();
+            
+            String geometryCombinada = geometries.isEmpty() ? null : String.join("|", geometries);
+            
+            RutaTentativaDTO resultado = RutaTentativaDTO.builder()
+                .depositosIds(todosDepositosIds)
+                .depositosNombres(nombresDepositos)
+                .distanciaTotal(Math.round(distanciaTotal * 100.0) / 100.0)
+                .duracionTotalHoras(Math.round(duracionTotalHoras * 100.0) / 100.0)
+                .numeroTramos(tramos.size())
+                .tramos(tramos)
+                .geometry(geometryCombinada)
+                .exitoso(true)
+                .mensaje("Ruta completa calculada con " + tramos.size() + " tramos")
+                .build();
+            
+            logger.info("=== FIN calcularRutaTentativaCompleta: {} km, {} tramos ===", resultado.getDistanciaTotal(), resultado.getNumeroTramos());
+            return resultado;
+            
+        } catch (Exception e) {
+            logger.error("Error calculando ruta tentativa completa: {}", e.getMessage(), e);
+            return RutaTentativaDTO.builder()
+                .exitoso(false)
+                .mensaje("Error: " + e.getMessage())
+                .build();
+        }
+    }
 
     /**
      * Calcula una ruta tentativa entre origen y destino, considerando depósitos intermedios

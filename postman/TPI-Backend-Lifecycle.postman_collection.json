@@ -103,14 +103,6 @@
           }
         },
         {
-          "name": "Solicitar Ruta (operador)",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/solicitar-ruta", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "solicitar-ruta" ] }
-          }
-        },
-        {
           "name": "Get Ruta by Solicitud",
           "request": {
             "method": "GET",

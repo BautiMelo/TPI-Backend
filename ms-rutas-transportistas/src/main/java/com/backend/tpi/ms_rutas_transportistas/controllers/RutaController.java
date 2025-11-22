@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controlador REST para gestionar Rutas
@@ -41,6 +42,9 @@ public class RutaController {
     @Autowired
     private com.backend.tpi.ms_rutas_transportistas.repositories.RutaOpcionRepository rutaOpcionRepository;
 
+    @Autowired
+    private com.backend.tpi.ms_rutas_transportistas.repositories.RutaRepository rutaRepository;
+
     /**
      * Crea una nueva ruta para una solicitud de transporte
      * @param createRutaDTO Datos de la ruta a crear
@@ -51,18 +55,26 @@ public class RutaController {
     public ResponseEntity<Object> create(@RequestBody CreateRutaDTO createRutaDTO) {
         logger.info("POST /api/v1/rutas - Creando nueva ruta para solicitud ID: {}", createRutaDTO.getIdSolicitud());
         try {
-            // If called only with solicitudId and no deposit IDs, generate tentative options instead of persisting
-            if (createRutaDTO != null && createRutaDTO.getIdSolicitud() != null
-                    && createRutaDTO.getOrigenDepositoId() == null && createRutaDTO.getDestinoDepositoId() == null) {
-                java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO> variantes = rutaService.generateOptionsForSolicitud(createRutaDTO.getIdSolicitud());
-                return ResponseEntity.ok(variantes);
+            // Validar si ya existe una ruta para esta solicitud
+            Optional<com.backend.tpi.ms_rutas_transportistas.models.Ruta> rutaExistente = 
+                    rutaRepository.findByIdSolicitud(createRutaDTO.getIdSolicitud());
+            if (rutaExistente.isPresent()) {
+                logger.warn("POST /api/v1/rutas - La solicitud {} ya tiene una ruta asignada (ID: {})", 
+                        createRutaDTO.getIdSolicitud(), rutaExistente.get().getId());
+                return ResponseEntity.status(409)
+                        .body(java.util.Map.of("mensaje", "La solicitud ya tiene una ruta asignada", 
+                                               "rutaId", rutaExistente.get().getId()));
             }
+            
             RutaDTO result = rutaService.create(createRutaDTO);
             logger.info("POST /api/v1/rutas - Respuesta: 200 - Ruta creada con ID: {}", result.getId());
             return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            logger.warn("POST /api/v1/rutas - Validación: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(java.util.Map.of("mensaje", e.getMessage()));
         } catch (Exception e) {
             logger.error("POST /api/v1/rutas - Error: {}", e.getMessage());
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(java.util.Map.of("mensaje", "Error interno del servidor"));
         }
     }
 
@@ -255,21 +267,6 @@ public class RutaController {
     }
 
     // ---- Integration endpoints (delegan al service) ----
-
-    /**
-     * Asigna un transportista a una ruta específica
-     * @param id ID de la ruta
-     * @param transportistaId ID del transportista a asignar
-     * @return Resultado de la asignación
-     */
-    @PostMapping("/{id}/asignar-transportista")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<Object> asignarTransportista(@PathVariable Long id, @RequestParam Long transportistaId) {
-        logger.info("POST /api/v1/rutas/{}/asignar-transportista - Asignando transportista ID: {}", id, transportistaId);
-        Object result = rutaService.assignTransportista(id, transportistaId);
-        logger.info("POST /api/v1/rutas/{}/asignar-transportista - Respuesta: 200 - Transportista asignado", id);
-        return ResponseEntity.ok(result);
-    }
 
     /**
      * Busca la ruta asociada a una solicitud específica

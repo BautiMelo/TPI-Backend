@@ -105,4 +105,19 @@ public class CamionController {
         logger.info("PATCH /api/v1/camiones/{}/asignar - Respuesta: 200 - Transportista asignado", dominio);
         return ResponseEntity.ok(camion);
     }
+
+    /**
+     * Elimina un camión del sistema
+     * @param dominio Dominio del camión a eliminar
+     * @return Respuesta sin contenido
+     */
+    @DeleteMapping("/{dominio}")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    @Operation(summary = "Eliminar camión del sistema")
+    public ResponseEntity<Void> deleteCamion(@PathVariable String dominio) {
+        logger.info("DELETE /api/v1/camiones/{} - Eliminando camión", dominio);
+        camionService.deleteByDominio(dominio);
+        logger.info("DELETE /api/v1/camiones/{} - Respuesta: 204 - Camión eliminado", dominio);
+        return ResponseEntity.noContent().build();
+    }
 }

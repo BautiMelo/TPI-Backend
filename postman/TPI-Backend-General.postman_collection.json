@@ -472,14 +472,6 @@
           }
         },
         {
-          "name": "Solicitar Ruta",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/solicitar-ruta", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "solicitar-ruta" ] }
-          }
-        },
-        {
           "name": "Calcular Precio",
           "request": {
             "method": "POST",
@@ -825,14 +817,6 @@
           }
         },
         {
-          "name": "Asignar Transportista",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/asignar-transportista?transportistaId={{transportistaId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "asignar-transportista" ], "query": [ { "key": "transportistaId", "value": "{{transportistaId}}" } ] }
-          }
-        },
-        {
           "name": "Get Ruta by Solicitud",
           "request": {
             "method": "GET",
@@ -920,6 +904,14 @@
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "url": { "raw": "{{baseUrl}}/api/v1/tramos/{{tramoId}}/asignar-transportista?camionId=1&dominio={{camionDominio}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "tramos", "{{tramoId}}", "asignar-transportista" ], "query": [ { "key": "camionId", "value": "1" }, { "key": "dominio", "value": "{{camionDominio}}" } ] }
           }
+        },
+        {
+          "name": "Delete Tramo",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/tramos/{{tramoId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "tramos", "{{tramoId}}" ] }
+          }
         }
       ]
     },
@@ -968,6 +960,14 @@
             "method": "PATCH",
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "url": { "raw": "{{baseUrl}}/api/v1/camiones/{{camionDominio}}/asignar?nombreTransportista=Juan Transportista", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "camiones", "{{camionDominio}}", "asignar" ], "query": [ { "key": "nombreTransportista", "value": "Juan Transportista" } ] }
+          }
+        },
+        {
+          "name": "Delete Camion",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/camiones/{{camionDominio}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "camiones", "{{camionDominio}}" ] }
           }
         }
       ]

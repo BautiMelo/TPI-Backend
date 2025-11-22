@@ -189,17 +189,26 @@ public class SolicitudService {
                 throw new IllegalArgumentException("Error al procesar el contenedor: " + e.getMessage());
             }
 
-            // Asignar estado por defecto si existe (PROGRAMADA)
+            // Asignar estado por defecto PENDIENTE (estado inicial de toda solicitud)
             try {
                 if (estadoSolicitudRepository != null) {
-                    estadoSolicitudRepository.findByNombre("PROGRAMADA").ifPresent(solicitud::setEstado);
+                    java.util.Optional<com.backend.tpi.ms_solicitudes.models.EstadoSolicitud> estadoPendiente = 
+                            estadoSolicitudRepository.findByNombre("PENDIENTE");
+                    if (estadoPendiente.isPresent()) {
+                        solicitud.setEstado(estadoPendiente.get());
+                        logger.info("Estado PENDIENTE asignado a la nueva solicitud - ID Estado: {}", estadoPendiente.get().getId());
+                    } else {
+                        logger.error("CRITICO: Estado PENDIENTE no encontrado en la base de datos");
+                    }
                 }
             } catch (Exception e) {
-                logger.warn("No se pudo asignar estado por defecto a la solicitud: {}", e.getMessage());
+                logger.error("Error al asignar estado por defecto a la solicitud: {}", e.getMessage(), e);
             }
 
             solicitud = solicitudRepository.save(solicitud);
-            logger.info("Solicitud creada exitosamente con ID: {}", solicitud.getId());
+            logger.info("Solicitud creada exitosamente con ID: {} - Estado: {}", 
+                solicitud.getId(), 
+                solicitud.getEstado() != null ? solicitud.getEstado().getNombre() : "null");
             return toDto(solicitud);
         }
 
@@ -404,11 +413,35 @@ public class SolicitudService {
             // Cambiar estado a PROGRAMADO cuando se asocia una ruta
             estadoSolicitudRepository.findByNombre("PROGRAMADO").ifPresent(estado -> {
                 solicitud.setEstado(estado);
-                logger.info("Estado de solicitud {} cambiado a PROGRAMADO", solicitudId);
+                logger.info("Estado de solicitud cambiado a PROGRAMADO");
             });
             
             solicitud = solicitudRepository.save(solicitud);
             logger.info("Solicitud ID: {} actualizada con rutaId: {}", solicitudId, rutaId);
+            return toDto(solicitud);
+        }
+
+        /**
+         * Cambia el estado de una solicitud (usado por ms-rutas-transportistas)
+         * @param solicitudId ID de la solicitud
+         * @param nuevoEstado Nombre del nuevo estado
+         * @return Solicitud actualizada
+         */
+        @org.springframework.transaction.annotation.Transactional
+        public SolicitudDTO cambiarEstado(Long solicitudId, String nuevoEstado) {
+            logger.info("Cambiando estado de solicitud {} a {}", solicitudId, nuevoEstado);
+            Solicitud solicitud = solicitudRepository.findById(solicitudId)
+                    .orElseThrow(() -> {
+                        logger.error("Solicitud no encontrada con ID: {}", solicitudId);
+                        return new RuntimeException("Solicitud no encontrada con ID: " + solicitudId);
+                    });
+            
+            estadoSolicitudRepository.findByNombre(nuevoEstado).ifPresent(estado -> {
+                solicitud.setEstado(estado);
+                logger.info("Estado cambiado a {}", estado.getNombre());
+            });
+            
+            solicitud = solicitudRepository.save(solicitud);
             return toDto(solicitud);
         }
 

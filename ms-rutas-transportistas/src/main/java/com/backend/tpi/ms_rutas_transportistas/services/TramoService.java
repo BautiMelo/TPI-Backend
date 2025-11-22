@@ -647,8 +647,38 @@ public class TramoService {
         }
 
         tramo.setCamionDominio(camion.getDominio());
+        
+        // Cambiar estado a EN_EJECUCION cuando se asigna camión
+        estadoTramoRepository.findByNombre("EN_EJECUCION").ifPresent(tramo::setEstado);
+        tramo.setFechaHoraInicio(java.time.LocalDateTime.now());
+        
         Tramo saved2 = tramoRepository.save(tramo);
-        logger.info("Camión {} asignado exitosamente al tramo ID: {}", camion.getDominio(), tramoId);
+        logger.info("Camión {} asignado exitosamente al tramo ID: {} y estado cambiado a EN_EJECUCION", camion.getDominio(), tramoId);
+        
+        // Verificar si es el primer tramo de la ruta para cambiar estado de solicitud a EN_RUTA
+        Ruta ruta = tramo.getRuta();
+        if (ruta != null && ruta.getIdSolicitud() != null) {
+            java.util.List<Tramo> tramosRuta = tramoRepository.findByRutaId(ruta.getId());
+            boolean esPrimerInicio = tramosRuta.stream()
+                    .filter(t -> !t.getId().equals(tramoId))
+                    .noneMatch(t -> t.getFechaHoraInicio() != null);
+
+            if (esPrimerInicio) {
+                logger.info("Es el primer tramo iniciado de la ruta {}, cambiando estado de solicitud {} a EN_RUTA", ruta.getId(), ruta.getIdSolicitud());
+                try {
+                    String token = extractBearerToken();
+                    solicitudesClient.put()
+                            .uri("/api/v1/solicitudes/" + ruta.getIdSolicitud() + "/estado?nuevoEstado=EN_RUTA")
+                            .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                            .retrieve()
+                            .toBodilessEntity();
+                    logger.info("Estado de solicitud {} cambiado a EN_RUTA", ruta.getIdSolicitud());
+                } catch (Exception e) {
+                    logger.error("Error al cambiar estado de solicitud a EN_RUTA: {}", e.getMessage());
+                }
+            }
+        }
+        
         return toDto(saved2);
     }
 
@@ -779,5 +809,62 @@ public class TramoService {
             return ((JwtAuthenticationToken) auth).getToken().getTokenValue();
         }
         return null;
+    }
+
+    /**
+     * Elimina un tramo por su ID
+     * @param id ID del tramo a eliminar
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public void delete(Long id) {
+        logger.info("Eliminando tramo con ID: {}", id);
+        tramoRepository.deleteById(id);
+    }
+
+    /**
+     * Actualiza la fecha de llegada de un tramo
+     * Si es el último tramo, cambia el estado de la solicitud a ENTREGADO
+     * @param tramoId ID del tramo
+     * @param fechaLlegada Fecha y hora de llegada
+     * @return Tramo actualizado
+     */
+    @org.springframework.transaction.annotation.Transactional
+    public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO updateFechaLlegada(Long tramoId, java.time.LocalDateTime fechaLlegada) {
+        logger.info("Actualizando fecha de llegada del tramo {}: {}", tramoId, fechaLlegada);
+        Tramo tramo = tramoRepository.findById(tramoId)
+                .orElseThrow(() -> new RuntimeException("Tramo no encontrado con ID: " + tramoId));
+        
+        tramo.setFechaHoraLlegada(fechaLlegada);
+        
+        // Cambiar estado del tramo a COMPLETADO
+        estadoTramoRepository.findByNombre("COMPLETADO").ifPresent(tramo::setEstado);
+        
+        tramo = tramoRepository.save(tramo);
+        logger.info("Fecha de llegada actualizada para tramo ID: {} y estado cambiado a COMPLETADO", tramoId);
+        
+        // Verificar si es el último tramo de la ruta para cambiar estado de solicitud a ENTREGADO
+        Ruta ruta = tramo.getRuta();
+        if (ruta != null && ruta.getIdSolicitud() != null) {
+            java.util.List<Tramo> tramosRuta = tramoRepository.findByRutaId(ruta.getId());
+            boolean todosCompletados = tramosRuta.stream()
+                    .allMatch(t -> t.getFechaHoraLlegada() != null);
+
+            if (todosCompletados) {
+                logger.info("Todos los tramos de la ruta {} completados, cambiando estado de solicitud {} a ENTREGADO", ruta.getId(), ruta.getIdSolicitud());
+                try {
+                    String token = extractBearerToken();
+                    solicitudesClient.put()
+                            .uri("/api/v1/solicitudes/" + ruta.getIdSolicitud() + "/estado?nuevoEstado=ENTREGADO")
+                            .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                            .retrieve()
+                            .toBodilessEntity();
+                    logger.info("Estado de solicitud {} cambiado a ENTREGADO", ruta.getIdSolicitud());
+                } catch (Exception e) {
+                    logger.error("Error al cambiar estado de solicitud a ENTREGADO: {}", e.getMessage());
+                }
+            }
+        }
+        
+        return toDto(tramo);
     }
 }

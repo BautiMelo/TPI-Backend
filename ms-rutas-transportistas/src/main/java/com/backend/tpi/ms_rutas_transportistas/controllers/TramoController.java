@@ -106,4 +106,48 @@ public class TramoController {
             ));
         }
     }
+
+    /**
+     * Elimina un tramo del sistema
+     * @param id ID del tramo a eliminar
+     * @return Respuesta sin contenido
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<Void> deleteTramo(@PathVariable Long id) {
+        logger.info("DELETE /api/v1/tramos/{} - Eliminando tramo", id);
+        tramoService.delete(id);
+        logger.info("DELETE /api/v1/tramos/{} - Respuesta: 204 - Tramo eliminado", id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Actualiza la fecha de llegada de un tramo
+     * Si es el último tramo, cambia el estado de la solicitud a ENTREGADO
+     * @param id ID del tramo
+     * @param fechaHoraReal Fecha y hora real de llegada (formato ISO: 2025-11-20T15:30:00)
+     * @return Tramo actualizado
+     */
+    @PatchMapping("/{id}/fecha-llegada")
+    @PreAuthorize("hasAnyRole('TRANSPORTISTA','OPERADOR','ADMIN')")
+    public ResponseEntity<?> updateFechaLlegada(
+            @PathVariable Long id,
+            @RequestParam String fechaHoraReal) {
+        logger.info("PATCH /api/v1/tramos/{}/fecha-llegada - Actualizando fecha: {}", id, fechaHoraReal);
+        try {
+            java.time.LocalDateTime fecha = java.time.LocalDateTime.parse(fechaHoraReal);
+            TramoDTO tramo = tramoService.updateFechaLlegada(id, fecha);
+            logger.info("PATCH /api/v1/tramos/{}/fecha-llegada - Respuesta: 200 - Fecha actualizada", id);
+            return ResponseEntity.ok(tramo);
+        } catch (RuntimeException e) {
+            logger.error("PATCH /api/v1/tramos/{}/fecha-llegada - Respuesta: 404 - {}", id, e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            logger.error("PATCH /api/v1/tramos/{}/fecha-llegada - Respuesta: 400 - Error al parsear fecha: {}", id, e.getMessage());
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                "error", "Formato de fecha inválido",
+                "mensaje", "Use formato ISO-8601: YYYY-MM-DDTHH:mm:ss"
+            ));
+        }
+    }
 }

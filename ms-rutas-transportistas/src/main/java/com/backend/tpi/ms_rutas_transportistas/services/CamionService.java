@@ -205,4 +205,21 @@ public class CamionService {
         camion.setActivo(dto.getActivo() != null ? dto.getActivo() : true);
         return camion;
     }
+
+    /**
+     * Elimina un camión por su dominio
+     * @param dominio Dominio del camión a eliminar
+     * @throws RuntimeException si no se encuentra el camión
+     */
+    @Transactional
+    public void deleteByDominio(String dominio) {
+        logger.info("Eliminando camión con dominio: {}", dominio);
+        Camion camion = camionRepository.findByDominio(dominio)
+                .orElseThrow(() -> {
+                    logger.error("Camión no encontrado con dominio: {}", dominio);
+                    return new RuntimeException("Camión no encontrado con dominio: " + dominio);
+                });
+        camionRepository.delete(camion);
+        logger.info("Camión eliminado exitosamente con dominio: {}", dominio);
+    }
 }

@@ -793,3 +793,453 @@ com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize 
 2025-11-22T02:05:43.007Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-11-22T02:05:43.014Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-11-22T02:05:43.020Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T02:05:47.266Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T02:05:47.269Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T02:05:48.228Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T02:05:48.319Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 84 ms. Found 7 JPA repository interfaces.
+2025-11-22T02:05:49.030Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T02:05:49.046Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T02:05:49.047Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T02:05:49.077Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T02:05:49.078Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1755 ms
+2025-11-22T02:05:49.579Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T02:05:49.622Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T02:05:49.873Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@299a43d9
+2025-11-22T02:05:49.875Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T02:05:49.910Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T02:05:51.023Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T02:05:51.861Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T02:05:52.556Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T02:05:52.565Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 6.216 seconds (process running for 6.932)
+2025-11-22T02:07:02.100Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T02:07:02.432Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/4/confirmar - Confirmando opción
+2025-11-22T02:07:10.781Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : No se pudo notificar a ms-solicitudes para solicitud 2: 404 Not Found: [no body]
+2025-11-22T02:07:26.483Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.RutaController       : GET /api/v1/solicitudes/2/opciones - Listando opciones persistidas
+2025-11-22T02:17:04.840Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/10/confirmar - Confirmando opción
+2025-11-22T02:17:29.435Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-5] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/10/confirmar - Confirmando opción
+2025-11-22T02:17:34.207Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T02:17:34.208Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T02:17:34.859Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T02:17:34.859Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:17:34.860Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T02:17:34.860Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:17:34.860Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 23]
+2025-11-22T02:17:34.861Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:17:34.863Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:17:34.908Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:17:34.910Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:17:34.934Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:17:34.935Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 2 depósitos obtenidos ===
+2025-11-22T02:17:34.935Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 2 de 2 solicitados
+2025-11-22T02:17:34.936Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:17:34.936Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:17:34.936Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:17:34.938Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:36.526Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2509.54 km, duración=29.73 hrs
+2025-11-22T02:17:36.528Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2509.54 km, 1 tramos
+2025-11-22T02:17:36.572Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:17:36.572Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[2]
+2025-11-22T02:17:36.576Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:17:36.576Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 2, 23]
+2025-11-22T02:17:36.576Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:17:36.577Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:17:36.591Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:17:36.592Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/2/coordenadas
+2025-11-22T02:17:36.610Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 2 obtenido: {latitud=-34.49, longitud=-58.55, nombre=Depósito Zona Norte, depositoId=2}
+2025-11-22T02:17:36.611Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:17:36.642Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:17:36.643Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:17:36.643Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:17:36.643Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:17:36.644Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 2: lat=-34.49, lon=-58.55, nombre=Depósito Zona Norte
+2025-11-22T02:17:36.644Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:17:36.644Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 2 (-34.49, -58.55)
+2025-11-22T02:17:36.645Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-58.550000,-34.490000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:36.708Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=24.57 km, duración=0.42 hrs
+2025-11-22T02:17:36.708Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 2 (-34.49, -58.55) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:17:36.709Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.550000,-34.490000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:36.843Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2520.85 km, duración=29.86 hrs
+2025-11-22T02:17:36.844Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2545.42 km, 2 tramos
+2025-11-22T02:17:36.844Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:17:36.844Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[3]
+2025-11-22T02:17:36.845Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:17:36.845Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 3, 23]
+2025-11-22T02:17:36.845Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:17:36.846Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:17:36.868Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:17:36.869Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/3/coordenadas
+2025-11-22T02:17:36.894Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 3 obtenido: {latitud=-34.92, longitud=-57.95, nombre=Depósito La Plata, depositoId=3}
+2025-11-22T02:17:36.895Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:17:36.918Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:17:36.919Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:17:36.919Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:17:36.919Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:17:36.920Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 3: lat=-34.92, lon=-57.95, nombre=Depósito La Plata
+2025-11-22T02:17:36.920Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:17:36.920Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 3 (-34.92, -57.95)
+2025-11-22T02:17:36.920Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-57.950000,-34.920000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:37.028Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=59.26 km, duración=0.81 hrs
+2025-11-22T02:17:37.028Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 3 (-34.92, -57.95) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:17:37.029Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-57.950000,-34.920000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:37.192Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2499.59 km, duración=29.8 hrs
+2025-11-22T02:17:37.192Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2558.85 km, 2 tramos
+2025-11-22T02:17:37.193Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:17:37.193Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[7]
+2025-11-22T02:17:37.193Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:17:37.193Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 7, 23]
+2025-11-22T02:17:37.194Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:17:37.194Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:17:37.214Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:17:37.215Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/7/coordenadas
+2025-11-22T02:17:37.236Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 7 obtenido: {latitud=-38.72, longitud=-62.27, nombre=Depósito Bahía Blanca, depositoId=7}
+2025-11-22T02:17:37.237Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:17:37.248Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:17:37.248Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:17:37.248Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:17:37.249Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:17:37.249Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 7: lat=-38.72, lon=-62.27, nombre=Depósito Bahía Blanca
+2025-11-22T02:17:37.249Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:17:37.249Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 7 (-38.72, -62.27)
+2025-11-22T02:17:37.250Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-62.270000,-38.720000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:37.296Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=637.04 km, duración=7.86 hrs
+2025-11-22T02:17:37.296Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 7 (-38.72, -62.27) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:17:37.296Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-62.270000,-38.720000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:17:37.366Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=1873.63 km, duración=21.98 hrs
+2025-11-22T02:17:37.367Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2510.67 km, 2 tramos
+2025-11-22T02:17:56.689Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/14/confirmar - Confirmando opción
+2025-11-22T02:17:56.725Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.controllers.RutaController       : Confirmación inválida: Ya existe una ruta para la solicitud ID: 2
+2025-11-22T02:20:50.349Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/14/confirmar - Confirmando opción
+2025-11-22T02:20:50.359Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.RutaController       : Confirmación inválida: Ya existe una ruta para la solicitud ID: 2
+2025-11-22T02:21:34.912Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/3/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T02:21:34.913Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaService             : Generate options for solicitud 3
+2025-11-22T02:21:35.645Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 3 -> origen: 1, destino: 23
+2025-11-22T02:21:35.645Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:21:35.646Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T02:21:35.646Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:21:35.646Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 23]
+2025-11-22T02:21:35.647Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:21:35.647Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:21:35.749Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:21:35.750Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:21:35.767Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:21:35.767Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 2 depósitos obtenidos ===
+2025-11-22T02:21:35.768Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 2 de 2 solicitados
+2025-11-22T02:21:35.768Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:21:35.768Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:21:35.768Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:21:35.769Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:35.810Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2509.54 km, duración=29.73 hrs
+2025-11-22T02:21:35.813Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2509.54 km, 1 tramos
+2025-11-22T02:21:35.858Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:21:35.859Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[2]
+2025-11-22T02:21:35.863Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:21:35.866Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 2, 23]
+2025-11-22T02:21:35.866Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:21:35.866Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:21:35.891Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:21:35.891Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/2/coordenadas
+2025-11-22T02:21:35.907Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 2 obtenido: {latitud=-34.49, longitud=-58.55, nombre=Depósito Zona Norte, depositoId=2}
+2025-11-22T02:21:35.907Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:21:35.933Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:21:35.934Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:21:35.934Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:21:35.934Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:21:35.935Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 2: lat=-34.49, lon=-58.55, nombre=Depósito Zona Norte
+2025-11-22T02:21:35.935Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:21:35.935Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 2 (-34.49, -58.55)
+2025-11-22T02:21:35.935Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-58.550000,-34.490000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:35.980Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=24.57 km, duración=0.42 hrs
+2025-11-22T02:21:35.981Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 2 (-34.49, -58.55) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:21:35.981Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.550000,-34.490000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:36.019Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2520.85 km, duración=29.86 hrs
+2025-11-22T02:21:36.020Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2545.42 km, 2 tramos
+2025-11-22T02:21:36.021Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:21:36.021Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[3]
+2025-11-22T02:21:36.021Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:21:36.021Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 3, 23]
+2025-11-22T02:21:36.024Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:21:36.025Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:21:36.037Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:21:36.037Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/3/coordenadas
+2025-11-22T02:21:36.067Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 3 obtenido: {latitud=-34.92, longitud=-57.95, nombre=Depósito La Plata, depositoId=3}
+2025-11-22T02:21:36.068Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:21:36.088Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:21:36.089Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:21:36.089Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:21:36.089Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:21:36.090Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 3: lat=-34.92, lon=-57.95, nombre=Depósito La Plata
+2025-11-22T02:21:36.090Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:21:36.090Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 3 (-34.92, -57.95)
+2025-11-22T02:21:36.091Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-57.950000,-34.920000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:36.098Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=59.26 km, duración=0.81 hrs
+2025-11-22T02:21:36.100Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 3 (-34.92, -57.95) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:21:36.102Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-57.950000,-34.920000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:36.140Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2499.59 km, duración=29.8 hrs
+2025-11-22T02:21:36.140Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2558.85 km, 2 tramos
+2025-11-22T02:21:36.141Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:21:36.141Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[7]
+2025-11-22T02:21:36.141Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:21:36.141Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 7, 23]
+2025-11-22T02:21:36.142Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:21:36.142Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:21:36.155Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:21:36.155Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/7/coordenadas
+2025-11-22T02:21:36.170Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 7 obtenido: {latitud=-38.72, longitud=-62.27, nombre=Depósito Bahía Blanca, depositoId=7}
+2025-11-22T02:21:36.172Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:21:36.196Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:21:36.198Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:21:36.200Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:21:36.200Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:21:36.201Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 7: lat=-38.72, lon=-62.27, nombre=Depósito Bahía Blanca
+2025-11-22T02:21:36.201Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:21:36.201Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 7 (-38.72, -62.27)
+2025-11-22T02:21:36.201Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-62.270000,-38.720000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:36.217Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=637.04 km, duración=7.86 hrs
+2025-11-22T02:21:36.225Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 7 (-38.72, -62.27) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:21:36.227Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-62.270000,-38.720000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:21:36.252Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=1873.63 km, duración=21.98 hrs
+2025-11-22T02:21:36.253Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2510.67 km, 2 tramos
+2025-11-22T02:21:44.708Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/3/opciones/18/confirmar - Confirmando opción
+2025-11-22T02:21:44.776Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.RutaService             : Notificada solicitud 3 con rutaId 2 (createFromTentativa)
+2025-11-22T02:26:11.221Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Creando nueva ruta para solicitud ID: 3
+2025-11-22T02:26:11.222Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaService             : Generate options for solicitud 3
+2025-11-22T02:26:11.358Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 3 -> origen: 1, destino: 23
+2025-11-22T02:26:11.359Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:26:11.360Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T02:26:11.360Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:26:11.360Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 23]
+2025-11-22T02:26:11.361Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:26:11.361Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:26:11.373Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:26:11.374Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:26:11.388Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:26:11.389Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 2 depósitos obtenidos ===
+2025-11-22T02:26:11.389Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 2 de 2 solicitados
+2025-11-22T02:26:11.389Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:26:11.389Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:26:11.389Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:26:11.390Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.427Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2509.54 km, duración=29.73 hrs
+2025-11-22T02:26:11.428Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2509.54 km, 1 tramos
+2025-11-22T02:26:11.454Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:26:11.454Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[2]
+2025-11-22T02:26:11.454Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:26:11.455Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 2, 23]
+2025-11-22T02:26:11.455Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:26:11.455Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:26:11.474Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:26:11.475Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/2/coordenadas
+2025-11-22T02:26:11.493Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 2 obtenido: {latitud=-34.49, longitud=-58.55, nombre=Depósito Zona Norte, depositoId=2}
+2025-11-22T02:26:11.494Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:26:11.508Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:26:11.508Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:26:11.509Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:26:11.509Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:26:11.509Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 2: lat=-34.49, lon=-58.55, nombre=Depósito Zona Norte
+2025-11-22T02:26:11.509Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:26:11.510Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 2 (-34.49, -58.55)
+2025-11-22T02:26:11.510Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-58.550000,-34.490000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.521Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=24.57 km, duración=0.42 hrs
+2025-11-22T02:26:11.522Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 2 (-34.49, -58.55) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:26:11.522Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.550000,-34.490000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.558Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2520.85 km, duración=29.86 hrs
+2025-11-22T02:26:11.559Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2545.42 km, 2 tramos
+2025-11-22T02:26:11.560Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:26:11.560Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[3]
+2025-11-22T02:26:11.561Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:26:11.561Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 3, 23]
+2025-11-22T02:26:11.562Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:26:11.562Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:26:11.575Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:26:11.576Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/3/coordenadas
+2025-11-22T02:26:11.591Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 3 obtenido: {latitud=-34.92, longitud=-57.95, nombre=Depósito La Plata, depositoId=3}
+2025-11-22T02:26:11.592Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:26:11.602Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:26:11.603Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:26:11.603Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:26:11.603Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:26:11.604Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 3: lat=-34.92, lon=-57.95, nombre=Depósito La Plata
+2025-11-22T02:26:11.604Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:26:11.604Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 3 (-34.92, -57.95)
+2025-11-22T02:26:11.604Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-57.950000,-34.920000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.613Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=59.26 km, duración=0.81 hrs
+2025-11-22T02:26:11.614Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 3 (-34.92, -57.95) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:26:11.615Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-57.950000,-34.920000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.653Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2499.59 km, duración=29.8 hrs
+2025-11-22T02:26:11.654Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2558.85 km, 2 tramos
+2025-11-22T02:26:11.654Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:26:11.654Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[7]
+2025-11-22T02:26:11.655Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:26:11.655Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 7, 23]
+2025-11-22T02:26:11.655Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:26:11.655Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:26:11.672Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:26:11.672Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/7/coordenadas
+2025-11-22T02:26:11.685Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 7 obtenido: {latitud=-38.72, longitud=-62.27, nombre=Depósito Bahía Blanca, depositoId=7}
+2025-11-22T02:26:11.686Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:26:11.701Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:26:11.702Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:26:11.702Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:26:11.703Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:26:11.703Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 7: lat=-38.72, lon=-62.27, nombre=Depósito Bahía Blanca
+2025-11-22T02:26:11.703Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:26:11.703Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 7 (-38.72, -62.27)
+2025-11-22T02:26:11.704Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-62.270000,-38.720000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.755Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=637.04 km, duración=7.86 hrs
+2025-11-22T02:26:11.756Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 7 (-38.72, -62.27) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:26:11.757Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-62.270000,-38.720000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:26:11.784Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=1873.63 km, duración=21.98 hrs
+2025-11-22T02:26:11.785Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2510.67 km, 2 tramos
+2025-11-22T02:28:09.802Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Creando nueva ruta para solicitud ID: 2
+2025-11-22T02:28:09.806Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T02:28:09.858Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T02:28:09.858Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:28:09.859Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T02:28:09.859Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:28:09.859Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 23]
+2025-11-22T02:28:09.860Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:28:09.860Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:28:09.872Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:28:09.872Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:28:09.882Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:28:09.882Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 2 depósitos obtenidos ===
+2025-11-22T02:28:09.882Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 2 de 2 solicitados
+2025-11-22T02:28:09.883Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:28:09.883Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:28:09.883Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:28:09.883Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:09.922Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2509.54 km, duración=29.73 hrs
+2025-11-22T02:28:09.922Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2509.54 km, 1 tramos
+2025-11-22T02:28:09.945Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:28:09.945Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[2]
+2025-11-22T02:28:09.946Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:28:09.946Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 2, 23]
+2025-11-22T02:28:09.946Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:28:09.947Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:28:09.958Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:28:09.959Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/2/coordenadas
+2025-11-22T02:28:09.968Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 2 obtenido: {latitud=-34.49, longitud=-58.55, nombre=Depósito Zona Norte, depositoId=2}
+2025-11-22T02:28:09.968Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:28:09.977Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:28:09.978Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:28:09.978Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:28:09.978Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:28:09.978Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 2: lat=-34.49, lon=-58.55, nombre=Depósito Zona Norte
+2025-11-22T02:28:09.979Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:28:09.979Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 2 (-34.49, -58.55)
+2025-11-22T02:28:09.979Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-58.550000,-34.490000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:10.000Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=24.57 km, duración=0.42 hrs
+2025-11-22T02:28:10.000Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 2 (-34.49, -58.55) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:28:10.001Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.550000,-34.490000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:10.035Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2520.85 km, duración=29.86 hrs
+2025-11-22T02:28:10.035Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2545.42 km, 2 tramos
+2025-11-22T02:28:10.036Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:28:10.036Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[3]
+2025-11-22T02:28:10.036Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:28:10.037Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 3, 23]
+2025-11-22T02:28:10.037Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:28:10.037Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:28:10.049Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:28:10.049Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/3/coordenadas
+2025-11-22T02:28:10.062Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 3 obtenido: {latitud=-34.92, longitud=-57.95, nombre=Depósito La Plata, depositoId=3}
+2025-11-22T02:28:10.062Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:28:10.072Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:28:10.073Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:28:10.073Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:28:10.073Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:28:10.073Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 3: lat=-34.92, lon=-57.95, nombre=Depósito La Plata
+2025-11-22T02:28:10.074Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:28:10.074Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 3 (-34.92, -57.95)
+2025-11-22T02:28:10.074Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-57.950000,-34.920000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:10.082Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=59.26 km, duración=0.81 hrs
+2025-11-22T02:28:10.082Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 3 (-34.92, -57.95) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:28:10.082Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-57.950000,-34.920000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:10.135Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2499.59 km, duración=29.8 hrs
+2025-11-22T02:28:10.137Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2558.85 km, 2 tramos
+2025-11-22T02:28:10.138Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T02:28:10.138Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[7]
+2025-11-22T02:28:10.138Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T02:28:10.139Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 7, 23]
+2025-11-22T02:28:10.139Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T02:28:10.139Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T02:28:10.150Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T02:28:10.151Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/7/coordenadas
+2025-11-22T02:28:10.160Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 7 obtenido: {latitud=-38.72, longitud=-62.27, nombre=Depósito Bahía Blanca, depositoId=7}
+2025-11-22T02:28:10.160Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T02:28:10.178Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T02:28:10.179Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T02:28:10.179Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T02:28:10.179Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T02:28:10.180Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 7: lat=-38.72, lon=-62.27, nombre=Depósito Bahía Blanca
+2025-11-22T02:28:10.180Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T02:28:10.180Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 7 (-38.72, -62.27)
+2025-11-22T02:28:10.180Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-62.270000,-38.720000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:10.199Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=637.04 km, duración=7.86 hrs
+2025-11-22T02:28:10.200Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 7 (-38.72, -62.27) a depósito 23 (-51.62, -69.22)
+2025-11-22T02:28:10.200Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-62.270000,-38.720000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T02:28:10.232Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=1873.63 km, duración=21.98 hrs
+2025-11-22T02:28:10.233Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2510.67 km, 2 tramos
+2025-11-22T02:35:56.636Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.RutaController       : GET /api/v1/rutas - Listando todas las rutas
+2025-11-22T02:35:56.645Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.RutaController       : GET /api/v1/rutas - Respuesta: 200 - 1 rutas encontradas
+2025-11-22T02:38:07.616Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.RutaController       : GET /api/v1/rutas/2 - Buscando ruta por ID
+2025-11-22T02:38:07.620Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.RutaController       : GET /api/v1/rutas/2 - Respuesta: 200 - Ruta encontrada
+2025-11-22T02:38:13.776Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.controllers.RutaController       : DELETE /api/v1/rutas/2 - Eliminando ruta
+2025-11-22T02:38:13.777Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.RutaService             : Eliminando ruta ID: 2
+2025-11-22T02:38:40.527Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.controllers.TramoController      : GET /api/v1/tramos - Listando todos los tramos
+2025-11-22T02:38:40.543Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.controllers.TramoController      : GET /api/v1/tramos - Respuesta: 200 - 1 tramos encontrados
+2025-11-22T02:39:45.305Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones - Listando todos los camiones
+2025-11-22T02:39:45.309Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones - Respuesta: 200 - 0 camiones encontrados
+2025-11-22T02:40:00.756Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones - Creando nuevo camión con dominio: ABC123
+2025-11-22T02:40:00.761Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.CamionService           : Guardando nuevo camión con dominio: ABC123
+2025-11-22T02:40:00.786Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.CamionService           : Camión guardado exitosamente con ID: 1
+2025-11-22T02:40:00.786Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones - Respuesta: 200 - Camión creado con dominio: ABC123
+2025-11-22T02:40:41.659Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.CamionController     : PATCH /api/v1/camiones/ABC123/asignar - Asignando a transportista: Juan Transportista
+2025-11-22T02:40:41.661Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.CamionService           : Asignando transportista 'Juan Transportista' al camión con dominio: ABC123
+2025-11-22T02:40:41.669Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.CamionService           : Transportista asignado exitosamente al camión con dominio: ABC123
+2025-11-22T02:40:41.679Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.CamionController     : PATCH /api/v1/camiones/ABC123/asignar - Respuesta: 200 - Transportista asignado
+2025-11-22T02:42:49.451Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones/ABC123/estado - Actualizando estado - disponible: true, activo: false
+2025-11-22T02:42:49.453Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.CamionService           : Actualizando estado de camión con dominio: ABC123 - disponible: true, activo: false
+2025-11-22T02:42:49.456Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.services.CamionService           : Estado del camión actualizado exitosamente - dominio: ABC123
+2025-11-22T02:42:49.466Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones/ABC123/estado - Respuesta: 200 - Estado actualizado
+2025-11-22T02:43:06.246Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones/ABC123 - Buscando camión por dominio
+2025-11-22T02:43:06.253Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones/ABC123 - Respuesta: 200 - Camión encontrado
+2025-11-22T02:43:32.597Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones - Listando todos los camiones
+2025-11-22T02:43:32.601Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones - Respuesta: 200 - 1 camiones encontrados
+2025-11-22T02:43:40.756Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones - Creando nuevo camión con dominio: ABC123
+2025-11-22T02:43:40.761Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-9] c.b.t.m.services.CamionService           : Ya existe un camión con dominio: ABC123
+2025-11-22T02:43:56.267Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones/ABC123/estado - Actualizando estado - disponible: true, activo: true
+2025-11-22T02:43:56.268Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.CamionService           : Actualizando estado de camión con dominio: ABC123 - disponible: true, activo: true
+2025-11-22T02:43:56.271Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.CamionService           : Estado del camión actualizado exitosamente - dominio: ABC123
+2025-11-22T02:43:56.275Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.controllers.CamionController     : POST /api/v1/camiones/ABC123/estado - Respuesta: 200 - Estado actualizado
+2025-11-22T02:44:08.552Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones/ABC123 - Buscando camión por dominio
+2025-11-22T02:44:08.557Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.CamionController     : GET /api/v1/camiones/ABC123 - Respuesta: 200 - Camión encontrado
+2025-11-22T02:46:07.331Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.TramoController      : GET /api/v1/tramos - Listando todos los tramos
+2025-11-22T02:46:07.336Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.TramoController      : GET /api/v1/tramos - Respuesta: 200 - 1 tramos encontrados
+2025-11-22T02:46:15.826Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.TramoController      : POST /api/v1/tramos/1/asignar-transportista - Asignando camiónId: 1 dominio: ABC123
+2025-11-22T02:46:15.827Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.TramoService            : Asignando camión dominio: ABC123 al tramo ID: 1
+2025-11-22T02:46:16.524Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.TramoService            : Validación de capacidad exitosa - Camión ABC123 es compatible con la carga
+2025-11-22T02:46:16.541Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.TramoService            : Camión ABC123 asignado exitosamente al tramo ID: 1
+2025-11-22T02:46:16.542Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.TramoController      : POST /api/v1/tramos/1/asignar-transportista - Respuesta: 200 - Camión asignado
+2025-11-22T02:53:07.152Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.TramoController      : GET /api/v1/tramos - Listando todos los tramos
+2025-11-22T02:53:07.158Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-6] c.b.t.m.controllers.TramoController      : GET /api/v1/tramos - Respuesta: 200 - 1 tramos encontrados
+2025-11-22T03:01:19.472Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T03:01:19.576Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T03:01:19.603Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T03:01:23.510Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T03:01:23.513Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T03:01:24.527Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T03:01:24.619Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 82 ms. Found 7 JPA repository interfaces.
+2025-11-22T03:01:25.419Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T03:01:25.442Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T03:01:25.442Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T03:01:25.483Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T03:01:25.484Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1920 ms
+2025-11-22T03:01:26.150Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T03:01:26.213Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T03:01:26.679Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@299a43d9
+2025-11-22T03:01:26.681Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T03:01:26.722Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T03:01:28.103Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T03:01:28.993Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T03:01:29.757Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T03:01:29.766Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 7.108 seconds (process running for 8.309)
