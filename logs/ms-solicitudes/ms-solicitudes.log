@@ -336,3 +336,883 @@
 2025-11-22T03:48:47.304Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-10] c.b.t.m.services.SolicitudService        : Nuevo contenedor creado con ID 6 para la solicitud
 2025-11-22T03:48:47.377Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-10] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 5
 2025-11-22T03:48:47.379Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-10] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 5
+2025-11-22T19:49:46.813Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T19:49:46.827Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T19:49:50.699Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T19:49:50.967Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 230 ms. Found 5 JPA repository interfaces.
+2025-11-22T19:49:54.021Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-22T19:49:54.122Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T19:49:54.123Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T19:49:54.236Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T19:49:54.238Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7232 ms
+2025-11-22T19:49:57.895Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T19:49:58.007Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T19:49:58.629Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@9880a15
+2025-11-22T19:49:58.635Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T19:49:58.746Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T19:50:04.195Z  WARN 1 --- [ms-solicitudes] [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:455) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:276) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at java.base/java.util.HashMap.forEach(Unknown Source) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at com.backend.tpi.ms_solicitudes.MsSolicitudesApplication.main(MsSolicitudesApplication.java:10) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:356) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:341) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:317) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:312) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.1.0.jar!/:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.1.0.jar!/:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	... 41 common frames omitted
+
+2025-11-22T19:50:04.210Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T19:50:07.111Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T19:50:07.209Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-22T19:50:08.645Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-22T19:50:09.402Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-22T19:50:09.423Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 25.864 seconds (process running for 27.49)
+2025-11-22T19:50:55.490Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T19:50:55.516Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T19:50:55.679Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T19:50:55.681Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@99fbece7, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.2, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T19:50:55.685Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T19:50:55.904Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.create(com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:50:55.918Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.create(com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:50:55.918Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T19:50:58.132Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5696714, lon=-70.9958553
+2025-11-22T19:50:58.135Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5696714, lon=-70.9958553
+2025-11-22T19:50:59.168Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T19:50:59.169Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T19:50:59.323Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 24
+2025-11-22T19:50:59.324Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 24
+2025-11-22T19:50:59.525Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/24
+2025-11-22T19:50:59.537Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T19:50:59.538Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@99fbece7, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.2, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T19:50:59.541Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/24
+2025-11-22T19:50:59.548Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:50:59.550Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:50:59.551Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/24 - Buscando solicitud por ID
+2025-11-22T19:50:59.586Z  WARN 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : No se pudo validar cliente por email tester@example.com: Cliente no encontrado con email: tester@example.com
+2025-11-22T19:51:54.413Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T19:51:54.418Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T19:51:54.419Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@e735b074, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.2, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T19:51:54.420Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T19:51:54.424Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.create(com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:51:54.425Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.create(com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:51:54.425Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T19:51:55.636Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5696714, lon=-70.9958553
+2025-11-22T19:51:55.637Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5696714, lon=-70.9958553
+2025-11-22T19:51:57.990Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T19:51:57.991Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T19:51:58.011Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 25
+2025-11-22T19:51:58.012Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 25
+2025-11-22T19:51:58.041Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/25
+2025-11-22T19:51:58.045Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T19:51:58.046Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@e735b074, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.2, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T19:51:58.047Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/25
+2025-11-22T19:51:58.049Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:51:58.050Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T19:51:58.050Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/25 - Buscando solicitud por ID
+2025-11-22T19:51:58.061Z  WARN 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : No se pudo validar cliente por email tester@example.com: Cliente no encontrado con email: tester@example.com
+2025-11-22T20:01:25.401Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T20:01:25.441Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:01:25.443Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@7e6556d3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.2, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:01:25.445Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T20:01:25.455Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.create(com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:01:25.457Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.create(com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:01:25.458Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T20:01:28.047Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5791023, lon=-71.0004914
+2025-11-22T20:01:28.051Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5791023, lon=-71.0004914
+2025-11-22T20:01:29.274Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:01:29.277Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T20:01:29.308Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 26
+2025-11-22T20:01:29.310Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 26
+2025-11-22T20:01:29.347Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/26
+2025-11-22T20:01:29.353Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:01:29.356Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@7e6556d3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.2, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:01:29.360Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/26
+2025-11-22T20:01:29.364Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:01:29.365Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:01:29.367Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/26 - Buscando solicitud por ID
+2025-11-22T20:01:29.382Z  WARN 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : No se pudo validar cliente por email tester@example.com: Cliente no encontrado con email: tester@example.com
+2025-11-22T20:08:27.508Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:08:27.516Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:08:27.526Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:08:35.185Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:08:35.197Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:08:39.602Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:08:39.774Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 149 ms. Found 5 JPA repository interfaces.
+2025-11-22T20:08:41.833Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-22T20:08:41.912Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:08:41.916Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:08:42.117Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:08:42.128Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6816 ms
+2025-11-22T20:08:44.571Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:08:44.702Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:08:45.430Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2fd4312a
+2025-11-22T20:08:45.445Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:08:45.561Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:08:48.128Z  WARN 1 --- [ms-solicitudes] [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:455) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:276) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at java.base/java.util.HashMap.forEach(Unknown Source) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at com.backend.tpi.ms_solicitudes.MsSolicitudesApplication.main(MsSolicitudesApplication.java:10) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:356) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:341) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:317) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:312) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.1.0.jar!/:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.1.0.jar!/:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	... 41 common frames omitted
+
+2025-11-22T20:08:48.210Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:08:49.995Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:08:50.030Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-22T20:08:50.884Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-22T20:08:52.211Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-22T20:08:52.246Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 18.829 seconds (process running for 20.245)
+2025-11-22T20:09:37.716Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:09:37.747Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T20:09:37.953Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:37.955Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:37.963Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T20:09:38.309Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T20:09:40.471Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:09:40.474Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:09:41.429Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:09:41.430Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T20:09:41.486Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.ClienteService          : Guardando cliente: Test Cliente
+2025-11-22T20:09:41.551Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.ContenedorService       : Guardando contenedor para cliente ID: 10
+2025-11-22T20:09:41.571Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Nuevo contenedor creado con ID 2 para la solicitud
+2025-11-22T20:09:41.578Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Estado PENDIENTE asignado a la nueva solicitud - ID Estado: 1
+2025-11-22T20:09:41.588Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 11 - Estado: PENDIENTE
+2025-11-22T20:09:41.589Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 11
+2025-11-22T20:09:41.685Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/11
+2025-11-22T20:09:41.695Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:41.696Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:41.697Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/11
+2025-11-22T20:09:41.702Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.714Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.715Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/11 - Buscando solicitud por ID
+2025-11-22T20:09:41.733Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/11 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:09:41.765Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/11/programar?costoEstimado=1500&tiempoEstimado=8
+2025-11-22T20:09:41.771Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:41.774Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:41.775Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/11/programar?costoEstimado=1500&tiempoEstimado=8
+2025-11-22T20:09:41.784Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.programar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.787Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.programar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.788Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/11/programar - Programando solicitud - costoEstimado: 1500, tiempoEstimado: 8
+2025-11-22T20:09:41.792Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Programando solicitud ID: 11 con costo: 1500 y tiempo: 8
+2025-11-22T20:09:41.812Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Solicitud ID: 11 programada exitosamente (costoEstimado=1500, tiempoEstimado=8, estado=PENDIENTE)
+2025-11-22T20:09:41.830Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/11/programar - Respuesta: 200 - Solicitud programada
+2025-11-22T20:09:41.859Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/11/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:09:41.863Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:41.865Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:41.866Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/11/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:09:41.879Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.881Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.882Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/11/estado - Cambiando estado a: EN_TRANSITO
+2025-11-22T20:09:41.883Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 11 a EN_TRANSITO
+2025-11-22T20:09:41.898Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/11/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:09:41.929Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/11/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:09:41.935Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:41.936Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:41.938Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/11/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:09:41.942Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.943Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:41.944Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/11/estado - Cambiando estado a: COMPLETADA
+2025-11-22T20:09:41.946Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 11 a COMPLETADA
+2025-11-22T20:09:41.961Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/11/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:09:41.993Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/11/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:09:41.998Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:41.999Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:42.000Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/11/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:09:42.003Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:42.005Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:42.006Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/11/finalizar - Persistiendo costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:09:42.008Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Finalizando solicitud ID: 11 con costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:09:42.015Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Solicitud ID: 11 actualizada con costo final y tiempo real
+2025-11-22T20:09:42.021Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/11/finalizar - Respuesta: 200 - Solicitud finalizada
+2025-11-22T20:09:42.055Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/11
+2025-11-22T20:09:42.060Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:09:42.061Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@a787bd62, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:09:42.062Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/11
+2025-11-22T20:09:42.064Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:42.065Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:09:42.065Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/11 - Buscando solicitud por ID
+2025-11-22T20:09:42.073Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/11 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:12:25.024Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:12:25.030Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:12:25.042Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:12:28.003Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:12:28.007Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:12:29.378Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:12:29.475Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 87 ms. Found 5 JPA repository interfaces.
+2025-11-22T20:12:32.390Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-22T20:12:32.424Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:12:32.425Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:12:32.494Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:12:32.498Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4429 ms
+2025-11-22T20:12:33.340Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:12:33.396Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:12:33.738Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@20231384
+2025-11-22T20:12:33.742Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:12:33.778Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:12:35.203Z  WARN 1 --- [ms-solicitudes] [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:455) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:276) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at java.base/java.util.HashMap.forEach(Unknown Source) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at com.backend.tpi.ms_solicitudes.MsSolicitudesApplication.main(MsSolicitudesApplication.java:10) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:356) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:341) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:317) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:312) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.1.0.jar!/:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.1.0.jar!/:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	... 41 common frames omitted
+
+2025-11-22T20:12:35.211Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:12:36.278Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:12:36.308Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-22T20:12:36.756Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-22T20:12:37.225Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-22T20:12:37.248Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 10.189 seconds (process running for 11.056)
+2025-11-22T20:12:42.782Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:12:42.804Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T20:12:42.960Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:42.964Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:42.970Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T20:12:43.184Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T20:12:44.344Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:12:44.345Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:12:45.348Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:12:45.349Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T20:12:45.364Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.ContenedorService       : Guardando contenedor para cliente ID: 10
+2025-11-22T20:12:47.265Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Nuevo contenedor creado con ID 3 para la solicitud
+2025-11-22T20:12:47.273Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Estado PENDIENTE asignado a la nueva solicitud - ID Estado: 1
+2025-11-22T20:12:47.288Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 12 - Estado: PENDIENTE
+2025-11-22T20:12:47.289Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 12
+2025-11-22T20:12:47.361Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/12
+2025-11-22T20:12:47.371Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:47.374Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:47.376Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/12
+2025-11-22T20:12:47.381Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.396Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.398Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/12 - Buscando solicitud por ID
+2025-11-22T20:12:47.420Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/12 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:12:47.447Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/12/programar?costoEstimado=1500&tiempoEstimado=8
+2025-11-22T20:12:47.450Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:47.451Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:47.454Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/12/programar?costoEstimado=1500&tiempoEstimado=8
+2025-11-22T20:12:47.458Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.programar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.460Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.programar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.461Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/12/programar - Programando solicitud - costoEstimado: 1500, tiempoEstimado: 8
+2025-11-22T20:12:47.462Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Programando solicitud ID: 12 con costo: 1500 y tiempo: 8
+2025-11-22T20:12:47.472Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Solicitud ID: 12 programada exitosamente (costoEstimado=1500, tiempoEstimado=8, estado=PROGRAMADA)
+2025-11-22T20:12:47.485Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/12/programar - Respuesta: 200 - Solicitud programada
+2025-11-22T20:12:47.507Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/12/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:12:47.511Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:47.512Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:47.513Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/12/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:12:47.524Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.526Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.526Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/12/estado - Cambiando estado a: EN_TRANSITO
+2025-11-22T20:12:47.527Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 12 a EN_TRANSITO
+2025-11-22T20:12:47.535Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Estado cambiado a EN_TRANSITO
+2025-11-22T20:12:47.541Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/12/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:12:47.560Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/12/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:12:47.565Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:47.566Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:47.567Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/12/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:12:47.569Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.570Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.571Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/12/estado - Cambiando estado a: COMPLETADA
+2025-11-22T20:12:47.572Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 12 a COMPLETADA
+2025-11-22T20:12:47.582Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Estado cambiado a COMPLETADA
+2025-11-22T20:12:47.588Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/12/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:12:47.606Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/12/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:12:47.610Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:47.611Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:47.612Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/12/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:12:47.614Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.616Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.617Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/12/finalizar - Persistiendo costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:12:47.618Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Finalizando solicitud ID: 12 con costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:12:47.623Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Solicitud ID: 12 actualizada con costo final y tiempo real
+2025-11-22T20:12:47.630Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/12/finalizar - Respuesta: 200 - Solicitud finalizada
+2025-11-22T20:12:47.654Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/12
+2025-11-22T20:12:47.659Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:12:47.660Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@9c170ed3, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:12:47.661Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/12
+2025-11-22T20:12:47.662Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.664Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:12:47.665Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/12 - Buscando solicitud por ID
+2025-11-22T20:12:47.671Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/12 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:33:47.290Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:33:47.307Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:33:47.322Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:33:53.103Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:33:53.113Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:33:55.946Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:33:56.120Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 153 ms. Found 5 JPA repository interfaces.
+2025-11-22T20:33:57.642Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-22T20:33:57.681Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:33:57.684Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:33:57.758Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:33:57.760Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4560 ms
+2025-11-22T20:33:59.527Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:34:01.444Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:34:02.079Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3cb04dd
+2025-11-22T20:34:02.085Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:34:02.218Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:34:06.962Z  WARN 1 --- [ms-solicitudes] [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:455) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:276) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at java.base/java.util.HashMap.forEach(Unknown Source) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at com.backend.tpi.ms_solicitudes.MsSolicitudesApplication.main(MsSolicitudesApplication.java:10) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:356) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:341) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:317) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:312) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.1.0.jar!/:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.1.0.jar!/:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	... 41 common frames omitted
+
+2025-11-22T20:34:06.972Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:34:08.530Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:34:08.600Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-22T20:34:10.043Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-22T20:34:10.838Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-22T20:34:10.857Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 18.903 seconds (process running for 20.59)
+2025-11-22T20:34:21.274Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:34:21.300Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T20:34:21.480Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:21.482Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:21.490Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T20:34:21.726Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T20:34:27.754Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5696714, lon=-70.9958553
+2025-11-22T20:34:27.755Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5696714, lon=-70.9958553
+2025-11-22T20:34:28.714Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:34:28.715Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T20:34:28.728Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.ContenedorService       : Guardando contenedor para cliente ID: 10
+2025-11-22T20:34:28.786Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.SolicitudService        : Nuevo contenedor creado con ID 4 para la solicitud
+2025-11-22T20:34:28.790Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.SolicitudService        : Estado PENDIENTE asignado a la nueva solicitud - ID Estado: 1
+2025-11-22T20:34:28.801Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 27 - Estado: PENDIENTE
+2025-11-22T20:34:28.802Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 27
+2025-11-22T20:34:28.905Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/27
+2025-11-22T20:34:28.913Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:28.914Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:28.915Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/27
+2025-11-22T20:34:28.921Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:28.935Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:28.936Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/27 - Buscando solicitud por ID
+2025-11-22T20:34:28.958Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/27 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:34:29.826Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/27/ruta?rutaId=16
+2025-11-22T20:34:29.829Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:29.832Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.4, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:29.833Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/27/ruta?rutaId=16
+2025-11-22T20:34:29.837Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:29.839Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:29.840Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/27/ruta - Asociando rutaId: 16
+2025-11-22T20:34:29.843Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Seteando rutaId 16 para solicitud 27
+2025-11-22T20:34:29.855Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Estado de solicitud cambiado a PROGRAMADA
+2025-11-22T20:34:29.859Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Solicitud ID: 27 actualizada con rutaId: 16
+2025-11-22T20:34:29.958Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/27/ruta?rutaId=16
+2025-11-22T20:34:29.961Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:29.963Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:29.964Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/27/ruta?rutaId=16
+2025-11-22T20:34:29.966Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:29.967Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:29.968Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/27/ruta - Asociando rutaId: 16
+2025-11-22T20:34:29.969Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Seteando rutaId 16 para solicitud 27
+2025-11-22T20:34:29.975Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Estado de solicitud cambiado a PROGRAMADA
+2025-11-22T20:34:29.976Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Solicitud ID: 27 actualizada con rutaId: 16
+2025-11-22T20:34:29.997Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/27/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:34:30.000Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:30.001Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:30.002Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/27/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:34:30.016Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.018Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.019Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/27/estado - Cambiando estado a: EN_TRANSITO
+2025-11-22T20:34:30.020Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 27 a EN_TRANSITO
+2025-11-22T20:34:30.034Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Estado cambiado a EN_TRANSITO
+2025-11-22T20:34:30.039Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/27/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:34:30.067Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/27/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:34:30.070Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:30.072Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:30.073Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/27/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:34:30.076Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.078Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.080Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/27/estado - Cambiando estado a: COMPLETADA
+2025-11-22T20:34:30.082Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 27 a COMPLETADA
+2025-11-22T20:34:30.095Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Estado cambiado a COMPLETADA
+2025-11-22T20:34:30.106Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/27/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:34:30.127Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/27/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:34:30.130Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:30.131Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:30.132Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/27/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:34:30.134Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.136Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.137Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/27/finalizar - Persistiendo costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:34:30.138Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.services.SolicitudService        : Finalizando solicitud ID: 27 con costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:34:30.145Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.services.SolicitudService        : Solicitud ID: 27 actualizada con costo final y tiempo real
+2025-11-22T20:34:30.150Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/27/finalizar - Respuesta: 200 - Solicitud finalizada
+2025-11-22T20:34:30.170Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/27
+2025-11-22T20:34:30.173Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:34:30.174Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@324c3876, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:34:30.175Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/27
+2025-11-22T20:34:30.177Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.178Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:34:30.179Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-8] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/27 - Buscando solicitud por ID
+2025-11-22T20:34:30.184Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-8] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/27 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:45:58.313Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:45:58.319Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:45:58.327Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:46:00.911Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:46:00.916Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:46:01.978Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:46:02.068Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 82 ms. Found 5 JPA repository interfaces.
+2025-11-22T20:46:04.638Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-22T20:46:04.658Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:46:04.659Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:46:04.746Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:46:04.748Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3772 ms
+2025-11-22T20:46:05.458Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:46:05.493Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:46:05.740Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@b34c7c9
+2025-11-22T20:46:05.745Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:46:05.802Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:46:07.479Z  WARN 1 --- [ms-solicitudes] [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:455) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:276) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at java.base/java.util.HashMap.forEach(Unknown Source) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at com.backend.tpi.ms_solicitudes.MsSolicitudesApplication.main(MsSolicitudesApplication.java:10) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:356) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:341) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:317) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:312) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.1.0.jar!/:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.1.0.jar!/:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	... 41 common frames omitted
+
+2025-11-22T20:46:07.486Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:46:08.787Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:46:08.818Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-22T20:46:09.373Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-22T20:46:09.805Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-22T20:46:09.817Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 9.738 seconds (process running for 10.579)
+2025-11-22T20:48:43.039Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:48:43.048Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:48:43.057Z  INFO 1 --- [ms-solicitudes] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:48:45.238Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Starting MsSolicitudesApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:48:45.245Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:48:46.392Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:48:46.461Z  INFO 1 --- [ms-solicitudes] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 62 ms. Found 5 JPA repository interfaces.
+2025-11-22T20:48:47.210Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-22T20:48:47.233Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:48:47.234Z  INFO 1 --- [ms-solicitudes] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:48:47.278Z  INFO 1 --- [ms-solicitudes] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:48:47.280Z  INFO 1 --- [ms-solicitudes] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1969 ms
+2025-11-22T20:48:47.868Z  INFO 1 --- [ms-solicitudes] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:48:47.898Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:48:48.115Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2beee3e8
+2025-11-22T20:48:48.117Z  INFO 1 --- [ms-solicitudes] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:48:48.144Z  WARN 1 --- [ms-solicitudes] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:48:49.151Z  WARN 1 --- [ms-solicitudes] [main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists solicitudes add constraint FK279xcsj349cobksy7l8udimeg foreign key (contenedor_id) references contenedores" via JDBC [ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:455) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:276) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at java.base/java.util.HashMap.forEach(Unknown Source) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.13.jar!/:6.1.13]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.4.jar!/:3.3.4]
+	at com.backend.tpi.ms_solicitudes.MsSolicitudesApplication.main(MsSolicitudesApplication.java:10) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "solicitudes" violates foreign key constraint "fk279xcsj349cobksy7l8udimeg"
+  Detail: Key (contenedor_id)=(7) is not present in table "contenedores".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2733) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2420) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:517) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:434) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:356) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:341) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:317) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:312) ~[postgresql-42.7.4.jar!/:42.7.4]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.1.0.jar!/:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.1.0.jar!/:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.5.3.Final.jar!/:6.5.3.Final]
+	... 41 common frames omitted
+
+2025-11-22T20:48:49.158Z  INFO 1 --- [ms-solicitudes] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:48:50.111Z  WARN 1 --- [ms-solicitudes] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:48:50.952Z DEBUG 1 --- [ms-solicitudes] [main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-22T20:48:51.422Z DEBUG 1 --- [ms-solicitudes] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-11-22T20:48:51.771Z  INFO 1 --- [ms-solicitudes] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-22T20:48:51.781Z  INFO 1 --- [ms-solicitudes] [main] c.b.t.m.MsSolicitudesApplication         : Started MsSolicitudesApplication in 7.164 seconds (process running for 7.862)
+2025-11-22T20:49:08.278Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:49:08.318Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/solicitudes
+2025-11-22T20:49:08.514Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:08.516Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:08.521Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/solicitudes
+2025-11-22T20:49:08.791Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Creando nueva solicitud
+2025-11-22T20:49:11.250Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Av. Origén 123': lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:49:11.253Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de origen geocodificadas: lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:49:12.149Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.GeocodificacionService  : Coordenadas obtenidas vía calculos para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:49:12.151Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Coordenadas de destino geocodificadas: lat=36.1325696, lon=-5.4615595
+2025-11-22T20:49:12.167Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.ContenedorService       : Guardando contenedor para cliente ID: 10
+2025-11-22T20:49:12.215Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Nuevo contenedor creado con ID 5 para la solicitud
+2025-11-22T20:49:12.220Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Estado PENDIENTE asignado a la nueva solicitud - ID Estado: 1
+2025-11-22T20:49:12.229Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.services.SolicitudService        : Solicitud creada exitosamente con ID: 28 - Estado: PENDIENTE
+2025-11-22T20:49:12.231Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-1] c.b.t.m.controllers.SolicitudController  : POST /api/v1/solicitudes - Respuesta: 200 - Solicitud creada con ID: 28
+2025-11-22T20:49:12.293Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/28
+2025-11-22T20:49:12.300Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.303Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.308Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/28
+2025-11-22T20:49:12.314Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.339Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-2] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.341Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/28 - Buscando solicitud por ID
+2025-11-22T20:49:12.367Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-2] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/28 - Respuesta: 200 - Solicitud encontrada
+2025-11-22T20:49:12.487Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/28/ruta?rutaId=17
+2025-11-22T20:49:12.491Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.493Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.4, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.494Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/28/ruta?rutaId=17
+2025-11-22T20:49:12.499Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.501Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-3] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.502Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/28/ruta - Asociando rutaId: 17
+2025-11-22T20:49:12.504Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Seteando rutaId 17 para solicitud 28
+2025-11-22T20:49:12.511Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Estado de solicitud cambiado a PROGRAMADA
+2025-11-22T20:49:12.514Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-3] c.b.t.m.services.SolicitudService        : Solicitud ID: 28 actualizada con rutaId: 17
+2025-11-22T20:49:12.558Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/28/ruta?rutaId=17
+2025-11-22T20:49:12.563Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.564Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.566Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/28/ruta?rutaId=17
+2025-11-22T20:49:12.570Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.572Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-4] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.setRutaId(java.lang.Long,java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.573Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/28/ruta - Asociando rutaId: 17
+2025-11-22T20:49:12.574Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Seteando rutaId 17 para solicitud 28
+2025-11-22T20:49:12.582Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Estado de solicitud cambiado a PROGRAMADA
+2025-11-22T20:49:12.584Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-4] c.b.t.m.services.SolicitudService        : Solicitud ID: 28 actualizada con rutaId: 17
+2025-11-22T20:49:12.611Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/28/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:49:12.615Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.618Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.620Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/28/estado?nuevoEstado=EN_TRANSITO
+2025-11-22T20:49:12.630Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.631Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-5] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.632Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/28/estado - Cambiando estado a: EN_TRANSITO
+2025-11-22T20:49:12.634Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 28 a EN_TRANSITO
+2025-11-22T20:49:12.643Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.services.SolicitudService        : Estado cambiado a EN_TRANSITO
+2025-11-22T20:49:12.650Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-5] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/28/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:49:12.674Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Securing PUT /api/v1/solicitudes/28/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:49:12.679Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.680Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.682Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] o.s.security.web.FilterChainProxy        : Secured PUT /api/v1/solicitudes/28/estado?nuevoEstado=COMPLETADA
+2025-11-22T20:49:12.686Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.688Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-6] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.cambiarEstado(java.lang.Long,java.lang.String); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.689Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/28/estado - Cambiando estado a: COMPLETADA
+2025-11-22T20:49:12.690Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Cambiando estado de solicitud 28 a COMPLETADA
+2025-11-22T20:49:12.699Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.services.SolicitudService        : Estado cambiado a COMPLETADA
+2025-11-22T20:49:12.708Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-6] c.b.t.m.controllers.SolicitudController  : PUT /api/v1/solicitudes/28/estado - Respuesta: 200 - Estado cambiado
+2025-11-22T20:49:12.733Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Securing PATCH /api/v1/solicitudes/28/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:49:12.739Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.740Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.742Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] o.s.security.web.FilterChainProxy        : Secured PATCH /api/v1/solicitudes/28/finalizar?costoFinal=1600&tiempoReal=9
+2025-11-22T20:49:12.745Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.747Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-7] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.finalizar(java.lang.Long,java.math.BigDecimal,java.math.BigDecimal); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.748Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/28/finalizar - Persistiendo costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:49:12.750Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.services.SolicitudService        : Finalizando solicitud ID: 28 con costoFinal: 1600, tiempoReal: 9
+2025-11-22T20:49:12.758Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.services.SolicitudService        : Solicitud ID: 28 actualizada con costo final y tiempo real
+2025-11-22T20:49:12.765Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-7] c.b.t.m.controllers.SolicitudController  : PATCH /api/v1/solicitudes/28/finalizar - Respuesta: 200 - Solicitud finalizada
+2025-11-22T20:49:12.792Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/solicitudes/28
+2025-11-22T20:49:12.799Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] o.s.s.o.s.r.a.JwtAuthenticationProvider  : Authenticated token
+2025-11-22T20:49:12.801Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] .s.r.w.a.BearerTokenAuthenticationFilter : Set SecurityContextHolder to JwtAuthenticationToken [Principal=org.springframework.security.oauth2.jwt.Jwt@b4c4299e, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=172.19.0.8, SessionId=null], Granted Authorities=[ROLE_TRANSPORTISTA, ROLE_ADMIN, ROLE_OPERADOR, ROLE_CLIENTE, ROLE_RESPONSABLE]]
+2025-11-22T20:49:12.804Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/solicitudes/28
+2025-11-22T20:49:12.807Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.808Z DEBUG 1 --- [ms-solicitudes] [http-nio-8083-exec-8] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.backend.tpi.ms_solicitudes.controllers.SolicitudController.findById(java.lang.Long); target is of class [com.backend.tpi.ms_solicitudes.controllers.SolicitudController]
+2025-11-22T20:49:12.811Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-8] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/28 - Buscando solicitud por ID
+2025-11-22T20:49:12.818Z  INFO 1 --- [ms-solicitudes] [http-nio-8083-exec-8] c.b.t.m.controllers.SolicitudController  : GET /api/v1/solicitudes/28 - Respuesta: 200 - Solicitud encontrada

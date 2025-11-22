@@ -410,11 +410,13 @@ public class SolicitudService {
                     });
             solicitud.setRutaId(rutaId);
             
-            // Cambiar estado a PROGRAMADO cuando se asocia una ruta
-            estadoSolicitudRepository.findByNombre("PROGRAMADO").ifPresent(estado -> {
-                solicitud.setEstado(estado);
-                logger.info("Estado de solicitud cambiado a PROGRAMADO");
-            });
+            // Cambiar estado a PROGRAMADA cuando se asocia una ruta
+            java.util.Optional<com.backend.tpi.ms_solicitudes.models.EstadoSolicitud> estadoProgramadaOpt =
+                    estadoSolicitudRepository.findByNombre("PROGRAMADA");
+            if (estadoProgramadaOpt.isPresent()) {
+                solicitud.setEstado(estadoProgramadaOpt.get());
+                logger.info("Estado de solicitud cambiado a PROGRAMADA");
+            }
             
             solicitud = solicitudRepository.save(solicitud);
             logger.info("Solicitud ID: {} actualizada con rutaId: {}", solicitudId, rutaId);
@@ -436,10 +438,12 @@ public class SolicitudService {
                         return new RuntimeException("Solicitud no encontrada con ID: " + solicitudId);
                     });
             
-            estadoSolicitudRepository.findByNombre(nuevoEstado).ifPresent(estado -> {
-                solicitud.setEstado(estado);
-                logger.info("Estado cambiado a {}", estado.getNombre());
-            });
+            java.util.Optional<com.backend.tpi.ms_solicitudes.models.EstadoSolicitud> estadoOpt =
+                    estadoSolicitudRepository.findByNombre(nuevoEstado);
+            if (estadoOpt.isPresent()) {
+                solicitud.setEstado(estadoOpt.get());
+                logger.info("Estado cambiado a {}", estadoOpt.get().getNombre());
+            }
             
             solicitud = solicitudRepository.save(solicitud);
             return toDto(solicitud);
@@ -827,67 +831,8 @@ public class SolicitudService {
             return toDto(solicitud);
         }
 
-        /**
-         * Programa una solicitud asignándole costo y tiempo estimados
-         * @param id ID de la solicitud
-         * @param costoEstimado Costo estimado del transporte
-         * @param tiempoEstimado Tiempo estimado del transporte
-         * @return DTO de la solicitud programada
-         */
-        @org.springframework.transaction.annotation.Transactional
-        public SolicitudDTO programar(Long id, java.math.BigDecimal costoEstimado, java.math.BigDecimal tiempoEstimado) {
-                logger.info("Programando solicitud ID: {} con costo: {} y tiempo: {}", id, costoEstimado, tiempoEstimado);
-                Solicitud solicitud = solicitudRepository.findById(id)
-                        .orElseThrow(() -> {
-                            logger.error("No se puede programar - Solicitud no encontrada con ID: {}", id);
-                            return new RuntimeException("Solicitud no encontrada con ID: " + id);
-                        });
-
-                // Si no se proporcionó costo o tiempo estimado, intentar calcularlos delegando a ms-gestion-calculos
-                try {
-                    Object precioObj = null;
-                    if (costoEstimado == null || tiempoEstimado == null) {
-                        precioObj = calculatePrice(id);
-                    }
-
-                    if (precioObj != null) {
-                        // Manejar CostoResponseDTO (respuesta típica) o Map como fallback
-                        if (precioObj instanceof com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO) {
-                            com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO costoResp = (com.backend.tpi.ms_solicitudes.dtos.CostoResponseDTO) precioObj;
-                            if (costoEstimado == null && costoResp.getCostoTotal() != null) {
-                                solicitud.setCostoEstimado(java.math.BigDecimal.valueOf(costoResp.getCostoTotal()));
-                                logger.debug("Costo estimado calculado y seteado desde calculos: {}", costoResp.getCostoTotal());
-                            }
-                            if (tiempoEstimado == null && costoResp.getTiempoEstimado() != null) {
-                                java.math.BigDecimal horas = parseTiempoEstimadoStringToHours(costoResp.getTiempoEstimado());
-                                if (horas != null) {
-                                    solicitud.setTiempoEstimado(horas);
-                                    logger.debug("Tiempo estimado calculado y seteado (horas): {}", horas);
-                                }
-                            }
-                        } else if (precioObj instanceof java.util.Map) {
-                            @SuppressWarnings("unchecked")
-                            java.util.Map<String, Object> mapa = (java.util.Map<String, Object>) precioObj;
-                            if (costoEstimado == null && mapa.get("precio") instanceof Number) {
-                                solicitud.setCostoEstimado(java.math.BigDecimal.valueOf(((Number) mapa.get("precio")).doubleValue()));
-                                logger.debug("Costo estimado calculado y seteado desde mapa: {}", mapa.get("precio"));
-                            }
-                            // No siempre hay tiempo en el mapa fallback
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.warn("No se pudo calcular precio estimado al programar solicitud {}: {}", id, e.getMessage());
-                }
-
-                // Si se pasaron explícitamente valores, los respetamos (sobrescriben lo calculado)
-                if (costoEstimado != null) solicitud.setCostoEstimado(costoEstimado);
-                if (tiempoEstimado != null) solicitud.setTiempoEstimado(tiempoEstimado);
-
-                solicitud = solicitudRepository.save(solicitud);
-                logger.info("Solicitud ID: {} programada exitosamente (costoEstimado={}, tiempoEstimado={})", id, solicitud.getCostoEstimado(), solicitud.getTiempoEstimado());
-                return toDto(solicitud);
-    }
-
+        // `programar` behavior removed: route selection (confirmRouteSelectionByOptionId or setRutaId)
+        // now sets the solicitud to PROGRAMADA. This method was intentionally deleted.
         /**
          * Parsea un string como "2h 30m" o "1h" a horas en BigDecimal (ej. "2h 30m" -> 2.5)
          */

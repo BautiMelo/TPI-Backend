@@ -1243,3 +1243,74 @@ com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize 
 2025-11-22T03:01:28.993Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2025-11-22T03:01:29.757Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
 2025-11-22T03:01:29.766Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 7.108 seconds (process running for 8.309)
+2025-11-22T19:49:51.886Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T19:49:51.895Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T19:49:58.158Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T19:49:58.385Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 195 ms. Found 7 JPA repository interfaces.
+2025-11-22T19:50:02.669Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T19:50:02.739Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T19:50:02.740Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T19:50:02.870Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T19:50:02.872Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 10728 ms
+2025-11-22T19:50:05.008Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T19:50:05.111Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T19:50:05.874Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@793d09e
+2025-11-22T19:50:05.883Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T19:50:06.003Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T19:50:09.579Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T19:50:10.932Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T19:50:12.014Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T19:50:12.026Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 22.353 seconds (process running for 24.456)
+2025-11-22T20:08:28.935Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:08:28.947Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:08:28.981Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:08:35.751Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:08:35.760Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:08:40.092Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:08:40.342Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 201 ms. Found 7 JPA repository interfaces.
+2025-11-22T20:08:42.723Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T20:08:42.767Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:08:42.769Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:08:42.881Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:08:42.883Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6820 ms
+2025-11-22T20:08:46.097Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:08:46.156Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:08:47.465Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4eb1943b
+2025-11-22T20:08:47.472Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:08:47.639Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:08:50.116Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:08:52.552Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:08:54.083Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T20:08:54.106Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 20.19 seconds (process running for 21.769)
+2025-11-22T20:33:47.363Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:33:47.404Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:33:47.426Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:33:53.239Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:33:53.247Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:33:56.687Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:33:56.834Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 125 ms. Found 7 JPA repository interfaces.
+2025-11-22T20:33:58.940Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T20:33:59.032Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:33:59.038Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:33:59.204Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:33:59.206Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5846 ms
+2025-11-22T20:34:03.251Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:34:03.327Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:34:03.845Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6a902015
+2025-11-22T20:34:03.850Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:34:03.924Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:34:08.375Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:34:10.885Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:34:11.991Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T20:34:12.006Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 19.986 seconds (process running for 21.742)
+2025-11-22T20:34:29.100Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:34:29.534Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Creando nueva ruta para solicitud ID: 27
+2025-11-22T20:34:29.747Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Ruta creada exitosamente con ID: 16 para solicitud ID: 27
+2025-11-22T20:34:29.747Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : No se especificaron depósitos - ruta creada sin tramos automáticos
+2025-11-22T20:34:29.897Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Notificada solicitud 27 con rutaId 16
+2025-11-22T20:34:29.908Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Respuesta: 200 - Ruta creada con ID: 16
+2025-11-22T20:49:12.466Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Creando nueva ruta para solicitud ID: 28
+2025-11-22T20:49:12.476Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : Ruta creada exitosamente con ID: 17 para solicitud ID: 28
+2025-11-22T20:49:12.477Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : No se especificaron depósitos - ruta creada sin tramos automáticos
+2025-11-22T20:49:12.528Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : Notificada solicitud 28 con rutaId 17
+2025-11-22T20:49:12.531Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Respuesta: 200 - Ruta creada con ID: 17

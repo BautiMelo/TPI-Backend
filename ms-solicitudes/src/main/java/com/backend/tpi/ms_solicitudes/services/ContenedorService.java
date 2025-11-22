@@ -231,9 +231,10 @@ public class ContenedorService {
                         break;
                         
                     case "pendiente":
+                    case "programada":
                     case "programado":
                     default:
-                        // Si está pendiente, está en el origen (depósito)
+                        // Si está pendiente/programada, asumir que se encuentra en el origen (depósito)
                         seguimiento.setUbicacionActualLat(solicitud.getOrigenLat());
                         seguimiento.setUbicacionActualLong(solicitud.getOrigenLong());
                         // TODO: Obtener depositoId desde ms-gestion-calculos si está almacenado

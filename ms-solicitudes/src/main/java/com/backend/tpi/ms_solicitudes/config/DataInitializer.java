@@ -27,16 +27,19 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        // Inicializar estados de solicitud si no existen
-        if (estadoSolicitudRepository.count() == 0) {
-            EstadoSolicitud borrador = new EstadoSolicitud(); borrador.setNombre("BORRADOR");
-            EstadoSolicitud programada = new EstadoSolicitud(); programada.setNombre("PROGRAMADA");
-            EstadoSolicitud enTransito = new EstadoSolicitud(); enTransito.setNombre("EN_TRANSITO");
-            EstadoSolicitud entregada = new EstadoSolicitud(); entregada.setNombre("ENTREGADA");
-            estadoSolicitudRepository.save(borrador);
-            estadoSolicitudRepository.save(programada);
-            estadoSolicitudRepository.save(enTransito);
-            estadoSolicitudRepository.save(entregada);
+        // Asegurar que existan los estados canónicos (upsert por nombre)
+        String[] estadosCanonicos = new String[] {"PENDIENTE", "PROGRAMADA", "EN_TRANSITO", "COMPLETADA", "CANCELADA"};
+        for (String nombre : estadosCanonicos) {
+            try {
+                estadoSolicitudRepository.findByNombre(nombre).orElseGet(() -> {
+                    EstadoSolicitud e = new EstadoSolicitud();
+                    e.setNombre(nombre);
+                    return estadoSolicitudRepository.save(e);
+                });
+            } catch (Exception ex) {
+                // Registrar y continuar; evitar que el initializer deje de ejecutarse por una fila duplicada u otro problema
+                System.err.println("Warning: no se pudo garantizar estado '" + nombre + "': " + ex.getMessage());
+            }
         }
 
         // Inicializar estados de contenedor si no existen

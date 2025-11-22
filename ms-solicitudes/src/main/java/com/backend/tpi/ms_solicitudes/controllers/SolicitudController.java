@@ -338,6 +338,26 @@ public class SolicitudController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * POST /api/v1/solicitudes/{id}/rutas - Solicita rutas/precomputadas para una solicitud
+     * Requiere rol CLIENTE, OPERADOR o ADMIN
+     * @param id ID de la solicitud
+     * @return Respuesta del microservicio de rutas (opciones o ruta creada)
+     */
+    @PostMapping("/{id}/rutas")
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
+    public ResponseEntity<Object> requestRoute(@PathVariable Long id) {
+        logger.info("POST /api/v1/solicitudes/{}/rutas - Solicitando ruta para solicitud", id);
+        try {
+            Object resp = solicitudService.requestRoute(id);
+            logger.info("POST /api/v1/solicitudes/{}/rutas - Respuesta del servicio de rutas obtenida", id);
+            return ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            logger.error("POST /api/v1/solicitudes/{}/rutas - Error solicitando ruta: {}", id, e.getMessage());
+            return ResponseEntity.status(500).body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
+
     
 
     /**
@@ -356,26 +376,6 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudDTO);
     }
 
-    /**
-    * PATCH /api/v1/solicitudes/{id}/programar - Programa una solicitud asignando costo y tiempo estimados
-    * Requiere rol OPERADOR o ADMIN
-     * @param id ID de la solicitud
-     * @param costoEstimado Costo estimado del transporte
-     * @param tiempoEstimado Tiempo estimado del transporte
-     * @return Solicitud programada
-     */
-    @PatchMapping("/{id}/programar")
-    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<SolicitudDTO> programar(
-            @PathVariable Long id, 
-            @RequestParam java.math.BigDecimal costoEstimado,
-            @RequestParam java.math.BigDecimal tiempoEstimado) {
-        logger.info("PATCH /api/v1/solicitudes/{}/programar - Programando solicitud - costoEstimado: {}, tiempoEstimado: {}", 
-            id, costoEstimado, tiempoEstimado);
-        SolicitudDTO solicitudDTO = solicitudService.programar(id, costoEstimado, tiempoEstimado);
-        logger.info("PATCH /api/v1/solicitudes/{}/programar - Respuesta: 200 - Solicitud programada", id);
-        return ResponseEntity.ok(solicitudDTO);
-    }
 
     /**
     * PATCH /api/v1/solicitudes/{id}/finalizar - Persiste el costo final y tiempo real de la solicitud
@@ -415,7 +415,7 @@ public class SolicitudController {
 
     /**
      * POST /api/v1/solicitudes/{solicitudId}/opciones/{opcionId}/confirmar
-     * Confirma la opción seleccionada (body opcional si ya se conoce la estructura de la opción)
+     * Confirma la opción seleccionada
      * Requiere rol OPERADOR o ADMIN
      */
     @PostMapping("/{solicitudId}/opciones/{opcionId}/confirmar")
@@ -426,8 +426,14 @@ public class SolicitudController {
         logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Confirmando opción por opcionId", solicitudId, opcionId);
         try {
             java.util.Map<String, Object> resp = solicitudService.confirmRouteSelectionByOptionId(solicitudId, opcionId);
-            logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Opción confirmada", solicitudId, opcionId);
-            return ResponseEntity.ok(resp);
+            // Al confirmar la opción queremos devolver también la solicitud actualizada
+            // para que el cliente vea la asociación (rutaId) y el cambio de estado.
+            com.backend.tpi.ms_solicitudes.dtos.SolicitudDTO solicitudActualizada = solicitudService.findById(solicitudId);
+            java.util.Map<String, Object> combined = new java.util.HashMap<>();
+            combined.put("ruta", resp);
+            combined.put("solicitud", solicitudActualizada);
+            logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Opción confirmada y solicitud actualizada devuelta", solicitudId, opcionId);
+            return ResponseEntity.ok(combined);
         } catch (Exception e) {
             logger.error("Error confirmando opción para solicitud {} opción {}: {}", solicitudId, opcionId, e.getMessage());
             return ResponseEntity.status(500).body(java.util.Map.of("error", e.getMessage()));

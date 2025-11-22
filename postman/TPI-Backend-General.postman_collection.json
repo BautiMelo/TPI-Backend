@@ -495,14 +495,7 @@
             "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/estado?estado=EN_PROCESO", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "estado" ], "query": [ { "key": "estado", "value": "EN_PROCESO" } ] }
           }
         },
-        {
-          "name": "Programar Solicitud",
-          "request": {
-            "method": "PATCH",
-            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/programar?costoEstimado=2000.00&tiempoEstimado=5.0", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "programar" ], "query": [ { "key": "costoEstimado", "value": "2000.00" }, { "key": "tiempoEstimado", "value": "5.0" } ] }
-          }
-        },
+        
         {
           "name": "Finalizar Solicitud",
           "request": {
@@ -737,7 +730,7 @@
       "name": "Rutas",
       "item": [
         {
-          "name": "Create Ruta",
+          "name": "Request Ruta For Solicitud",
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
@@ -745,7 +738,7 @@
               "mode": "raw",
               "raw": "{\n  \"idSolicitud\": {{solicitudId}}\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/v1/rutas", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas" ] }
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/rutas", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "rutas" ] }
           }
         },
         {

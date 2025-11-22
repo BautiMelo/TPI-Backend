@@ -7,6 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -32,8 +33,9 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                // permitir registro público y la documentación OpenAPI/Swagger
+                // permitir registro público, creación de solicitudes y la documentación OpenAPI/Swagger
                 .requestMatchers("/api/v1/clientes/registro").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/solicitudes").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/v3/api-docs", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
             ).oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt ->

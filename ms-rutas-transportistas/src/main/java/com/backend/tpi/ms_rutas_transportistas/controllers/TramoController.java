@@ -122,8 +122,8 @@ public class TramoController {
     }
 
     /**
-     * Actualiza la fecha de llegada de un tramo
-     * Si es el último tramo, cambia el estado de la solicitud a ENTREGADO
+    * Actualiza la fecha de llegada de un tramo
+    * Si es el último tramo, cambia el estado de la solicitud a COMPLETADA
      * @param id ID del tramo
      * @param fechaHoraReal Fecha y hora real de llegada (formato ISO: 2025-11-20T15:30:00)
      * @return Tramo actualizado

@@ -325,3 +325,94 @@ Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "
 2025-11-22T03:48:45.251Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 567, CABA': lat=-34.5765392, lon=-58.4314883
 2025-11-22T03:48:45.460Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Corrientes 123, CABA
 2025-11-22T03:48:46.544Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Corrientes 123, CABA': lat=-34.6028098, lon=-58.3693688
+2025-11-22T19:49:43.603Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T19:49:43.613Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T19:49:48.640Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T19:49:49.305Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 595 ms. Found 4 JPA repository interfaces.
+2025-11-22T19:49:51.971Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-22T19:49:52.035Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T19:49:52.037Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T19:49:52.224Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T19:49:52.244Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8528 ms
+2025-11-22T19:49:57.085Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T19:49:57.191Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T19:49:57.700Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2b8cf049
+2025-11-22T19:49:57.705Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T19:49:57.824Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T19:50:03.390Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T19:50:06.037Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T19:50:09.010Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-22T19:50:09.033Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 27.056 seconds (process running for 30.396)
+2025-11-22T19:50:56.093Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T19:50:56.401Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T19:50:57.973Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5696714, lon=-70.9958553
+2025-11-22T19:50:58.144Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T19:50:59.163Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T19:51:54.441Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T19:51:55.631Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5696714, lon=-70.9958553
+2025-11-22T19:51:55.647Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T19:51:57.981Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:01:25.517Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T20:01:28.037Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5791023, lon=-71.0004914
+2025-11-22T20:01:28.064Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T20:01:29.266Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:08:28.991Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:08:29.005Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:08:29.023Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:08:36.054Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:08:36.076Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:08:40.487Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:08:40.944Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 431 ms. Found 4 JPA repository interfaces.
+2025-11-22T20:08:44.017Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-22T20:08:44.084Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:08:44.087Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:08:44.212Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:08:44.213Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7968 ms
+2025-11-22T20:08:46.464Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:08:46.675Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:08:48.030Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7a30e30b
+2025-11-22T20:08:48.165Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:08:48.235Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:08:50.637Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:08:52.782Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:08:54.386Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-22T20:08:54.400Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 20.367 seconds (process running for 22.09)
+2025-11-22T20:09:38.513Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:09:38.770Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T20:09:40.300Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:09:40.490Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T20:09:41.425Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:12:43.279Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T20:12:44.279Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:12:44.355Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T20:12:45.341Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:33:47.398Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:33:47.415Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T20:33:47.435Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T20:33:53.266Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T20:33:53.275Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T20:33:56.683Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T20:33:57.038Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 337 ms. Found 4 JPA repository interfaces.
+2025-11-22T20:33:59.319Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-22T20:33:59.369Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T20:33:59.372Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T20:33:59.558Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T20:33:59.560Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6178 ms
+2025-11-22T20:34:03.588Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T20:34:03.668Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T20:34:04.128Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2c7375da
+2025-11-22T20:34:04.138Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T20:34:04.237Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T20:34:08.443Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T20:34:10.936Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T20:34:12.110Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-22T20:34:12.119Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 20.011 seconds (process running for 21.908)
+2025-11-22T20:34:21.895Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T20:34:22.163Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T20:34:27.636Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5696714, lon=-70.9958553
+2025-11-22T20:34:27.764Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T20:34:28.707Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595
+2025-11-22T20:49:08.894Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Origén 123
+2025-11-22T20:49:09.909Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Origén 123': lat=-34.5766066, lon=-71.0061858
+2025-11-22T20:49:11.272Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Calle Destino 456
+2025-11-22T20:49:12.142Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Calle Destino 456': lat=36.1325696, lon=-5.4615595

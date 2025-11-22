@@ -47,11 +47,10 @@ Paso a paso (mapa a requests Postman)
 - Resultado: se crea/retorna la `Ruta` final (generada por `ms-rutas`) y la `solicitud` se parchea para apuntar a `rutaId`.
 - Postman: los scripts de test actualizan `rutaId` en variables y envían automáticamente el `PATCH /api/v1/solicitudes/{solicitudId}/ruta?rutaId={rutaId}` para mantener sincronía.
 
-8) Asignaciones, Programación y Ejecución
+8) Asignaciones y Ejecución
 - Asignar contenedor: `POST /api/v1/solicitudes/{solicitudId}/asignar-contenedor?contenedorId={contenedorId}`.
 - Calcular precio estimado: `POST /api/v1/solicitudes/{solicitudId}/calcular-precio`.
 - Asignar transporte: `POST /api/v1/solicitudes/{solicitudId}/asignar-transporte?transportistaId={transportistaId}`.
-- Programar: `PATCH /api/v1/solicitudes/{solicitudId}/programar?costoEstimado={}&tiempoEstimado={}`.
 - Finalizar: `PATCH /api/v1/solicitudes/{solicitudId}/finalizar?costoFinal={}&tiempoReal={}`.
 
 9) Tramos y seguimiento de la ejecución

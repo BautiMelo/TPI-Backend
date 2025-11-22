@@ -2,7 +2,7 @@
   "info": {
     "name": "TPI Backend - Lifecycle",
     "_postman_id": "tpi-backend-lifecycle-001",
-    "description": "Collection that demonstrates a full lifecycle for a solicitud: auth, create contenedor, create solicitud, solicitar ruta, calcular precio, asignar contenedor/transporte, programar y finalizar. Includes a folder to switch role tokens quickly.",
+    "description": "Collection that demonstrates a full lifecycle for a solicitud: auth, create contenedor, create solicitud, solicitar ruta, calcular precio, asignar contenedor/transporte y finalizar. Includes a folder to switch role tokens quickly.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -291,14 +291,7 @@
             "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/asignar-transporte?transportistaId={{transportistaId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "asignar-transporte" ], "query": [ { "key": "transportistaId", "value": "{{transportistaId}}" } ] }
           }
         },
-        {
-          "name": "Programar Solicitud (operador)",
-          "request": {
-            "method": "PATCH",
-            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/{{solicitudId}}/programar?costoEstimado=2000.00&tiempoEstimado=5.0", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "{{solicitudId}}", "programar" ], "query": [ { "key": "costoEstimado", "value": "2000.00" }, { "key": "tiempoEstimado", "value": "5.0" } ] }
-          }
-        },
+        
         {
           "name": "Finalizar Solicitud (operador)",
           "request": {
