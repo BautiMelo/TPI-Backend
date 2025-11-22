@@ -24,6 +24,9 @@ public class ClienteService {
 
     @Autowired
     private KeycloakService keycloakService;
+    
+    @Autowired
+    private com.backend.tpi.ms_solicitudes.repositories.ContenedorRepository contenedorRepository;
 
     /**
      * Obtiene todos los clientes del sistema
@@ -94,10 +97,20 @@ public class ClienteService {
     /**
      * Elimina un cliente por su ID
      * @param id ID del cliente a eliminar
+     * @throws RuntimeException si el cliente tiene contenedores asignados
      */
     @Transactional
     public void deleteById(Long id) {
         Cliente cliente = findById(id);
+        
+        // Validar que no tenga contenedores asignados
+        long cantidadContenedores = contenedorRepository.countByClienteId(id);
+        if (cantidadContenedores > 0) {
+            throw new RuntimeException("No se puede eliminar el cliente ID " + id + 
+                " porque tiene " + cantidadContenedores + " contenedor(es) asignado(s). " +
+                "Debe eliminar primero los contenedores asociados.");
+        }
+        
         log.info("Eliminando cliente ID: {}", id);
         clienteRepository.delete(cliente);
     }

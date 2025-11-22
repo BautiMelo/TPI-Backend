@@ -335,10 +335,20 @@ public class SolicitudService {
         /**
          * Elimina una solicitud por su ID
          * @param id ID de la solicitud a eliminar
+         * @throws RuntimeException si la solicitud tiene una ruta asignada
          */
         @org.springframework.transaction.annotation.Transactional
         public void delete(Long id) {
             logger.info("Eliminando solicitud ID: {}", id);
+            
+            // Validar que no tenga ruta asignada
+            SolicitudDTO solicitudDTO = findById(id);
+            if (solicitudDTO != null && solicitudDTO.getRutaId() != null) {
+                throw new RuntimeException("No se puede eliminar la solicitud ID " + id + 
+                    " porque tiene una ruta asignada (Ruta ID: " + solicitudDTO.getRutaId() + "). " +
+                    "Debe eliminar primero la ruta asociada.");
+            }
+            
             solicitudRepository.deleteById(id);
             logger.debug("Solicitud ID: {} eliminada de la base de datos", id);
         }
@@ -390,6 +400,13 @@ public class SolicitudService {
                         return new RuntimeException("Solicitud no encontrada con ID: " + solicitudId);
                     });
             solicitud.setRutaId(rutaId);
+            
+            // Cambiar estado a PROGRAMADO cuando se asocia una ruta
+            estadoSolicitudRepository.findByNombre("PROGRAMADO").ifPresent(estado -> {
+                solicitud.setEstado(estado);
+                logger.info("Estado de solicitud {} cambiado a PROGRAMADO", solicitudId);
+            });
+            
             solicitud = solicitudRepository.save(solicitud);
             logger.info("Solicitud ID: {} actualizada con rutaId: {}", solicitudId, rutaId);
             return toDto(solicitud);

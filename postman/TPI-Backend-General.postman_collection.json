@@ -702,7 +702,19 @@
             "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Deposito Norte\",\n  \"direccion\": \"Av. Gral. Paz 1234, CABA\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"costoEstadiaDiario\": 500.0\n}"
+              "raw": "{\n  \"nombre\": \"Deposito Norte\",\n  \"direccion\": \"Av. Gral. Paz 1234, CABA\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"nombreCiudad\": \"Buenos Aires\",\n  \"costoEstadiaDiario\": 500.0\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/depositos", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "depositos" ] }
+          }
+        },
+        {
+          "name": "Create Deposito (con geocodificación)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Deposito Sur\",\n  \"direccion\": \"Av. del Libertador 5000, CABA\",\n  \"latitud\": -34.5564,\n  \"longitud\": -58.4524,\n  \"costoEstadiaDiario\": 450.0\n}"
             },
             "url": { "raw": "{{baseUrl}}/api/v1/depositos", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "depositos" ] }
           }
@@ -714,7 +726,7 @@
             "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": {{depositoId}},\n  \"nombre\": \"Deposito Norte Actualizado\",\n  \"direccion\": \"Av. Gral. Paz 9999, CABA\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"costoEstadiaDiario\": 600.0\n}"
+              "raw": "{\n  \"id\": {{depositoId}},\n  \"nombre\": \"Deposito Norte Actualizado\",\n  \"direccion\": \"Av. Gral. Paz 9999, CABA\",\n  \"latitud\": -34.6037,\n  \"longitud\": -58.3816,\n  \"nombreCiudad\": \"Capital Federal\",\n  \"costoEstadiaDiario\": 600.0\n}"
             },
             "url": { "raw": "{{baseUrl}}/api/v1/depositos/{{depositoId}}", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "depositos", "{{depositoId}}" ] }
           }

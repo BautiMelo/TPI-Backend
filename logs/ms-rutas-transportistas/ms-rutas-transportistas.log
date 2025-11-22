@@ -1,18 +1,795 @@
-2025-11-21T01:53:00.784Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
-2025-11-21T01:53:01.329Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
-2025-11-21T01:53:15.276Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-21T01:53:15.567Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 255 ms. Found 7 JPA repository interfaces.
-2025-11-21T01:53:19.966Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
-2025-11-21T01:53:20.170Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-21T01:53:20.172Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
-2025-11-21T01:53:20.587Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-11-21T01:53:20.593Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 18481 ms
-2025-11-21T01:53:24.279Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-21T01:53:24.370Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-11-21T01:53:25.013Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@566f4659
-2025-11-21T01:53:25.017Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-11-21T01:53:25.414Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-11-21T01:53:29.972Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-21T01:53:32.416Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-21T01:53:38.243Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
-2025-11-21T01:53:38.268Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 43.265 seconds (process running for 48.0)
+2025-11-22T00:40:51.494Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T00:40:51.607Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T00:40:58.699Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T00:40:59.014Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 275 ms. Found 7 JPA repository interfaces.
+2025-11-22T00:41:01.833Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T00:41:01.898Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T00:41:01.900Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T00:41:02.036Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T00:41:02.038Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 10138 ms
+2025-11-22T00:41:04.790Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T00:41:04.881Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T00:41:05.593Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@39514976
+2025-11-22T00:41:05.598Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T00:41:05.822Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T00:41:12.285Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T00:41:17.213Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T00:41:20.572Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T00:41:20.619Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 31.068 seconds (process running for 34.72)
+2025-11-22T00:44:50.940Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T00:44:52.119Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Creando nueva ruta para solicitud ID: 2
+2025-11-22T00:44:52.122Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T00:44:52.547Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Error generating options for solicitud 2: 404 Not Found: [no body]
+2025-11-22T00:44:52.549Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/rutas - Error: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+2025-11-22T00:47:01.728Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T00:47:01.728Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T00:47:01.750Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaService             : Error generating options for solicitud 2: 404 Not Found: [no body]
+2025-11-22T00:47:01.754Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.RutaController       : Error generando opciones para solicitud 2: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+
+java.lang.RuntimeException: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+	at com.backend.tpi.ms_rutas_transportistas.services.RutaService.generateOptionsForSolicitud(RutaService.java:760) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:716) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.services.RutaService$$SpringCGLIB$$0.generateOptionsForSolicitud(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController.createOptionsForSolicitud(RutaController.java:78) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.proceed(AuthorizationManagerBeforeMethodInterceptor.java:269) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.attemptAuthorization(AuthorizationManagerBeforeMethodInterceptor.java:264) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.invoke(AuthorizationManagerBeforeMethodInterceptor.java:197) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.config.annotation.method.configuration.DeferringMethodInterceptor.invoke(DeferringMethodInterceptor.java:44) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController$$SpringCGLIB$$0.createOptionsForSolicitud(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:145) ~[spring-security-oauth2-resource-server-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at java.base/java.lang.Thread.run(Unknown Source) ~[na:na]
+Caused by: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:112) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.StatusHandler.lambda$defaultHandler$3(StatusHandler.java:86) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.StatusHandler.handle(StatusHandler.java:146) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.applyStatusHandlers(DefaultRestClient.java:707) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient.readWithMessageConverters(DefaultRestClient.java:200) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.readBody(DefaultRestClient.java:694) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.toEntityInternal(DefaultRestClient.java:664) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.toEntity(DefaultRestClient.java:660) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.services.RutaService.generateOptionsForSolicitud(RutaService.java:703) ~[!/:0.0.1-SNAPSHOT]
+	... 112 common frames omitted
+
+2025-11-22T00:51:10.720Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T00:51:10.721Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T00:51:10.744Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : Error generating options for solicitud 2: 404 Not Found: [no body]
+2025-11-22T00:51:10.745Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : Error generando opciones para solicitud 2: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+
+java.lang.RuntimeException: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+	at com.backend.tpi.ms_rutas_transportistas.services.RutaService.generateOptionsForSolicitud(RutaService.java:760) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:716) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.services.RutaService$$SpringCGLIB$$0.generateOptionsForSolicitud(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController.createOptionsForSolicitud(RutaController.java:78) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.proceed(AuthorizationManagerBeforeMethodInterceptor.java:269) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.attemptAuthorization(AuthorizationManagerBeforeMethodInterceptor.java:264) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.invoke(AuthorizationManagerBeforeMethodInterceptor.java:197) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.config.annotation.method.configuration.DeferringMethodInterceptor.invoke(DeferringMethodInterceptor.java:44) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController$$SpringCGLIB$$0.createOptionsForSolicitud(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:145) ~[spring-security-oauth2-resource-server-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at java.base/java.lang.Thread.run(Unknown Source) ~[na:na]
+Caused by: org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found: [no body]
+	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:112) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.StatusHandler.lambda$defaultHandler$3(StatusHandler.java:86) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.StatusHandler.handle(StatusHandler.java:146) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.applyStatusHandlers(DefaultRestClient.java:707) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient.readWithMessageConverters(DefaultRestClient.java:200) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.readBody(DefaultRestClient.java:694) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.toEntityInternal(DefaultRestClient.java:664) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.toEntity(DefaultRestClient.java:660) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.services.RutaService.generateOptionsForSolicitud(RutaService.java:703) ~[!/:0.0.1-SNAPSHOT]
+	... 112 common frames omitted
+
+2025-11-22T00:51:22.170Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/1/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T00:51:22.172Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Generate options for solicitud 1
+2025-11-22T00:51:22.273Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 1 -> origen: 1, destino: 1
+2025-11-22T00:51:22.275Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=1, intermedios=null
+2025-11-22T00:51:22.331Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T00:51:22.343Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T00:51:22.344Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 1
+2025-11-22T00:51:22.349Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T00:51:22.361Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T00:52:05.446Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-5] c.b.t.m.controllers.RutaController       : GET /api/v1/solicitudes/1/opciones - Listando opciones persistidas
+2025-11-22T01:05:36.819Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/1/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:05:36.820Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.RutaService             : Generate options for solicitud 1
+2025-11-22T01:05:36.868Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 1 -> origen: 1, destino: 1
+2025-11-22T01:05:36.869Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=1, intermedios=null
+2025-11-22T01:05:36.874Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:05:36.881Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:05:36.881Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 1
+2025-11-22T01:05:36.882Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:05:36.886Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-7] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:05:46.368Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:05:46.369Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:05:46.413Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:05:46.413Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:05:46.417Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:05:46.421Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:05:46.422Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:05:46.422Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:05:46.427Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-8] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:17:44.300Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:17:44.301Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:17:44.398Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:17:44.398Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:17:44.402Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:17:44.408Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:17:44.408Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:17:44.409Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:17:44.413Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-10] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:19:35.648Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:19:35.649Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:19:35.702Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:19:35.702Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:19:35.707Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:19:35.712Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:19:35.713Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:19:35.714Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:19:35.719Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-2] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:31:41.335Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:31:41.336Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:31:41.511Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:31:41.511Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:31:41.517Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:31:41.526Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:31:41.527Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:31:41.527Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:31:41.533Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:32:01.357Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T01:32:01.596Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T01:32:01.606Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T01:32:05.009Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T01:32:05.021Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T01:32:05.973Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T01:32:06.035Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 54 ms. Found 7 JPA repository interfaces.
+2025-11-22T01:32:06.819Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T01:32:06.843Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T01:32:06.844Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T01:32:06.885Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T01:32:06.886Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1824 ms
+2025-11-22T01:32:07.447Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T01:32:07.487Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T01:32:07.793Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@793d09e
+2025-11-22T01:32:07.794Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T01:32:07.825Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T01:32:08.964Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T01:32:09.929Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T01:32:10.810Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T01:32:10.820Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 6.506 seconds (process running for 7.405)
+2025-11-22T01:40:30.697Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T01:40:30.732Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T01:40:30.738Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T01:40:33.357Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T01:40:33.360Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T01:40:34.232Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T01:40:34.302Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 7 JPA repository interfaces.
+2025-11-22T01:40:35.024Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T01:40:35.048Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T01:40:35.049Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T01:40:35.112Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T01:40:35.114Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1708 ms
+2025-11-22T01:40:35.657Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T01:40:35.685Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T01:40:36.045Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1e6cb932
+2025-11-22T01:40:36.046Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T01:40:36.072Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T01:40:37.113Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T01:40:38.057Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T01:40:38.807Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T01:40:38.828Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 6.048 seconds (process running for 6.744)
+2025-11-22T01:41:04.995Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T01:41:05.231Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:41:05.232Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:41:05.575Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:41:05.576Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:41:05.587Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:41:05.592Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:41:05.592Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:41:05.594Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:41:05.598Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:46:01.012Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:46:01.013Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:46:01.109Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:46:01.110Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:46:01.114Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:46:01.118Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:46:01.118Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:46:01.119Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:46:01.122Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:46:19.510Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:46:19.511Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:46:19.584Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:46:19.584Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:46:19.589Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 1: 401 Unauthorized: [no body]
+2025-11-22T01:46:19.594Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener info del depósito 23: 401 Unauthorized: [no body]
+2025-11-22T01:46:19.596Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : No se pudo obtener información de depósitos 1 o 23
+2025-11-22T01:46:19.596Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 0.0 km, 0 tramos
+2025-11-22T01:46:19.600Z  WARN 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.services.DepositoService         : Error al obtener lista de depósitos desde ms-gestion-calculos: 401 Unauthorized: [no body]
+2025-11-22T01:50:40.044Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T01:50:40.062Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T01:50:40.079Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T01:50:43.053Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T01:50:43.056Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T01:50:43.856Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T01:50:43.934Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 71 ms. Found 7 JPA repository interfaces.
+2025-11-22T01:50:44.909Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T01:50:44.926Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T01:50:44.927Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T01:50:44.961Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T01:50:44.962Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1860 ms
+2025-11-22T01:50:45.590Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T01:50:46.149Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T01:50:46.512Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@28f90752
+2025-11-22T01:50:46.514Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T01:50:46.559Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T01:50:48.367Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T01:50:49.912Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T01:50:50.817Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T01:50:50.828Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 8.359 seconds (process running for 9.076)
+2025-11-22T01:50:55.039Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-22T01:50:55.417Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones - Generando y persistiendo opciones para solicitud
+2025-11-22T01:50:55.418Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Generate options for solicitud 2
+2025-11-22T01:50:55.687Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaService             : Nearest deposits for solicitud 2 -> origen: 1, destino: 23
+2025-11-22T01:50:55.688Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T01:50:55.688Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=null
+2025-11-22T01:50:55.688Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T01:50:55.689Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 23]
+2025-11-22T01:50:55.690Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T01:50:55.690Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T01:50:55.953Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T01:50:55.953Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T01:50:55.966Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T01:50:55.967Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 2 depósitos obtenidos ===
+2025-11-22T01:50:55.967Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 2 de 2 solicitados
+2025-11-22T01:50:55.967Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T01:50:55.968Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T01:50:55.968Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 23 (-51.62, -69.22)
+2025-11-22T01:50:55.969Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:50:56.574Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2509.54 km, duración=29.73 hrs
+2025-11-22T01:50:56.577Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2509.54 km, 1 tramos
+2025-11-22T01:50:57.263Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T01:50:57.264Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[2]
+2025-11-22T01:50:57.267Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T01:50:57.268Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 2, 23]
+2025-11-22T01:50:57.268Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T01:50:57.268Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T01:50:57.280Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T01:50:57.281Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/2/coordenadas
+2025-11-22T01:50:57.304Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 2 obtenido: {latitud=-34.49, longitud=-58.55, nombre=Depósito Zona Norte, depositoId=2}
+2025-11-22T01:50:57.306Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T01:50:57.318Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T01:50:57.318Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T01:50:57.319Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T01:50:57.319Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T01:50:57.319Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 2: lat=-34.49, lon=-58.55, nombre=Depósito Zona Norte
+2025-11-22T01:50:57.320Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T01:50:57.320Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 2 (-34.49, -58.55)
+2025-11-22T01:50:57.320Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-58.550000,-34.490000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:50:57.898Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=24.57 km, duración=0.42 hrs
+2025-11-22T01:50:57.901Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 2 (-34.49, -58.55) a depósito 23 (-51.62, -69.22)
+2025-11-22T01:50:57.902Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.550000,-34.490000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:50:58.301Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2520.85 km, duración=29.86 hrs
+2025-11-22T01:50:58.302Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2545.42 km, 2 tramos
+2025-11-22T01:50:58.303Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T01:50:58.303Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[3]
+2025-11-22T01:50:58.303Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T01:50:58.304Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 3, 23]
+2025-11-22T01:50:58.304Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T01:50:58.304Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T01:50:58.324Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T01:50:58.325Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/3/coordenadas
+2025-11-22T01:50:58.337Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 3 obtenido: {latitud=-34.92, longitud=-57.95, nombre=Depósito La Plata, depositoId=3}
+2025-11-22T01:50:58.337Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T01:50:58.356Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T01:50:58.357Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T01:50:58.358Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T01:50:58.358Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T01:50:58.358Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 3: lat=-34.92, lon=-57.95, nombre=Depósito La Plata
+2025-11-22T01:50:58.359Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T01:50:58.359Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 3 (-34.92, -57.95)
+2025-11-22T01:50:58.360Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-57.950000,-34.920000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:50:59.312Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=59.26 km, duración=0.81 hrs
+2025-11-22T01:50:59.312Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 3 (-34.92, -57.95) a depósito 23 (-51.62, -69.22)
+2025-11-22T01:50:59.313Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-57.950000,-34.920000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:51:00.531Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=2499.59 km, duración=29.8 hrs
+2025-11-22T01:51:00.531Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2558.85 km, 2 tramos
+2025-11-22T01:51:00.532Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : === INICIO calcularRutaTentativa ===
+2025-11-22T01:51:00.532Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Calculando ruta tentativa: origen=1, destino=23, intermedios=[7]
+2025-11-22T01:51:00.533Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === INICIO getInfoForDepositos ===
+2025-11-22T01:51:00.533Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Solicitando info para depósitos: [1, 7, 23]
+2025-11-22T01:51:00.533Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Token extraído: PRESENTE (longitud=1235)
+2025-11-22T01:51:00.534Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/1/coordenadas
+2025-11-22T01:51:00.546Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 1 obtenido: {latitud=-34.6, longitud=-58.39, nombre=Depósito Central CABA, depositoId=1}
+2025-11-22T01:51:00.546Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/7/coordenadas
+2025-11-22T01:51:00.557Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 7 obtenido: {latitud=-38.72, longitud=-62.27, nombre=Depósito Bahía Blanca, depositoId=7}
+2025-11-22T01:51:00.557Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Llamando GET /api/v1/depositos/23/coordenadas
+2025-11-22T01:51:00.574Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : Depósito 23 obtenido: {latitud=-51.62, longitud=-69.22, nombre=Depósito Río Gallegos, depositoId=23}
+2025-11-22T01:51:00.576Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.DepositoService         : === FIN getInfoForDepositos: 3 depósitos obtenidos ===
+2025-11-22T01:51:00.577Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Depósitos obtenidos: 3 de 3 solicitados
+2025-11-22T01:51:00.577Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 1: lat=-34.6, lon=-58.39, nombre=Depósito Central CABA
+2025-11-22T01:51:00.578Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 7: lat=-38.72, lon=-62.27, nombre=Depósito Bahía Blanca
+2025-11-22T01:51:00.578Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    :   Depósito 23: lat=-51.62, lon=-69.22, nombre=Depósito Río Gallegos
+2025-11-22T01:51:00.578Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 1: Calculando distancia desde depósito 1 (-34.6, -58.39) a depósito 7 (-38.72, -62.27)
+2025-11-22T01:51:00.579Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-58.390000,-34.600000;-62.270000,-38.720000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:51:00.803Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=637.04 km, duración=7.86 hrs
+2025-11-22T01:51:00.804Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Tramo 2: Calculando distancia desde depósito 7 (-38.72, -62.27) a depósito 23 (-51.62, -69.22)
+2025-11-22T01:51:00.805Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.OSRMService             : Llamando a OSRM: http://osrm:5000/route/v1/driving/-62.270000,-38.720000;-69.220000,-51.620000?overview=full&steps=true&geometries=polyline
+2025-11-22T01:51:01.042Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Resultado OSRM: exitoso=true, distancia=1873.63 km, duración=21.98 hrs
+2025-11-22T01:51:01.043Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-1] c.b.t.m.services.RutaTentativaService    : Ruta tentativa calculada: 2510.67 km, 2 tramos
+2025-11-22T01:52:16.571Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/4/confirmar - Confirmando opción
+2025-11-22T01:52:16.611Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-3] c.b.t.m.controllers.RutaController       : Error confirmando opción: Cannot deserialize value of type `com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO` from Array value (token `JsonToken.START_ARRAY`)
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1]
+
+com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO` from Array value (token `JsonToken.START_ARRAY`)
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1]
+	at com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1767) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1541) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1488) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeFromArray(BeanDeserializer.java:660) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeOther(BeanDeserializer.java:211) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:187) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4905) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3848) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3816) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController.confirmarOpcionPersistida(RutaController.java:136) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.proceed(AuthorizationManagerBeforeMethodInterceptor.java:269) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.attemptAuthorization(AuthorizationManagerBeforeMethodInterceptor.java:264) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.invoke(AuthorizationManagerBeforeMethodInterceptor.java:197) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.config.annotation.method.configuration.DeferringMethodInterceptor.invoke(DeferringMethodInterceptor.java:44) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController$$SpringCGLIB$$0.confirmarOpcionPersistida(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:145) ~[spring-security-oauth2-resource-server-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at java.base/java.lang.Thread.run(Unknown Source) ~[na:na]
+
+2025-11-22T01:52:19.943Z  INFO 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : POST /api/v1/solicitudes/2/opciones/4/confirmar - Confirmando opción
+2025-11-22T01:52:19.948Z ERROR 1 --- [ms-rutas-transportistas] [http-nio-8082-exec-4] c.b.t.m.controllers.RutaController       : Error confirmando opción: Cannot deserialize value of type `com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO` from Array value (token `JsonToken.START_ARRAY`)
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1]
+
+com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO` from Array value (token `JsonToken.START_ARRAY`)
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1]
+	at com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1767) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1541) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1488) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeFromArray(BeanDeserializer.java:660) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeOther(BeanDeserializer.java:211) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:187) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4905) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3848) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3816) ~[jackson-databind-2.17.2.jar!/:2.17.2]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController.confirmarOpcionPersistida(RutaController.java:136) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.proceed(AuthorizationManagerBeforeMethodInterceptor.java:269) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.attemptAuthorization(AuthorizationManagerBeforeMethodInterceptor.java:264) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.invoke(AuthorizationManagerBeforeMethodInterceptor.java:197) ~[spring-security-core-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.config.annotation.method.configuration.DeferringMethodInterceptor.invoke(DeferringMethodInterceptor.java:44) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.13.jar!/:6.1.13]
+	at com.backend.tpi.ms_rutas_transportistas.controllers.RutaController$$SpringCGLIB$$0.confirmarOpcionPersistida(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:145) ~[spring-security-oauth2-resource-server-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195) ~[spring-webmvc-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230) ~[spring-security-config-6.3.3.jar!/:6.3.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar!/:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar!/:na]
+	at java.base/java.lang.Thread.run(Unknown Source) ~[na:na]
+
+2025-11-22T02:02:17.803Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T02:02:17.828Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T02:02:17.839Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-22T02:02:21.735Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-22T02:02:21.738Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-22T02:02:22.723Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-22T02:02:22.835Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 7 JPA repository interfaces.
+2025-11-22T02:02:23.725Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-22T02:02:23.743Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-22T02:02:23.743Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-22T02:02:23.777Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-22T02:02:23.778Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1995 ms
+2025-11-22T02:02:24.399Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-22T02:02:24.450Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-22T02:02:25.064Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@793d09e
+2025-11-22T02:02:25.066Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-22T02:02:25.132Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-22T02:02:26.515Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T02:02:29.038Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-22T02:02:29.933Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-22T02:02:29.946Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 8.863 seconds (process running for 9.676)
+2025-11-22T02:05:43.007Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-22T02:05:43.014Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-22T02:05:43.020Z  INFO 1 --- [ms-rutas-transportistas] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

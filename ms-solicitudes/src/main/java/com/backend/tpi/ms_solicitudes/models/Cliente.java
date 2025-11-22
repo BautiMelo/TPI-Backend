@@ -12,7 +12,11 @@ import lombok.Data;
 @Table(name = "clientes")
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "lowest-available-id")
+    @org.hibernate.annotations.GenericGenerator(
+        name = "lowest-available-id",
+        strategy = "com.backend.tpi.ms_solicitudes.config.LowestAvailableIdGenerator"
+    )
     @Column(name = "id_cliente")
     private Long id;
 

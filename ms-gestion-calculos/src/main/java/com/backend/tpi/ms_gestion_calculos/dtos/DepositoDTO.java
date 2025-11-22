@@ -10,5 +10,6 @@ public class DepositoDTO {
     private Double latitud;
     private Double longitud;
     private Long idCiudad;
+    private String nombreCiudad;  // Permite especificar ciudad por nombre (alternativa a idCiudad)
     private Double costoEstadiaDiario;
 }

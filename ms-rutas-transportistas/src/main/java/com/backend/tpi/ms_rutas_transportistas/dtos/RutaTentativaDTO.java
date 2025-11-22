@@ -48,6 +48,11 @@ public class RutaTentativaDTO {
     private List<TramoTentativoDTO> tramos;
     
     /**
+     * Geometría de la ruta completa en formato polyline (para visualización en mapas)
+     */
+    private String geometry;
+    
+    /**
      * Indica si la ruta fue calculada exitosamente
      */
     private Boolean exitoso;

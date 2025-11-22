@@ -72,15 +72,30 @@ public class RutaController {
      */
     @PostMapping("/solicitudes/{solicitudId}/opciones")
     @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> createOptionsForSolicitud(@PathVariable Long solicitudId) {
+    public ResponseEntity<?> createOptionsForSolicitud(@PathVariable Long solicitudId) {
         logger.info("POST /api/v1/solicitudes/{}/opciones - Generando y persistiendo opciones para solicitud", solicitudId);
         try {
             java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO> variantes = rutaService.generateOptionsForSolicitud(solicitudId);
             java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> saved = rutaOpcionService.saveOptionsForSolicitud(solicitudId, variantes);
             return ResponseEntity.ok(saved);
+        } catch (IllegalStateException e) {
+            logger.error("Error de estado al generar opciones para solicitud {}: {}", solicitudId, e.getMessage());
+            return ResponseEntity.status(400).body(java.util.Map.of(
+                "error", "Error de validación",
+                "mensaje", e.getMessage()
+            ));
+        } catch (IllegalArgumentException e) {
+            logger.error("Error de argumento al generar opciones para solicitud {}: {}", solicitudId, e.getMessage());
+            return ResponseEntity.status(400).body(java.util.Map.of(
+                "error", "Datos inválidos",
+                "mensaje", e.getMessage()
+            ));
         } catch (Exception e) {
             logger.error("Error generando opciones para solicitud {}: {}", solicitudId, e.getMessage(), e);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(java.util.Map.of(
+                "error", "Error interno del servidor",
+                "mensaje", "Ocurrió un error inesperado al generar las opciones de ruta"
+            ));
         }
     }
 
@@ -116,9 +131,29 @@ public class RutaController {
                 return ResponseEntity.badRequest().build();
             }
 
-            // Convertir tramosJson a RutaTentativaDTO
+            // Convertir RutaOpcion a RutaTentativaDTO
             com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-            com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO rutaTentativa = mapper.readValue(opcion.getTramosJson(), com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO.class);
+            
+            // Deserializar los arrays JSON
+            List<Long> depositosIds = mapper.readValue(opcion.getDepositosIdsJson(), 
+                    new com.fasterxml.jackson.core.type.TypeReference<List<Long>>() {});
+            List<String> depositosNombres = mapper.readValue(opcion.getDepositosNombresJson(), 
+                    new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {});
+            List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO> tramos = mapper.readValue(opcion.getTramosJson(), 
+                    new com.fasterxml.jackson.core.type.TypeReference<List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO>>() {});
+            
+            // Reconstruir RutaTentativaDTO
+            com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO rutaTentativa = 
+                    com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO.builder()
+                    .depositosIds(depositosIds)
+                    .depositosNombres(depositosNombres)
+                    .distanciaTotal(opcion.getDistanciaTotal())
+                    .duracionTotalHoras(opcion.getDuracionTotalHoras())
+                    .numeroTramos(tramos.size())
+                    .tramos(tramos)
+                    .geometry(opcion.getGeometry())
+                    .exitoso(true)
+                    .build();
 
             // Crear Ruta definitiva usando RutaService
             RutaDTO rutaDto = rutaService.createFromTentativa(solicitudId, rutaTentativa);

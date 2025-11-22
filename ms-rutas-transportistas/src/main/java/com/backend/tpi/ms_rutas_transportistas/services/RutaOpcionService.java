@@ -70,6 +70,7 @@ public class RutaOpcionService {
             ro.setDepositosIdsJson(objectMapper.writeValueAsString(opcion.getDepositosIds()));
             ro.setDepositosNombresJson(objectMapper.writeValueAsString(opcion.getDepositosNombres()));
             ro.setTramosJson(objectMapper.writeValueAsString(opcion.getTramos()));
+            ro.setGeometry(opcion.getGeometry());
             saved.add(rutaOpcionRepository.save(ro));
         }
         return saved;

@@ -126,10 +126,20 @@ public class ContenedorService {
     /**
      * Elimina un contenedor por su ID
      * @param id ID del contenedor a eliminar
+     * @throws RuntimeException si el contenedor tiene solicitudes asignadas
      */
     @Transactional
     public void deleteById(Long id) {
         Contenedor contenedor = findById(id);
+        
+        // Validar que no tenga solicitudes asignadas
+        long cantidadSolicitudes = solicitudRepository.countByContenedor_Id(id);
+        if (cantidadSolicitudes > 0) {
+            throw new RuntimeException("No se puede eliminar el contenedor ID " + id + 
+                " porque tiene " + cantidadSolicitudes + " solicitud(es) asignada(s). " +
+                "Debe eliminar primero las solicitudes asociadas.");
+        }
+        
         log.info("Eliminando contenedor ID: {}", id);
         contenedorRepository.delete(contenedor);
     }

@@ -228,10 +228,20 @@ public class RutaService {
     /**
      * Elimina una ruta por su ID
      * @param id ID de la ruta a eliminar
+     * @throws RuntimeException si la ruta tiene tramos asignados
      */
     @org.springframework.transaction.annotation.Transactional
     public void delete(Long id) {
         logger.info("Eliminando ruta ID: {}", id);
+        
+        // Validar que no tenga tramos asignados
+        long cantidadTramos = tramoRepository.countByRutaId(id);
+        if (cantidadTramos > 0) {
+            throw new RuntimeException("No se puede eliminar la ruta ID " + id + 
+                " porque tiene " + cantidadTramos + " tramo(s) asignado(s). " +
+                "Debe eliminar primero los tramos asociados.");
+        }
+        
         rutaRepository.deleteById(id);
         logger.debug("Ruta ID: {} eliminada de la base de datos", id);
     }
@@ -716,7 +726,10 @@ public class RutaService {
 
             java.util.List<java.util.Map<String, Object>> depositos = depsResp != null ? depsResp.getBody() : null;
             if (depositos == null || depositos.isEmpty()) {
-                throw new IllegalStateException("No deposits available to compute routes");
+                logger.error("No se encontraron depósitos en el sistema. Se requiere al menos un depósito para calcular rutas.");
+                throw new IllegalStateException("No hay depósitos disponibles en el sistema para calcular rutas. " +
+                    "Por favor, registre al menos un depósito en el microservicio de cálculos (POST /api/v1/depositos) " +
+                    "antes de solicitar opciones de ruta.");
             }
 
             // Encontrar depósito más cercano al origen y al destino

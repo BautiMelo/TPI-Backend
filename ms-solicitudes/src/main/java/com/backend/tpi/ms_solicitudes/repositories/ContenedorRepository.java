@@ -15,4 +15,11 @@ public interface ContenedorRepository extends JpaRepository<Contenedor, Long> {
 	 * @return Lista de contenedores del cliente
 	 */
 	java.util.List<Contenedor> findByClienteId(Long clienteId);
+	
+	/**
+	 * Cuenta contenedores de un cliente
+	 * @param clienteId ID del cliente
+	 * @return Cantidad de contenedores del cliente
+	 */
+	long countByClienteId(Long clienteId);
 }

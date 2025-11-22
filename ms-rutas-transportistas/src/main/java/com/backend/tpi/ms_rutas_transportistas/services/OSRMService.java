@@ -42,15 +42,9 @@ public class OSRMService {
                     origen.getLongitud(), origen.getLatitud(),
                     destino.getLongitud(), destino.getLatitud());
 
-            // Construir URL con parámetros
-            // overview=full para obtener geometría completa
-            // steps=true para obtener instrucciones detalladas
-            String uri = UriComponentsBuilder.fromPath("/route/v1/driving/{coordinates}")
-                    .queryParam("overview", "full")
-                    .queryParam("steps", "true")
-                    .queryParam("geometries", "polyline")
-                    .buildAndExpand(coordinates)
-                    .toUriString();
+            // Construir URL directamente para evitar problemas de encoding con ; y ,
+            String uri = String.format("/route/v1/driving/%s?overview=full&steps=true&geometries=polyline", 
+                    coordinates);
 
             log.info("Llamando a OSRM: {}", osrmBaseUrl + uri);
 
@@ -119,12 +113,8 @@ public class OSRMService {
                         coordenadas[i].getLatitud()));
             }
 
-            String uri = UriComponentsBuilder.fromPath("/route/v1/driving/{coordinates}")
-                    .queryParam("overview", "full")
-                    .queryParam("steps", "true")
-                    .queryParam("geometries", "polyline")
-                    .buildAndExpand(coordinates.toString())
-                    .toUriString();
+            String uri = String.format("/route/v1/driving/%s?overview=full&steps=true&geometries=polyline",
+                    coordinates.toString());
 
             log.info("Llamando a OSRM con {} waypoints: {}", coordenadas.length, osrmBaseUrl + uri);
 

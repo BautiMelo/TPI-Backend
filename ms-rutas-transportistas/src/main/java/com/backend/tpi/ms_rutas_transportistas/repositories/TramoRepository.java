@@ -16,4 +16,11 @@ public interface TramoRepository extends JpaRepository<Tramo, Long> {
 	 * @return Lista de tramos de la ruta
 	 */
 	java.util.List<Tramo> findByRutaId(Long rutaId);
+	
+	/**
+	 * Cuenta los tramos de una ruta específica
+	 * @param rutaId ID de la ruta
+	 * @return Cantidad de tramos de la ruta
+	 */
+	long countByRutaId(Long rutaId);
 }

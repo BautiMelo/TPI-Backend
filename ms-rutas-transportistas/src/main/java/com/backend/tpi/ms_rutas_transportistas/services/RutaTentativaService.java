@@ -160,6 +160,7 @@ public class RutaTentativaService {
             Long destinoDepositoId,
             List<Long> depositosIntermediosIds) {
         
+        logger.info("=== INICIO calcularRutaTentativa ===");
         logger.info("Calculando ruta tentativa: origen={}, destino={}, intermedios={}", 
                 origenDepositoId, destinoDepositoId, depositosIntermediosIds);
         
@@ -174,9 +175,19 @@ public class RutaTentativaService {
             
             // Obtener información de todos los depósitos (delegado a DepositoService)
             Map<Long, Map<String, Object>> depositosInfo = depositoService.getInfoForDepositos(todosDepositosIds);
+            logger.info("Depósitos obtenidos: {} de {} solicitados", depositosInfo.size(), todosDepositosIds.size());
+            for (Long id : todosDepositosIds) {
+                if (depositosInfo.containsKey(id)) {
+                    Map<String, Object> info = depositosInfo.get(id);
+                    logger.info("  Depósito {}: lat={}, lon={}, nombre={}", id, info.get("latitud"), info.get("longitud"), info.get("nombre"));
+                } else {
+                    logger.error("  Depósito {} NO ENCONTRADO en la respuesta", id);
+                }
+            }
             
             // Calcular tramos entre depósitos consecutivos
             List<TramoTentativoDTO> tramos = new ArrayList<>();
+            List<String> geometries = new ArrayList<>();
             double distanciaTotal = 0.0;
             double duracionTotalHoras = 0.0;
             
@@ -202,7 +213,23 @@ public class RutaTentativaService {
                         ((Number) infoDestino.get("longitud")).doubleValue()
                 );
                 
+                logger.info("Tramo {}: Calculando distancia desde depósito {} ({}, {}) a depósito {} ({}, {})",
+                        i + 1, depOrigen, coordOrigen.getLatitud(), coordOrigen.getLongitud(),
+                        depDestino, coordDestino.getLatitud(), coordDestino.getLongitud());
+                
                 RutaCalculadaDTO rutaCalculada = osrmService.calcularRuta(coordOrigen, coordDestino);
+                logger.info("Resultado OSRM: exitoso={}, distancia={} km, duración={} hrs",
+                        rutaCalculada.isExitoso(), rutaCalculada.getDistanciaKm(), rutaCalculada.getDuracionHoras());
+                
+                // Validar que OSRM haya calculado la ruta exitosamente
+                if (!rutaCalculada.isExitoso() || rutaCalculada.getDistanciaKm() == null || rutaCalculada.getDistanciaKm() == 0.0) {
+                    logger.error("OSRM no pudo calcular la ruta entre depósito {} y {}: {}", 
+                            depOrigen, depDestino, rutaCalculada.getMensaje());
+                    return RutaTentativaDTO.builder()
+                            .exitoso(false)
+                            .mensaje("No se pudo calcular la ruta: " + rutaCalculada.getMensaje())
+                            .build();
+                }
                 
                 TramoTentativoDTO tramo = TramoTentativoDTO.builder()
                         .orden(i + 1)
@@ -219,6 +246,11 @@ public class RutaTentativaService {
                 if (rutaCalculada.getDuracionHoras() != null) {
                     duracionTotalHoras += rutaCalculada.getDuracionHoras();
                 }
+                
+                // Capturar geometría del tramo
+                if (rutaCalculada.getGeometry() != null && !rutaCalculada.getGeometry().isEmpty()) {
+                    geometries.add(rutaCalculada.getGeometry());
+                }
             }
             
             // Construir listas de nombres
@@ -228,6 +260,9 @@ public class RutaTentativaService {
                     .map(info -> (String) info.get("nombre"))
                     .toList();
             
+            // Combinar todas las geometrías en una sola (separadas por |)
+            String geometryCombinada = geometries.isEmpty() ? null : String.join("|", geometries);
+            
             RutaTentativaDTO resultado = RutaTentativaDTO.builder()
                     .depositosIds(todosDepositosIds)
                     .depositosNombres(nombresDepositos)
@@ -235,6 +270,7 @@ public class RutaTentativaService {
                     .duracionTotalHoras(Math.round(duracionTotalHoras * 100.0) / 100.0)
                     .numeroTramos(tramos.size())
                     .tramos(tramos)
+                    .geometry(geometryCombinada)
                     .exitoso(true)
                     .mensaje("Ruta tentativa calculada exitosamente con " + tramos.size() + " tramos")
                     .build();

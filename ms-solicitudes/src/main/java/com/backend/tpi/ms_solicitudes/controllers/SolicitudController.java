@@ -130,23 +130,29 @@ public class SolicitudController {
             logger.warn("GET /api/v1/solicitudes/{} - Respuesta: 404 - Solicitud no encontrada", id);
             return ResponseEntity.notFound().build();
         }
-        // Si el caller es CLIENTE verificamos propiedad
+        // Si el caller es CLIENTE verificamos propiedad (solo si NO tiene roles de admin/operador)
         var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities() != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"))) {
-            if (auth instanceof JwtAuthenticationToken) {
-                Object emailObj = ((JwtAuthenticationToken) auth).getToken().getClaim("email");
-                String email = emailObj != null ? emailObj.toString() : null;
-                if (email != null) {
-                    try {
-                        Cliente c = clienteService.findByEmail(email);
-                        Long ownerId = solicitudService.getClienteIdBySolicitudId(id);
-                        if (ownerId == null || !ownerId.equals(c.getId())) {
-                            logger.warn("CLIENTE (email={}) intento acceder a solicitud ajena: {}", email, id);
+        if (auth != null && auth.getAuthorities() != null) {
+            boolean hasCliente = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"));
+            boolean hasAdminOrOperador = auth.getAuthorities().stream().anyMatch(a -> 
+                a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_OPERADOR"));
+            
+            if (hasCliente && !hasAdminOrOperador) {
+                if (auth instanceof JwtAuthenticationToken) {
+                    Object emailObj = ((JwtAuthenticationToken) auth).getToken().getClaim("email");
+                    String email = emailObj != null ? emailObj.toString() : null;
+                    if (email != null) {
+                        try {
+                            Cliente c = clienteService.findByEmail(email);
+                            Long ownerId = solicitudService.getClienteIdBySolicitudId(id);
+                            if (ownerId == null || !ownerId.equals(c.getId())) {
+                                logger.warn("CLIENTE (email={}) intento acceder a solicitud ajena: {}", email, id);
+                                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                            }
+                        } catch (Exception ex) {
+                            logger.warn("No se pudo validar cliente por email {}: {}", email, ex.getMessage());
                             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
                         }
-                    } catch (Exception ex) {
-                        logger.warn("No se pudo validar cliente por email {}: {}", email, ex.getMessage());
-                        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
                     }
                 }
             }
@@ -161,19 +167,69 @@ public class SolicitudController {
     * Requiere rol OPERADOR o ADMIN
      * @param id ID de la solicitud a actualizar
      * @param createSolicitudDTO Nuevos datos de la solicitud
-     * @return Solicitud actualizada (200) o Not Found (404)
+     * @return Solicitud actualizada (200) con detalles de la operación
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<SolicitudDTO> update(@PathVariable Long id, @RequestBody CreateSolicitudDTO createSolicitudDTO) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateSolicitudDTO createSolicitudDTO) {
         logger.info("PUT /api/v1/solicitudes/{} - Actualizando solicitud", id);
-        SolicitudDTO solicitudDTO = solicitudService.update(id, createSolicitudDTO);
+        
+        // Buscar la solicitud
+        SolicitudDTO solicitudDTO = solicitudService.findById(id);
         if (solicitudDTO == null) {
             logger.warn("PUT /api/v1/solicitudes/{} - Respuesta: 404 - Solicitud no encontrada", id);
             return ResponseEntity.notFound().build();
         }
-        logger.info("PUT /api/v1/solicitudes/{} - Respuesta: 200 - Solicitud actualizada", id);
-        return ResponseEntity.ok(solicitudDTO);
+        
+        // Respuesta con detalles de la operación
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        java.util.List<String> warnings = new java.util.ArrayList<>();
+        boolean clienteModificado = false;
+        boolean direccionesActualizadas = false;
+        
+        // 1. Actualizar información del cliente
+        try {
+            Cliente clienteExistente = clienteService.findById(solicitudDTO.getClienteId());
+            Cliente datosCliente = new Cliente();
+            datosCliente.setNombre(createSolicitudDTO.getClienteNombre());
+            datosCliente.setEmail(createSolicitudDTO.getClienteEmail());
+            datosCliente.setTelefono(createSolicitudDTO.getClienteTelefono());
+            
+            clienteService.update(clienteExistente.getId(), datosCliente);
+            clienteModificado = true;
+            logger.info("PUT /api/v1/solicitudes/{} - Cliente actualizado correctamente", id);
+        } catch (Exception e) {
+            logger.warn("PUT /api/v1/solicitudes/{} - Error al actualizar cliente: {}", id, e.getMessage());
+            warnings.add("No se pudo actualizar la información del cliente: " + e.getMessage());
+        }
+        
+        // 2. Actualizar direcciones solo si está en estado PROGRAMADA
+        String estadoActual = solicitudDTO.getEstado();
+        if ("PROGRAMADA".equalsIgnoreCase(estadoActual)) {
+            try {
+                solicitudDTO = solicitudService.update(id, createSolicitudDTO);
+                direccionesActualizadas = true;
+                logger.info("PUT /api/v1/solicitudes/{} - Direcciones actualizadas correctamente", id);
+            } catch (Exception e) {
+                logger.warn("PUT /api/v1/solicitudes/{} - Error al actualizar direcciones: {}", id, e.getMessage());
+                warnings.add("No se pudieron actualizar las direcciones: " + e.getMessage());
+            }
+        } else {
+            warnings.add("Las direcciones no se pueden modificar porque la solicitud no está en estado PROGRAMADA (estado actual: " + estadoActual + ")");
+            logger.warn("PUT /api/v1/solicitudes/{} - No se actualizaron direcciones: estado {} != PROGRAMADA", id, estadoActual);
+        }
+        
+        // Preparar respuesta
+        response.put("solicitud", solicitudDTO);
+        response.put("clienteActualizado", clienteModificado);
+        response.put("direccionesActualizadas", direccionesActualizadas);
+        if (!warnings.isEmpty()) {
+            response.put("warnings", warnings);
+        }
+        
+        logger.info("PUT /api/v1/solicitudes/{} - Respuesta: 200 - Actualización completada (cliente: {}, direcciones: {})", 
+                    id, clienteModificado, direccionesActualizadas);
+        return ResponseEntity.ok(response);
     }
 
     /**

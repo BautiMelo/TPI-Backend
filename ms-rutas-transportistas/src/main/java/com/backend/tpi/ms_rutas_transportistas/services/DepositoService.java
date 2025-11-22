@@ -23,8 +23,10 @@ public class DepositoService {
      */
     public List<Map<String, Object>> getAllDepositos() {
         try {
+            String token = extractBearerToken();
             ResponseEntity<List<Map<String, Object>>> resp = calculosClient.get()
                     .uri("/api/v1/depositos")
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
                     .retrieve()
                     .toEntity(new ParameterizedTypeReference<List<Map<String, Object>>>() {});
             return resp.getBody() != null ? resp.getBody() : Collections.emptyList();
@@ -38,19 +40,31 @@ public class DepositoService {
      * Obtiene info para un conjunto de depósitos usando el endpoint /depositos/{id}/coordenadas
      */
     public Map<Long, Map<String, Object>> getInfoForDepositos(List<Long> depositosIds) {
+        logger.info("=== INICIO getInfoForDepositos ===");
+        logger.info("Solicitando info para depósitos: {}", depositosIds);
         Map<Long, Map<String, Object>> resultado = new HashMap<>();
         if (depositosIds == null || depositosIds.isEmpty()) return resultado;
+        String token = extractBearerToken();
+        logger.info("Token extraído: {}", token != null ? "PRESENTE (longitud=" + token.length() + ")" : "AUSENTE");
         for (Long id : depositosIds) {
             try {
+                logger.info("Llamando GET /api/v1/depositos/{}/coordenadas", id);
                 ResponseEntity<Map<String, Object>> resp = calculosClient.get()
                         .uri("/api/v1/depositos/{id}/coordenadas", id)
+                        .headers(h -> { if (token != null) h.setBearerAuth(token); })
                         .retrieve()
                         .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
-                if (resp.getBody() != null) resultado.put(id, resp.getBody());
+                if (resp.getBody() != null) {
+                    resultado.put(id, resp.getBody());
+                    logger.info("Depósito {} obtenido: {}", id, resp.getBody());
+                } else {
+                    logger.warn("Depósito {} respondió con body null", id);
+                }
             } catch (Exception e) {
-                logger.warn("Error al obtener info del depósito {}: {}", id, e.getMessage());
+                logger.error("Error al obtener info del depósito {}: {} - {}", id, e.getClass().getSimpleName(), e.getMessage());
             }
         }
+        logger.info("=== FIN getInfoForDepositos: {} depósitos obtenidos ===", resultado.size());
         return resultado;
     }
 
@@ -142,5 +156,13 @@ public class DepositoService {
         double dx = px - projx;
         double dy = py - projy;
         return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    private String extractBearerToken() {
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken) {
+            return ((org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken) auth).getToken().getTokenValue();
+        }
+        return null;
     }
 }
