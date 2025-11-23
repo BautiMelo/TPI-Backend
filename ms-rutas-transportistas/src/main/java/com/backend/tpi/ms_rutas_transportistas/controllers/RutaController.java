@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,16 +132,17 @@ public class RutaController {
 
     /**
      * Confirma una opción persistida para una solicitud: crea la Ruta definitiva y borra/archiva las otras opciones
-     * POST /api/v1/solicitudes/{solicitudId}/opciones/{opcionId}/confirmar
+     * POST /api/v1/rutas/opciones/{opcionId}/confirmar
      */
-    @PostMapping("/solicitudes/{solicitudId}/opciones/{opcionId}/confirmar")
+    @PostMapping("/opciones/{opcionId}/confirmar")
     @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
-    public ResponseEntity<RutaDTO> confirmarOpcionPersistida(@PathVariable Long solicitudId, @PathVariable Long opcionId) {
-        logger.info("POST /api/v1/solicitudes/{}/opciones/{}/confirmar - Confirmando opción", solicitudId, opcionId);
+    public ResponseEntity<RutaDTO> confirmarOpcionPersistida(@PathVariable Long opcionId) {
+        logger.info("POST /api/v1/rutas/opciones/{}/confirmar - Confirmando opción", opcionId);
         try {
             com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion opcion = rutaOpcionService.findById(opcionId);
             if (opcion == null) return ResponseEntity.notFound().build();
-            if (opcion.getSolicitudId() == null || !opcion.getSolicitudId().equals(solicitudId)) {
+            Long solicitudId = opcion.getSolicitudId();
+            if (solicitudId == null) {
                 return ResponseEntity.badRequest().build();
             }
 
@@ -295,6 +298,20 @@ public class RutaController {
         Object result = rutaService.findBySolicitudId(solicitudId);
         logger.info("GET /api/v1/rutas/por-solicitud/{} - Respuesta: 200 - Ruta encontrada", solicitudId);
         return ResponseEntity.ok(result);
+    }
+
+    /**
+     * Obtiene todos los tramos de una ruta específica
+     * @param id ID de la ruta
+     * @return Lista de tramos de la ruta
+     */
+    @GetMapping("/{id}/tramos")
+    @PreAuthorize("hasAnyRole('OPERADOR','TRANSPORTISTA','ADMIN','CLIENTE')")
+    public ResponseEntity<List<TramoDTO>> getTramosDeRuta(@PathVariable Long id) {
+        logger.info("GET /api/v1/rutas/{}/tramos - Buscando tramos de la ruta", id);
+        List<TramoDTO> tramos = tramoService.findByRutaId(id);
+        logger.info("GET /api/v1/rutas/{}/tramos - Respuesta: 200 - {} tramos encontrados", id, tramos.size());
+        return ResponseEntity.ok(tramos);
     }
 
     /**

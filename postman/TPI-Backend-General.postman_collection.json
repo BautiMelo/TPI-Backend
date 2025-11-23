@@ -472,6 +472,35 @@
           }
         },
         {
+          "name": "Get Seguimiento by Contenedor",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/v1/solicitudes/contenedor/{{contenedorId}}/seguimiento", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "solicitudes", "contenedor", "{{contenedorId}}", "seguimiento" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var data = pm.response.json();",
+                  "  if (data.solicitudId) {",
+                  "    pm.collectionVariables.set('solicitudId', data.solicitudId);",
+                  "    console.log('solicitudId auto-capturado: ' + data.solicitudId);",
+                  "  }",
+                  "  if (data.rutaId) {",
+                  "    pm.collectionVariables.set('rutaId', data.rutaId);",
+                  "    console.log('rutaId auto-capturado: ' + data.rutaId);",
+                  "  }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
           "name": "Calcular Precio",
           "request": {
             "method": "POST",

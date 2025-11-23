@@ -47,6 +47,9 @@ public class SolicitudService {
     private EstadoSolicitudRepository estadoSolicitudRepository;
     
     @Autowired
+    private com.backend.tpi.ms_solicitudes.repositories.EstadoContenedorRepository estadoContenedorRepository;
+    
+    @Autowired
     private GeocodificacionService geocodificacionService;
     
     @Autowired
@@ -174,15 +177,39 @@ public class SolicitudService {
                     
                     solicitud.setContenedor(cont);
                     logger.info("Contenedor existente ID {} asociado a la solicitud", cont.getId());
+                    
+                    // Cambiar estado del contenedor a OCUPADO cuando se asigna a una solicitud
+                    try {
+                        java.util.Optional<com.backend.tpi.ms_solicitudes.models.EstadoContenedor> estadoOcupado = 
+                            estadoContenedorRepository.findByNombre("OCUPADO");
+                        if (estadoOcupado.isPresent()) {
+                            contenedorService.updateEstado(cont.getId(), estadoOcupado.get().getId());
+                            logger.info("Estado del contenedor {} cambiado a OCUPADO", cont.getId());
+                        }
+                    } catch (Exception ex) {
+                        logger.warn("No se pudo cambiar el estado del contenedor a OCUPADO: {}", ex.getMessage());
+                    }
                 } else if (createSolicitudDTO.getContenedorPeso() != null || createSolicitudDTO.getContenedorVolumen() != null) {
                     com.backend.tpi.ms_solicitudes.models.Contenedor nuevoCont = new com.backend.tpi.ms_solicitudes.models.Contenedor();
                     nuevoCont.setPeso(createSolicitudDTO.getContenedorPeso());
                     nuevoCont.setVolumen(createSolicitudDTO.getContenedorVolumen());
                     // asociado al cliente si fue creado o provisto
                     if (solicitud.getClienteId() != null) nuevoCont.setClienteId(solicitud.getClienteId());
+                    
+                    // Asignar estado OCUPADO al nuevo contenedor
+                    try {
+                        java.util.Optional<com.backend.tpi.ms_solicitudes.models.EstadoContenedor> estadoOcupado = 
+                            estadoContenedorRepository.findByNombre("OCUPADO");
+                        if (estadoOcupado.isPresent()) {
+                            nuevoCont.setEstado(estadoOcupado.get());
+                        }
+                    } catch (Exception ex) {
+                        logger.warn("No se pudo asignar estado OCUPADO al nuevo contenedor: {}", ex.getMessage());
+                    }
+                    
                     com.backend.tpi.ms_solicitudes.models.Contenedor contGuardado = contenedorService.save(nuevoCont);
                     solicitud.setContenedor(contGuardado);
-                    logger.info("Nuevo contenedor creado con ID {} para la solicitud", contGuardado.getId());
+                    logger.info("Nuevo contenedor creado con ID {} para la solicitud (estado: OCUPADO)", contGuardado.getId());
                 }
             } catch (Exception e) {
                 logger.error("Error al crear/adjuntar contenedor en la creación de solicitud: {}", e.getMessage());
@@ -1044,5 +1071,87 @@ public class SolicitudService {
             logger.error("Error confirmando por opcionId {} para solicitud {}: {}", opcionId, solicitudId, e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Obtiene el seguimiento completo de un contenedor buscando su última solicitud
+     * @param contenedorId ID del contenedor a rastrear
+     * @return Map con información completa de la solicitud, contenedor y tramos
+     */
+    public Map<String, Object> getSeguimientoByContenedor(Long contenedorId) {
+        logger.info("Buscando última solicitud para contenedor ID: {}", contenedorId);
+        
+        // Buscar la última solicitud asociada al contenedor
+        Optional<Solicitud> solicitudOpt = solicitudRepository.findFirstByContenedor_IdOrderByIdDesc(contenedorId);
+        
+        if (solicitudOpt.isEmpty()) {
+            throw new RuntimeException("No se encontró ninguna solicitud para el contenedor ID: " + contenedorId);
+        }
+        
+        Solicitud solicitud = solicitudOpt.get();
+        logger.info("Última solicitud encontrada: ID {}, Estado: {}", 
+            solicitud.getId(), 
+            solicitud.getEstado() != null ? solicitud.getEstado().getNombre() : "null");
+        
+        Map<String, Object> resultado = new HashMap<>();
+        
+        // Información básica de la solicitud
+        resultado.put("solicitudId", solicitud.getId());
+        resultado.put("estadoSolicitud", solicitud.getEstado() != null ? solicitud.getEstado().getNombre() : null);
+        resultado.put("origenDireccion", solicitud.getDireccionOrigen());
+        resultado.put("destinoDireccion", solicitud.getDireccionDestino());
+        resultado.put("costoFinal", solicitud.getCostoFinal());
+        resultado.put("tiempoReal", solicitud.getTiempoReal());
+        resultado.put("rutaId", solicitud.getRutaId());
+        
+        // Información del contenedor
+        if (solicitud.getContenedor() != null) {
+            Map<String, Object> contenedorInfo = new HashMap<>();
+            contenedorInfo.put("id", solicitud.getContenedor().getId());
+            contenedorInfo.put("peso", solicitud.getContenedor().getPeso());
+            contenedorInfo.put("volumen", solicitud.getContenedor().getVolumen());
+            contenedorInfo.put("estado", solicitud.getContenedor().getEstado() != null ? 
+                solicitud.getContenedor().getEstado().getNombre() : null);
+            resultado.put("contenedor", contenedorInfo);
+        }
+        
+        // Si hay rutaId, consultar los tramos desde ms-rutas-transportistas
+        if (solicitud.getRutaId() != null) {
+            try {
+                String token = extractBearerToken();
+                ResponseEntity<Map<String, Object>> rutaResp = rutasClient.get()
+                    .uri("/api/v1/rutas/" + solicitud.getRutaId())
+                    .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                    .retrieve()
+                    .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {});
+                
+                Map<String, Object> rutaData = rutaResp.getBody();
+                if (rutaData != null) {
+                    resultado.put("ruta", rutaData);
+                    logger.info("Información de ruta {} agregada al seguimiento", solicitud.getRutaId());
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudo obtener información de la ruta {}: {}", solicitud.getRutaId(), e.getMessage());
+                resultado.put("ruta", null);
+            }
+        }
+        
+        // Agregar seguimiento del contenedor (ubicación actual, depósito, etc.)
+        try {
+            com.backend.tpi.ms_solicitudes.dtos.SeguimientoContenedorDTO seguimientoContenedor = 
+                contenedorService.getSeguimiento(contenedorId);
+            
+            Map<String, Object> ubicacion = new HashMap<>();
+            ubicacion.put("latitud", seguimientoContenedor.getUbicacionActualLat());
+            ubicacion.put("longitud", seguimientoContenedor.getUbicacionActualLong());
+            ubicacion.put("depositoId", seguimientoContenedor.getDepositoId());
+            ubicacion.put("estadoContenedor", seguimientoContenedor.getEstadoActual());
+            
+            resultado.put("ubicacionActual", ubicacion);
+        } catch (Exception e) {
+            logger.warn("No se pudo obtener seguimiento del contenedor: {}", e.getMessage());
+        }
+        
+        return resultado;
     }
 }

@@ -33,6 +33,9 @@ public class RutaOpcion {
     @Column(name = "duracion_total_horas")
     private Double duracionTotalHoras;
 
+    @Column(name = "costo_total")
+    private Double costoTotal;
+
     @Column(name = "depositos_ids", columnDefinition = "text")
     private String depositosIdsJson;
 

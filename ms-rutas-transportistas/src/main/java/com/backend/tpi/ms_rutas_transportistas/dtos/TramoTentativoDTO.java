@@ -44,6 +44,11 @@ public class TramoTentativoDTO {
     private Double duracionHoras;
     
     /**
+     * Costo aproximado del tramo
+     */
+    private Double costoAproximado;
+    
+    /**
      * Orden del tramo en la ruta (1, 2, 3, ...)
      */
     private Integer orden;

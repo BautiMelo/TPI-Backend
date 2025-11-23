@@ -38,6 +38,11 @@ public class RutaTentativaDTO {
     private Double duracionTotalHoras;
     
     /**
+     * Costo total aproximado de la ruta
+     */
+    private Double costoTotal;
+    
+    /**
      * Número de tramos que componen la ruta
      */
     private Integer numeroTramos;

@@ -477,4 +477,26 @@ public class SolicitudController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /**
+     * GET /api/v1/solicitudes/contenedor/{contenedorId}/seguimiento - Obtiene el seguimiento completo de un contenedor
+     * Busca la última solicitud asociada al contenedor y devuelve toda la información incluyendo tramos
+     * Requiere rol CLIENTE, OPERADOR o ADMIN
+     * @param contenedorId ID del contenedor a rastrear
+     * @return Información completa de la última solicitud con tramos y estado del contenedor
+     */
+    @GetMapping("/contenedor/{contenedorId}/seguimiento")
+    @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN')")
+    public ResponseEntity<?> getSeguimientoByContenedor(@PathVariable Long contenedorId) {
+        logger.info("GET /api/v1/solicitudes/contenedor/{}/seguimiento - Buscando última solicitud del contenedor", contenedorId);
+        try {
+            java.util.Map<String, Object> seguimiento = solicitudService.getSeguimientoByContenedor(contenedorId);
+            logger.info("GET /api/v1/solicitudes/contenedor/{}/seguimiento - Respuesta: 200 - Seguimiento encontrado", contenedorId);
+            return ResponseEntity.ok(seguimiento);
+        } catch (RuntimeException e) {
+            logger.error("GET /api/v1/solicitudes/contenedor/{}/seguimiento - Error: {}", contenedorId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
 }

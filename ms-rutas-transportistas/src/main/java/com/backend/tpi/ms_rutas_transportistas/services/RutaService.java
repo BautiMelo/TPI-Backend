@@ -3,6 +3,7 @@ package com.backend.tpi.ms_rutas_transportistas.services;
 import com.backend.tpi.ms_rutas_transportistas.dtos.CreateRutaDTO;
 import com.backend.tpi.ms_rutas_transportistas.dtos.RutaDTO;
 import com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO;
+import com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO;
 import com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO;
 import com.backend.tpi.ms_rutas_transportistas.models.Ruta;
 import com.backend.tpi.ms_rutas_transportistas.models.Tramo;
@@ -236,6 +237,11 @@ public class RutaService {
         dto.setIdSolicitud(ruta.getIdSolicitud());
         dto.setFechaCreacion(ruta.getFechaCreacion());
         dto.setOpcionSeleccionadaId(ruta.getOpcionSeleccionadaId());
+        
+        // Incluir los tramos de la ruta
+        List<TramoDTO> tramosDTO = tramoService.findByRutaId(ruta.getId());
+        dto.setTramos(tramosDTO);
+        
         return dto;
     }
 
@@ -805,14 +811,65 @@ public class RutaService {
                 tramo.setDuracionHoras(t.getDuracionHoras());
                 tramo.setGeneradoAutomaticamente(true);
                 
-                // Guardar coordenadas del punto de origen si no es un depósito
-                if (t.getOrigenLat() != null && t.getOrigenLong() != null) {
+                // Obtener token de autenticación
+                String token = extractBearerToken();
+                
+                // Consultar y guardar coordenadas del depósito de origen si existe
+                if (t.getOrigenDepositoId() != null) {
+                    try {
+                        org.springframework.http.ResponseEntity<java.util.Map<String, Object>> depositoEntity = calculosClient.get()
+                                .uri("/api/v1/depositos/{id}", t.getOrigenDepositoId())
+                                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                                .retrieve()
+                                .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
+                        
+                        java.util.Map<String, Object> deposito = depositoEntity.getBody();
+                        if (deposito != null) {
+                            Object lat = deposito.get("latitud");
+                            Object lon = deposito.get("longitud");
+                            if (lat instanceof Number && lon instanceof Number) {
+                                tramo.setOrigenLat(java.math.BigDecimal.valueOf(((Number) lat).doubleValue()));
+                                tramo.setOrigenLong(java.math.BigDecimal.valueOf(((Number) lon).doubleValue()));
+                                logger.info("    Coordenadas de depósito origen {}: lat={}, lon={}", 
+                                    t.getOrigenDepositoId(), lat, lon);
+                            }
+                        }
+                    } catch (Exception e) {
+                        logger.warn("No se pudieron obtener coordenadas del depósito origen {}: {}", 
+                            t.getOrigenDepositoId(), e.getMessage());
+                    }
+                } else if (t.getOrigenLat() != null && t.getOrigenLong() != null) {
+                    // Guardar coordenadas del punto de origen si no es un depósito (origen de solicitud)
                     tramo.setOrigenLat(java.math.BigDecimal.valueOf(t.getOrigenLat()));
                     tramo.setOrigenLong(java.math.BigDecimal.valueOf(t.getOrigenLong()));
                 }
                 
-                // Guardar coordenadas del punto de destino si no es un depósito
-                if (t.getDestinoLat() != null && t.getDestinoLong() != null) {
+                // Consultar y guardar coordenadas del depósito de destino si existe
+                if (t.getDestinoDepositoId() != null) {
+                    try {
+                        org.springframework.http.ResponseEntity<java.util.Map<String, Object>> depositoEntity = calculosClient.get()
+                                .uri("/api/v1/depositos/{id}", t.getDestinoDepositoId())
+                                .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                                .retrieve()
+                                .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
+                        
+                        java.util.Map<String, Object> deposito = depositoEntity.getBody();
+                        if (deposito != null) {
+                            Object lat = deposito.get("latitud");
+                            Object lon = deposito.get("longitud");
+                            if (lat instanceof Number && lon instanceof Number) {
+                                tramo.setDestinoLat(java.math.BigDecimal.valueOf(((Number) lat).doubleValue()));
+                                tramo.setDestinoLong(java.math.BigDecimal.valueOf(((Number) lon).doubleValue()));
+                                logger.info("    Coordenadas de depósito destino {}: lat={}, lon={}", 
+                                    t.getDestinoDepositoId(), lat, lon);
+                            }
+                        }
+                    } catch (Exception e) {
+                        logger.warn("No se pudieron obtener coordenadas del depósito destino {}: {}", 
+                            t.getDestinoDepositoId(), e.getMessage());
+                    }
+                } else if (t.getDestinoLat() != null && t.getDestinoLong() != null) {
+                    // Guardar coordenadas del punto de destino si no es un depósito (destino de solicitud)
                     tramo.setDestinoLat(java.math.BigDecimal.valueOf(t.getDestinoLat()));
                     tramo.setDestinoLong(java.math.BigDecimal.valueOf(t.getDestinoLong()));
                 }
@@ -859,8 +916,32 @@ public class RutaService {
                     .retrieve()
                     .toEntity(Object.class);
             logger.info("Notificada solicitud {} con rutaId {} (createFromTentativa)", solicitudId, ruta.getId());
+            
+            // Cambiar estado de solicitud a PROGRAMADA cuando se confirma una ruta
+            try {
+                solicitudesClient.put()
+                        .uri("/api/v1/solicitudes/" + solicitudId + "/estado?nuevoEstado=PROGRAMADA")
+                        .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                        .retrieve()
+                        .toBodilessEntity();
+                logger.info("Estado de solicitud {} cambiado a PROGRAMADA tras confirmar ruta", solicitudId);
+            } catch (Exception e) {
+                logger.warn("No se pudo cambiar estado de solicitud a PROGRAMADA: {}", e.getMessage());
+            }
         } catch (Exception e) {
             logger.warn("No se pudo notificar a ms-solicitudes para solicitud {}: {}", solicitudId, e.getMessage());
+        }
+
+        // Calcular automáticamente los costos aproximados de todos los tramos
+        try {
+            logger.info("Calculando costos aproximados automáticamente para ruta {}", ruta.getId());
+            calcularCostoRuta(ruta.getId());
+            logger.info("Costos aproximados calculados exitosamente");
+            
+            // Refrescar la entidad ruta para que toDto obtenga los tramos actualizados
+            ruta = rutaRepository.findById(ruta.getId()).orElse(ruta);
+        } catch (Exception e) {
+            logger.warn("No se pudieron calcular los costos aproximados automáticamente: {}", e.getMessage());
         }
 
         return toDto(ruta);
