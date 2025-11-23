@@ -417,6 +417,48 @@
           }
         },
         {
+          "name": "2.2.1 Consultar Seguimiento por Contenedor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var data = pm.response.json();",
+                  "  if (data.solicitudId) {",
+                  "    pm.collectionVariables.set('solicitudId', data.solicitudId);",
+                  "    console.log('✅ solicitudId auto-capturado: ' + data.solicitudId);",
+                  "  }",
+                  "  if (data.rutaId) {",
+                  "    pm.collectionVariables.set('rutaId', data.rutaId);",
+                  "    console.log('✅ rutaId auto-capturado: ' + data.rutaId);",
+                  "  }",
+                  "  console.log('✅ Seguimiento completo del contenedor obtenido');",
+                  "} else {",
+                  "  console.log('❌ Error al obtener seguimiento del contenedor');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/solicitudes/contenedor/{{contenedorId}}/seguimiento",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "solicitudes", "contenedor", "{{contenedorId}}", "seguimiento"]
+            },
+            "description": "Obtiene el seguimiento completo de un contenedor buscando su última solicitud:\n- Datos de la solicitud asociada\n- Información completa del contenedor con su estado actual\n- Ruta asignada con todos los tramos\n- Ubicación actual del contenedor\n- Depósito actual (si aplica)\n\nEste endpoint es útil cuando solo se conoce el ID del contenedor y se necesita toda la información de seguimiento."
+          }
+        },
+        {
           "name": "2.3 Ver Detalles de Solicitud",
           "request": {
             "method": "GET",
