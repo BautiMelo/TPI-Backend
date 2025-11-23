@@ -143,6 +143,12 @@ public class RutaController {
                 return ResponseEntity.badRequest().build();
             }
 
+            logger.info("=== CONFIRMACION: Opcion {} para solicitud {} ===", opcionId, solicitudId);
+            logger.info("TramosJson de DB (primeros 500 chars): {}", 
+                opcion.getTramosJson() != null && opcion.getTramosJson().length() > 500 
+                    ? opcion.getTramosJson().substring(0, 500) + "..." 
+                    : opcion.getTramosJson());
+
             // Convertir RutaOpcion a RutaTentativaDTO
             com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             
@@ -153,6 +159,15 @@ public class RutaController {
                     new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {});
             List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO> tramos = mapper.readValue(opcion.getTramosJson(), 
                     new com.fasterxml.jackson.core.type.TypeReference<List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO>>() {});
+            
+            logger.info("Tramos deserializados: {}", tramos != null ? tramos.size() : 0);
+            if (tramos != null) {
+                for (int i = 0; i < tramos.size(); i++) {
+                    com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO t = tramos.get(i);
+                    logger.info("  Tramo {}: orden={}, origenDepId={}, destinoDepId={}, dist={}", 
+                        i+1, t.getOrden(), t.getOrigenDepositoId(), t.getDestinoDepositoId(), t.getDistanciaKm());
+                }
+            }
             
             // Reconstruir RutaTentativaDTO
             com.backend.tpi.ms_rutas_transportistas.dtos.RutaTentativaDTO rutaTentativa = 
@@ -293,9 +308,10 @@ public class RutaController {
     @Operation(summary = "Marcar el inicio de un tramo de transporte")
     public ResponseEntity<TramoDTO> iniciarTramo(
             @PathVariable Long id,
-            @PathVariable Long tramoId) {
+            @PathVariable Long tramoId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaHoraReal) {
         logger.info("POST /api/v1/rutas/{}/tramos/{}/iniciar - Iniciando tramo", id, tramoId);
-        TramoDTO tramo = tramoService.iniciarTramo(id, tramoId);
+        TramoDTO tramo = tramoService.iniciarTramo(id, tramoId, fechaHoraReal);
         if (tramo == null) {
             logger.warn("POST /api/v1/rutas/{}/tramos/{}/iniciar - Respuesta: 404 - Tramo no encontrado", id, tramoId);
             return ResponseEntity.notFound().build();

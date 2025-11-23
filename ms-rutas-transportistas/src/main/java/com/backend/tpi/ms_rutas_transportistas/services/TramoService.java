@@ -353,7 +353,7 @@ public class TramoService {
      * @throws IllegalStateException si el tramo ya fue iniciado o no tiene camión asignado
      */
     @org.springframework.transaction.annotation.Transactional
-    public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO iniciarTramo(Long rutaId, Long tramoId) {
+    public com.backend.tpi.ms_rutas_transportistas.dtos.TramoDTO iniciarTramo(Long rutaId, Long tramoId, java.time.LocalDateTime fechaHoraReal) {
         logger.info("Iniciando tramo ID: {} de ruta ID: {}", tramoId, rutaId);
         Optional<Tramo> optionalTramo = tramoRepository.findById(tramoId);
         if (optionalTramo.isEmpty()) {
@@ -379,7 +379,9 @@ public class TramoService {
             throw new IllegalStateException("El tramo ya fue iniciado anteriormente");
         }
         
-        tramo.setFechaHoraInicioReal(java.time.LocalDateTime.now());
+        // Usar la fecha proporcionada o la actual si no se especifica
+        java.time.LocalDateTime fechaInicio = (fechaHoraReal != null) ? fechaHoraReal : java.time.LocalDateTime.now();
+        tramo.setFechaHoraInicioReal(fechaInicio);
         // Actualizar estado a EN_PROCESO
         try {
             estadoTramoRepository.findByNombre("EN_PROCESO").ifPresent(tramo::setEstado);

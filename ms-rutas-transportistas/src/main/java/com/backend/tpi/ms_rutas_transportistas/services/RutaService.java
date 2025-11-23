@@ -61,6 +61,9 @@ public class RutaService {
     @org.springframework.beans.factory.annotation.Value("${app.solicitudes.base-url:http://ms-solicitudes:8080}")
     private String solicitudesBaseUrl;
 
+    @org.springframework.beans.factory.annotation.Value("${app.rutas.estadia-deposito-horas:2.0}")
+    private double estadiaDepositoHoras;
+
     // Manual mapping - ModelMapper removed
 
     /**
@@ -766,6 +769,11 @@ public class RutaService {
         if (solicitudId == null) throw new IllegalArgumentException("SolicitudId is required");
         if (rutaTentativa == null) throw new IllegalArgumentException("RutaTentativa is required");
 
+        logger.info("=== createFromTentativa: solicitud={} ===", solicitudId);
+        logger.info("RutaTentativa: tramos={}, distTotal={}, durTotal={}", 
+            rutaTentativa.getTramos() != null ? rutaTentativa.getTramos().size() : 0,
+            rutaTentativa.getDistanciaTotal(), rutaTentativa.getDuracionTotalHoras());
+
         // Verificar si ya existe una ruta para esta solicitud
         Optional<Ruta> rutaExistente = rutaRepository.findByIdSolicitud(solicitudId);
         if (rutaExistente.isPresent()) {
@@ -776,9 +784,18 @@ public class RutaService {
         ruta.setIdSolicitud(solicitudId);
         ruta = rutaRepository.save(ruta);
 
-        // Crear tramos según la ruta tentativa
+        // Crear tramos según la ruta tentativa con fechas estimadas
         if (rutaTentativa.getTramos() != null) {
+            logger.info("Creando {} tramos para ruta {} con fechas estimadas", rutaTentativa.getTramos().size(), ruta.getId());
+            
+            // Fecha de inicio: ahora (momento de confirmación de la ruta)
+            java.time.LocalDateTime fechaActual = java.time.LocalDateTime.now();
+            
+            int creados = 0;
             for (TramoTentativoDTO t : rutaTentativa.getTramos()) {
+                logger.info("  Creando tramo: orden={}, origenDepId={}, destinoDepId={}, dist={}, duracion={}h", 
+                    t.getOrden(), t.getOrigenDepositoId(), t.getDestinoDepositoId(), t.getDistanciaKm(), t.getDuracionHoras());
+                
                 Tramo tramo = new Tramo();
                 tramo.setRuta(ruta);
                 tramo.setOrden(t.getOrden());
@@ -787,9 +804,50 @@ public class RutaService {
                 tramo.setDistancia(t.getDistanciaKm());
                 tramo.setDuracionHoras(t.getDuracionHoras());
                 tramo.setGeneradoAutomaticamente(true);
-                // fechas y coordenadas pueden venir vacías en la tentativa
+                
+                // Guardar coordenadas del punto de origen si no es un depósito
+                if (t.getOrigenLat() != null && t.getOrigenLong() != null) {
+                    tramo.setOrigenLat(java.math.BigDecimal.valueOf(t.getOrigenLat()));
+                    tramo.setOrigenLong(java.math.BigDecimal.valueOf(t.getOrigenLong()));
+                }
+                
+                // Guardar coordenadas del punto de destino si no es un depósito
+                if (t.getDestinoLat() != null && t.getDestinoLong() != null) {
+                    tramo.setDestinoLat(java.math.BigDecimal.valueOf(t.getDestinoLat()));
+                    tramo.setDestinoLong(java.math.BigDecimal.valueOf(t.getDestinoLong()));
+                }
+                
+                // Calcular fechas estimadas
+                // Fecha de inicio del tramo = fecha actual acumulada
+                tramo.setFechaHoraInicioEstimada(fechaActual);
+                
+                // Fecha de fin del tramo = fecha inicio + duración del viaje
+                double duracionHoras = t.getDuracionHoras() != null ? t.getDuracionHoras() : 0.0;
+                long minutosDuracion = (long) (duracionHoras * 60);
+                java.time.LocalDateTime fechaFinTramo = fechaActual.plusMinutes(minutosDuracion);
+                tramo.setFechaHoraFinEstimada(fechaFinTramo);
+                
+                logger.info("    Fechas estimadas: inicio={}, fin={}", 
+                    tramo.getFechaHoraInicioEstimada(), tramo.getFechaHoraFinEstimada());
+                
+                // Guardar el tramo
                 tramoService.save(tramo);
+                creados++;
+                
+                // Actualizar fecha actual para el próximo tramo
+                // Si el tramo termina en un depósito (no es el último tramo), agregar tiempo de estadía
+                if (t.getDestinoDepositoId() != null) {
+                    // Hay un depósito de destino, agregar tiempo de estadía
+                    long minutosEstadia = (long) (estadiaDepositoHoras * 60);
+                    fechaActual = fechaFinTramo.plusMinutes(minutosEstadia);
+                    logger.info("    Estadía en depósito {}: {} horas. Próximo inicio: {}", 
+                        t.getDestinoDepositoId(), estadiaDepositoHoras, fechaActual);
+                } else {
+                    // Es el último tramo (destino final), no hay estadía
+                    fechaActual = fechaFinTramo;
+                }
             }
+            logger.info("Total tramos creados: {} con fechas estimadas calculadas", creados);
         }
 
         // Intentar notificar al microservicio de solicitudes para asociar la ruta creada a la solicitud

@@ -243,18 +243,24 @@ public class RutaTentativaService {
                     orden, origenLat, origenLon, origenDepositoId, primerDeposito.get("nombre"));
                 
                 RutaCalculadaDTO ruta1 = osrmService.calcularRuta(coordOrigenReal, coordPrimerDeposito);
-                if (ruta1.isExitoso() && ruta1.getDistanciaKm() != null && ruta1.getDistanciaKm() > 0.0) {
+                // Crear tramo inicial SIEMPRE, incluso si distancia es 0 (origen coincide con depósito)
+                if (ruta1.isExitoso() && ruta1.getDistanciaKm() != null) {
+                    double distancia = ruta1.getDistanciaKm();
+                    double duracion = ruta1.getDuracionHoras() != null ? ruta1.getDuracionHoras() : 0.0;
+                    
                     tramos.add(TramoTentativoDTO.builder()
                         .orden(orden++)
                         .origenDepositoId(null) // No es un depósito, es el punto real
                         .origenDepositoNombre("Punto de Origen")
+                        .origenLat(origenLat) // Coordenadas del punto de origen real
+                        .origenLong(origenLon)
                         .destinoDepositoId(origenDepositoId)
                         .destinoDepositoNombre((String) primerDeposito.get("nombre"))
-                        .distanciaKm(ruta1.getDistanciaKm())
-                        .duracionHoras(ruta1.getDuracionHoras())
+                        .distanciaKm(distancia)
+                        .duracionHoras(duracion)
                         .build());
-                    distanciaTotal += ruta1.getDistanciaKm();
-                    duracionTotalHoras += ruta1.getDuracionHoras();
+                    distanciaTotal += distancia;
+                    duracionTotalHoras += duracion;
                     if (ruta1.getGeometry() != null) geometries.add(ruta1.getGeometry());
                 }
             }
@@ -318,18 +324,24 @@ public class RutaTentativaService {
                     orden, destinoDepositoId, ultimoDeposito.get("nombre"), destinoLat, destinoLon);
                 
                 RutaCalculadaDTO rutaFinal = osrmService.calcularRuta(coordUltimoDeposito, coordDestinoReal);
-                if (rutaFinal.isExitoso() && rutaFinal.getDistanciaKm() != null && rutaFinal.getDistanciaKm() > 0.0) {
+                // Crear tramo final SIEMPRE, incluso si distancia es 0 (destino coincide con depósito)
+                if (rutaFinal.isExitoso() && rutaFinal.getDistanciaKm() != null) {
+                    double distancia = rutaFinal.getDistanciaKm();
+                    double duracion = rutaFinal.getDuracionHoras() != null ? rutaFinal.getDuracionHoras() : 0.0;
+                    
                     tramos.add(TramoTentativoDTO.builder()
                         .orden(orden++)
                         .origenDepositoId(destinoDepositoId)
                         .origenDepositoNombre((String) ultimoDeposito.get("nombre"))
                         .destinoDepositoId(null) // No es un depósito, es el punto real
                         .destinoDepositoNombre("Punto de Destino")
-                        .distanciaKm(rutaFinal.getDistanciaKm())
-                        .duracionHoras(rutaFinal.getDuracionHoras())
+                        .destinoLat(destinoLat) // Coordenadas del punto de destino real
+                        .destinoLong(destinoLon)
+                        .distanciaKm(distancia)
+                        .duracionHoras(duracion)
                         .build());
-                    distanciaTotal += rutaFinal.getDistanciaKm();
-                    duracionTotalHoras += rutaFinal.getDuracionHoras();
+                    distanciaTotal += distancia;
+                    duracionTotalHoras += duracion;
                     if (rutaFinal.getGeometry() != null) geometries.add(rutaFinal.getGeometry());
                 }
             }

@@ -47,4 +47,16 @@ public class TramoTentativoDTO {
      * Orden del tramo en la ruta (1, 2, 3, ...)
      */
     private Integer orden;
+    
+    /**
+     * Coordenadas del punto de origen (para tramos que no inician en un depósito)
+     */
+    private Double origenLat;
+    private Double origenLong;
+    
+    /**
+     * Coordenadas del punto de destino (para tramos que no terminan en un depósito)
+     */
+    private Double destinoLat;
+    private Double destinoLong;
 }

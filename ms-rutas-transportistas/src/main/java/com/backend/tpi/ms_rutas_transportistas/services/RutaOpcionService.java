@@ -62,6 +62,16 @@ public class RutaOpcionService {
         List<RutaOpcion> saved = new ArrayList<>();
         int idx = 1;
         for (RutaTentativaDTO opcion : opciones) {
+            log.info("=== Guardando opción {} para solicitud {} ===", idx, solicitudId);
+            log.info("Tramos en RutaTentativaDTO: {}", opcion.getTramos() != null ? opcion.getTramos().size() : 0);
+            if (opcion.getTramos() != null) {
+                for (int i = 0; i < opcion.getTramos().size(); i++) {
+                    TramoTentativoDTO t = opcion.getTramos().get(i);
+                    log.info("  Tramo {}: orden={}, origenDepId={}, destinoDepId={}, dist={}", 
+                        i+1, t.getOrden(), t.getOrigenDepositoId(), t.getDestinoDepositoId(), t.getDistanciaKm());
+                }
+            }
+            
             RutaOpcion ro = new RutaOpcion();
             ro.setSolicitudId(solicitudId);
             ro.setOpcionIndex(idx++);
@@ -69,7 +79,11 @@ public class RutaOpcionService {
             ro.setDuracionTotalHoras(opcion.getDuracionTotalHoras());
             ro.setDepositosIdsJson(objectMapper.writeValueAsString(opcion.getDepositosIds()));
             ro.setDepositosNombresJson(objectMapper.writeValueAsString(opcion.getDepositosNombres()));
-            ro.setTramosJson(objectMapper.writeValueAsString(opcion.getTramos()));
+            
+            String tramosJsonStr = objectMapper.writeValueAsString(opcion.getTramos());
+            log.info("TramosJson serializado (primeros 300 chars): {}", 
+                tramosJsonStr.length() > 300 ? tramosJsonStr.substring(0, 300) + "..." : tramosJsonStr);
+            ro.setTramosJson(tramosJsonStr);
             ro.setGeometry(opcion.getGeometry());
             saved.add(rutaOpcionRepository.save(ro));
         }

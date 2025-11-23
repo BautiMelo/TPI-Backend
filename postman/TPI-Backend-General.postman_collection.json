@@ -822,7 +822,7 @@
           "request": {
             "method": "POST",
             "header": [ { "key": "Authorization", "value": "Bearer {{access_token}}" } ],
-            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/iniciar", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "iniciar" ] }
+            "url": { "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/iniciar?fechaHoraReal=2025-11-20T14:00:00", "host": [ "{{baseUrl}}" ], "path": [ "api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "iniciar" ], "query": [ { "key": "fechaHoraReal", "value": "2025-11-20T14:00:00", "description": "Fecha y hora de inicio (opcional, usa fecha actual si no se especifica)" } ] }
           }
         },
         {
