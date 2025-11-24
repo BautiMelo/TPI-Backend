@@ -1350,11 +1350,18 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/iniciar",
+              "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/iniciar?fechaHoraReal=2025-11-20T14:00:00",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "iniciar"]
+              "path": ["api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "iniciar"],
+              "query": [
+                {
+                  "key": "fechaHoraReal",
+                  "value": "2025-11-20T14:00:00",
+                  "description": "Fecha y hora de inicio (opcional). Formato ISO-8601: YYYY-MM-DDTHH:mm:ss. Si se omite, usa la fecha/hora actual."
+                }
+              ]
             },
-            "description": "**Rol: TRANSPORTISTA, OPERADOR o ADMIN**\n\nInicia un tramo de traslado. El sistema registra:\n- ✅ Fecha y hora de inicio real\n- ✅ Estado del tramo → EN_PROCESO\n- ✅ Estado del contenedor → EN_TRANSITO\n- ✅ Si es el primer tramo: Estado de solicitud → EN_TRANSITO\n\nEl transportista debe ejecutar este endpoint al comenzar el traslado."
+            "description": "**Rol: TRANSPORTISTA, OPERADOR o ADMIN**\n\nInicia un tramo de traslado. El sistema registra:\n- ✅ Fecha y hora de inicio real\n- ✅ Estado del tramo → EN_PROCESO\n- ✅ Estado del contenedor → EN_TRANSITO\n- ✅ Si es el primer tramo: Estado de solicitud → EN_TRANSITO\n\n**Parámetro opcional fechaHoraReal:**\nPermite especificar una fecha/hora personalizada para el inicio (útil para simular o registrar eventos pasados). Si se omite, se usa la fecha/hora actual del sistema.\n\nFormato: ISO-8601 (YYYY-MM-DDTHH:mm:ss)\nEjemplo: 2025-11-20T14:00:00"
           }
         },
         {
@@ -1368,11 +1375,18 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/finalizar",
+              "raw": "{{baseUrl}}/api/v1/rutas/{{rutaId}}/tramos/{{tramoId}}/finalizar?fechaHoraReal=2025-11-20T15:30:00",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "finalizar"]
+              "path": ["api", "v1", "rutas", "{{rutaId}}", "tramos", "{{tramoId}}", "finalizar"],
+              "query": [
+                {
+                  "key": "fechaHoraReal",
+                  "value": "2025-11-20T15:30:00",
+                  "description": "Fecha y hora de finalización (opcional). Formato ISO-8601: YYYY-MM-DDTHH:mm:ss. Si se omite, usa la fecha/hora actual."
+                }
+              ]
             },
-            "description": "**Rol: TRANSPORTISTA, OPERADOR o ADMIN**\n\nFinaliza un tramo de traslado. El sistema registra:\n- ✅ Fecha y hora de finalización real\n- ✅ Estado del tramo → COMPLETADO\n- ✅ Actualiza ubicación del contenedor\n- ✅ Si es el último tramo: Estado de solicitud → ENTREGADA\n- ✅ Calcula tiempo real del tramo\n- ✅ Calcula estadía en depósito (si corresponde)\n\nEl transportista debe ejecutar este endpoint al completar el traslado."
+            "description": "**Rol: TRANSPORTISTA, OPERADOR o ADMIN**\n\nFinaliza un tramo de traslado. El sistema registra:\n- ✅ Fecha y hora de finalización real\n- ✅ Estado del tramo → COMPLETADO\n- ✅ Actualiza ubicación del contenedor\n- ✅ Si es el último tramo: Estado de solicitud → ENTREGADA\n- ✅ Calcula tiempo real del tramo\n- ✅ Calcula estadía en depósito (si corresponde)\n\n**Parámetro opcional fechaHoraReal:**\nPermite especificar una fecha/hora personalizada para la finalización (útil para simular o registrar eventos pasados). Si se omite, se usa la fecha/hora actual del sistema.\n\nFormato: ISO-8601 (YYYY-MM-DDTHH:mm:ss)\nEjemplo: 2025-11-20T15:30:00\n\n**Cálculo de estadía:**\nSi el tramo finaliza en un depósito intermedio, el sistema calculará automáticamente el costo de estadía usando la diferencia entre esta fecha y la fecha de inicio del siguiente tramo."
           }
         },
         {

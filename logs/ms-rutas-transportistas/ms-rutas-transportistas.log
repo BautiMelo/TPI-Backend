@@ -5598,3 +5598,21 @@ Caused by: java.nio.channels.UnresolvedAddressException: null
 2025-11-24T19:08:01.008Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2025-11-24T19:08:01.638Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
 2025-11-24T19:08:01.647Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 6.823 seconds (process running for 7.675)
+2025-11-24T20:34:01.743Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Starting RutasTransportistasApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-24T20:34:01.763Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-11-24T20:34:25.154Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-24T20:34:26.029Z  INFO 1 --- [ms-rutas-transportistas] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 626 ms. Found 7 JPA repository interfaces.
+2025-11-24T20:34:35.755Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-11-24T20:34:36.134Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-24T20:34:36.141Z  INFO 1 --- [ms-rutas-transportistas] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-24T20:34:36.697Z  INFO 1 --- [ms-rutas-transportistas] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-24T20:34:36.701Z  INFO 1 --- [ms-rutas-transportistas] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 34564 ms
+2025-11-24T20:34:48.820Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-24T20:34:49.098Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-24T20:34:54.523Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4eb1943b
+2025-11-24T20:34:54.533Z  INFO 1 --- [ms-rutas-transportistas] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-24T20:34:56.509Z  WARN 1 --- [ms-rutas-transportistas] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-24T20:35:17.146Z  INFO 1 --- [ms-rutas-transportistas] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-24T20:35:32.531Z  WARN 1 --- [ms-rutas-transportistas] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-24T20:35:38.302Z  INFO 1 --- [ms-rutas-transportistas] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-11-24T20:35:38.363Z  INFO 1 --- [ms-rutas-transportistas] [main] c.b.t.m.RutasTransportistasApplication   : Started RutasTransportistasApplication in 108.842 seconds (process running for 137.649)
