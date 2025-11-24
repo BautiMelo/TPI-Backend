@@ -906,11 +906,11 @@
                 }
               ]
             },
-            "description": "Filtra contenedores que están EN_TRANSITO, es decir, pendientes de entrega.\n\nEstados disponibles:\n- LIBRE: Disponible para asignar\n- RESERVADO: Asignado a una solicitud\n- EN_TRANSITO: En proceso de entrega\n- ENTREGADO: Ya entregado"
+            "description": "Filtra contenedores que están EN_TRANSITO, es decir, pendientes de entrega.\n\nEstados disponibles:\n- LIBRE: Disponible para asignar\n- OCUPADO: Asignado a una solicitud\n- EN_TRANSITO: En proceso de entrega\n- EN_DEPOSITO: En depósito intermedio\n- ENTREGADO: Ya entregado"
           }
         },
         {
-          "name": "5.3 Filtrar Contenedores por Estado RESERVADO",
+          "name": "5.3 Filtrar Contenedores por Estado OCUPADO",
           "request": {
             "method": "GET",
             "header": [
@@ -920,18 +920,18 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/contenedores?estado=RESERVADO",
+              "raw": "{{baseUrl}}/api/v1/contenedores?estado=OCUPADO",
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "contenedores"],
               "query": [
                 {
                   "key": "estado",
-                  "value": "RESERVADO",
-                  "description": "Filtra por estado RESERVADO (asignados pero no en tránsito)"
+                  "value": "OCUPADO",
+                  "description": "Filtra por estado OCUPADO (asignados pero no en tránsito)"
                 }
               ]
             },
-            "description": "Filtra contenedores RESERVADOS, es decir, asignados a solicitudes pero aún no en tránsito."
+            "description": "Filtra contenedores OCUPADOS, es decir, asignados a solicitudes pero aún no en tránsito."
           }
         },
         {
@@ -956,7 +956,7 @@
                 }
               ]
             },
-            "description": "Lista solicitudes con filtros. Útil para ver solicitudes pendientes.\n\nEstados de solicitud:\n- BORRADOR: Creada pero sin ruta\n- PROGRAMADA: Con ruta asignada\n- EN_TRANSITO: En proceso\n- ENTREGADA: Completada"
+            "description": "Lista solicitudes con filtros. Útil para ver solicitudes pendientes.\n\nEstados de solicitud:\n- PENDIENTE: Creada pero sin ruta\n- PROGRAMADA: Con ruta asignada\n- EN_TRANSITO: En proceso\n- COMPLETADA: Completada"
           }
         },
         {

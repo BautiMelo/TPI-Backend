@@ -43,6 +43,28 @@ public class ContenedorService {
     public List<Contenedor> findAll() {
         return contenedorRepository.findAll();
     }
+    
+    /**
+     * Busca contenedores por estado
+     * @param estadoId ID del estado a filtrar
+     * @return Lista de contenedores con ese estado
+     */
+    public List<Contenedor> findByEstado(Long estadoId) {
+        EstadoContenedor estado = estadoContenedorRepository.findById(estadoId)
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado con ID: " + estadoId));
+        return contenedorRepository.findByEstado(estado);
+    }
+    
+    /**
+     * Busca contenedores por nombre de estado
+     * @param estadoNombre Nombre del estado a filtrar
+     * @return Lista de contenedores con ese estado
+     */
+    public List<Contenedor> findByEstadoNombre(String estadoNombre) {
+        EstadoContenedor estado = estadoContenedorRepository.findByNombre(estadoNombre)
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado: " + estadoNombre));
+        return contenedorRepository.findByEstado(estado);
+    }
 
     /**
      * Busca un contenedor por su ID

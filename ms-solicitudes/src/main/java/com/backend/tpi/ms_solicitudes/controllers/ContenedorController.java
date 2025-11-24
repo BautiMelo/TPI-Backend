@@ -43,14 +43,24 @@ public class ContenedorController {
     private EstadoContenedorRepository estadoContenedorRepository;
 
     /**
-     * GET /api/v1/contenedores - Lista todos los contenedores del sistema
+     * GET /api/v1/contenedores - Lista todos los contenedores del sistema con filtros opcionales
     * Requiere rol OPERADOR o ADMIN
-     * @return Lista de todos los contenedores
+     * @param estado Nombre del estado para filtrar (opcional)
+     * @return Lista de contenedores (todos o filtrados por estado)
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('OPERADOR', 'ADMIN')")
-    @Operation(summary = "Listar todos los contenedores")
-    public ResponseEntity<List<Contenedor>> getAllContenedores() {
+    @Operation(summary = "Listar todos los contenedores con filtros opcionales")
+    public ResponseEntity<List<Contenedor>> getAllContenedores(
+            @RequestParam(required = false) String estado) {
+        
+        if (estado != null && !estado.isEmpty()) {
+            logger.info("GET /api/v1/contenedores?estado={} - Listando contenedores por estado", estado);
+            List<Contenedor> contenedores = contenedorService.findByEstadoNombre(estado);
+            logger.info("GET /api/v1/contenedores?estado={} - Respuesta: 200 - {} contenedores encontrados", estado, contenedores.size());
+            return ResponseEntity.ok(contenedores);
+        }
+        
         logger.info("GET /api/v1/contenedores - Listando todos los contenedores");
         List<Contenedor> contenedores = contenedorService.findAll();
         logger.info("GET /api/v1/contenedores - Respuesta: 200 - {} contenedores encontrados", contenedores.size());

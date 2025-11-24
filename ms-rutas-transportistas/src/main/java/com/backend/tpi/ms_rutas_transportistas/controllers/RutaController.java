@@ -344,7 +344,7 @@ public class RutaController {
      * Marca la finalización de un tramo de transporte
      * @param id ID de la ruta
      * @param tramoId ID del tramo a finalizar
-     * @param fechaHoraReal Fecha y hora de finalización (opcional)
+     * @param fechaHoraReal Fecha y hora de finalización (opcional, usa fecha actual si no se proporciona)
      * @return Tramo finalizado
      */
     @PostMapping("/{id}/tramos/{tramoId}/finalizar")
@@ -353,20 +353,10 @@ public class RutaController {
     public ResponseEntity<TramoDTO> finalizarTramo(
             @PathVariable Long id,
             @PathVariable Long tramoId,
-            @RequestParam(required = false) String fechaHoraReal) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaHoraReal) {
         logger.info("POST /api/v1/rutas/{}/tramos/{}/finalizar - Finalizando tramo", id, tramoId);
         
-        java.time.LocalDateTime fechaHora = null;
-        if (fechaHoraReal != null && !fechaHoraReal.isEmpty()) {
-            try {
-                fechaHora = java.time.LocalDateTime.parse(fechaHoraReal);
-            } catch (Exception e) {
-                logger.warn("POST /api/v1/rutas/{}/tramos/{}/finalizar - Respuesta: 400 - Formato de fecha inválido", id, tramoId);
-                return ResponseEntity.badRequest().build();
-            }
-        }
-        
-        TramoDTO tramo = tramoService.finalizarTramo(id, tramoId, fechaHora);
+        TramoDTO tramo = tramoService.finalizarTramo(id, tramoId, fechaHoraReal);
         if (tramo == null) {
             logger.warn("POST /api/v1/rutas/{}/tramos/{}/finalizar - Respuesta: 404 - Tramo no encontrado", id, tramoId);
             return ResponseEntity.notFound().build();

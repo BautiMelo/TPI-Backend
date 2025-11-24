@@ -46,8 +46,14 @@ public class DataInitializer implements CommandLineRunner {
         if (estadoContenedorRepository.count() == 0) {
             EstadoContenedor libre = new EstadoContenedor(); libre.setNombre("LIBRE");
             EstadoContenedor ocupado = new EstadoContenedor(); ocupado.setNombre("OCUPADO");
+            EstadoContenedor enTransito = new EstadoContenedor(); enTransito.setNombre("EN_TRANSITO");
+            EstadoContenedor enDeposito = new EstadoContenedor(); enDeposito.setNombre("EN_DEPOSITO");
+            EstadoContenedor entregado = new EstadoContenedor(); entregado.setNombre("ENTREGADO");
             estadoContenedorRepository.save(libre);
             estadoContenedorRepository.save(ocupado);
+            estadoContenedorRepository.save(enTransito);
+            estadoContenedorRepository.save(enDeposito);
+            estadoContenedorRepository.save(entregado);
         }
 
         // Crear un cliente de ejemplo para pruebas si no existen clientes

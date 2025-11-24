@@ -17,6 +17,13 @@ public interface ContenedorRepository extends JpaRepository<Contenedor, Long> {
 	java.util.List<Contenedor> findByClienteId(Long clienteId);
 	
 	/**
+	 * Busca contenedores por estado
+	 * @param estado Estado del contenedor
+	 * @return Lista de contenedores con ese estado
+	 */
+	java.util.List<Contenedor> findByEstado(com.backend.tpi.ms_solicitudes.models.EstadoContenedor estado);
+	
+	/**
 	 * Cuenta contenedores de un cliente
 	 * @param clienteId ID del cliente
 	 * @return Cantidad de contenedores del cliente

@@ -41,9 +41,9 @@ public class EstadoTransicionService {
         TRANSICIONES_SOLICITUD.put("CANCELADA", Arrays.asList()); // Estado final
 
         // Configurar transiciones válidas de Contenedor
-        // Estados oficiales: LIBRE, ASIGNADO, EN_TRANSITO, EN_DEPOSITO, ENTREGADO
-        TRANSICIONES_CONTENEDOR.put("LIBRE", Arrays.asList("ASIGNADO"));
-        TRANSICIONES_CONTENEDOR.put("ASIGNADO", Arrays.asList("EN_TRANSITO", "LIBRE"));
+        // Estados oficiales: LIBRE, OCUPADO, EN_TRANSITO, EN_DEPOSITO, ENTREGADO
+        TRANSICIONES_CONTENEDOR.put("LIBRE", Arrays.asList("OCUPADO"));
+        TRANSICIONES_CONTENEDOR.put("OCUPADO", Arrays.asList("EN_TRANSITO", "LIBRE"));
         TRANSICIONES_CONTENEDOR.put("EN_TRANSITO", Arrays.asList("EN_DEPOSITO", "ENTREGADO"));
         TRANSICIONES_CONTENEDOR.put("EN_DEPOSITO", Arrays.asList("EN_TRANSITO"));
         TRANSICIONES_CONTENEDOR.put("ENTREGADO", Arrays.asList("LIBRE"));
