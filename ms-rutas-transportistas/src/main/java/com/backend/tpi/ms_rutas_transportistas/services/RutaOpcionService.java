@@ -161,6 +161,12 @@ public class RutaOpcionService {
         rutaRepository.save(ruta);
         log.info("Opción {} seleccionada para ruta {}", opcionId, rutaId);
 
+        // Eliminar todas las opciones de la solicitud (ya que se seleccionó una)
+        if (opcion.getSolicitudId() != null) {
+            log.info("Eliminando opciones restantes de la solicitud {}", opcion.getSolicitudId());
+            deleteBySolicitudId(opcion.getSolicitudId());
+        }
+
         // Si la ruta está asociada a una solicitud, notificar a ms-solicitudes
         if (ruta.getIdSolicitud() != null) {
             Long solicitudId = ruta.getIdSolicitud();

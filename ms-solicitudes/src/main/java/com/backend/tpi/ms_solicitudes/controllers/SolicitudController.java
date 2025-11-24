@@ -1,6 +1,7 @@
 package com.backend.tpi.ms_solicitudes.controllers;
 
 import com.backend.tpi.ms_solicitudes.dtos.CreateSolicitudDTO;
+import com.backend.tpi.ms_solicitudes.dtos.SeguimientoSolicitudDTO;
 import com.backend.tpi.ms_solicitudes.dtos.SolicitudDTO;
 import com.backend.tpi.ms_solicitudes.services.SolicitudService;
 import org.slf4j.Logger;
@@ -270,12 +271,11 @@ public class SolicitudController {
 
     /**
      * GET /api/v1/solicitudes/{id}/seguimiento - Devuelve información de seguimiento de la solicitud
-     * Si la solicitud tiene un contenedor asignado, delega al servicio de contenedores para obtener seguimiento.
-     * En caso contrario devuelve información básica (estado, rutaId, coordenadas origen/destino).
+     * Incluye estado de la solicitud y, si tiene contenedor asignado, también información del contenedor.
      */
     @GetMapping("/{id}/seguimiento")
     @PreAuthorize("hasAnyRole('CLIENTE','OPERADOR','ADMIN')")
-    public ResponseEntity<Object> getSeguimientoSolicitud(@PathVariable Long id) {
+    public ResponseEntity<SeguimientoSolicitudDTO> getSeguimientoSolicitud(@PathVariable Long id) {
         logger.info("GET /api/v1/solicitudes/{}/seguimiento - Consultando seguimiento de solicitud", id);
         SolicitudDTO solicitud = solicitudService.findById(id);
         if (solicitud == null) {
@@ -283,26 +283,33 @@ public class SolicitudController {
             return ResponseEntity.notFound().build();
         }
 
+        SeguimientoSolicitudDTO seguimiento = new SeguimientoSolicitudDTO();
+        
+        // Información de la solicitud
+        seguimiento.setSolicitudId(solicitud.getId());
+        seguimiento.setEstadoSolicitud(solicitud.getEstado());
+        seguimiento.setRutaId(solicitud.getRutaId());
+        seguimiento.setOrigenLat(solicitud.getOrigenLat());
+        seguimiento.setOrigenLong(solicitud.getOrigenLong());
+        seguimiento.setDestinoLat(solicitud.getDestinoLat());
+        seguimiento.setDestinoLong(solicitud.getDestinoLong());
+
+        // Si hay contenedor asignado, agregar su información
         if (solicitud.getContenedorId() != null) {
             try {
-                var seguimiento = contenedorService.getSeguimiento(solicitud.getContenedorId());
-                return ResponseEntity.ok(seguimiento);
+                var seguimientoContenedor = contenedorService.getSeguimiento(solicitud.getContenedorId());
+                seguimiento.setContenedorId(seguimientoContenedor.getIdContenedor());
+                seguimiento.setEstadoContenedor(seguimientoContenedor.getEstadoActual());
+                seguimiento.setUbicacionActualLat(seguimientoContenedor.getUbicacionActualLat());
+                seguimiento.setUbicacionActualLong(seguimientoContenedor.getUbicacionActualLong());
+                seguimiento.setDepositoId(seguimientoContenedor.getDepositoId());
             } catch (Exception e) {
                 logger.warn("Error obteniendo seguimiento del contenedor {}: {}", solicitud.getContenedorId(), e.getMessage());
-                return ResponseEntity.status(500).build();
+                // Continuar sin información del contenedor
             }
         }
 
-        // Si no hay contenedor asignado, devolvemos información básica de la solicitud
-        java.util.Map<String, Object> resumen = new java.util.HashMap<>();
-        resumen.put("solicitudId", solicitud.getId());
-        resumen.put("estado", solicitud.getEstado());
-        resumen.put("rutaId", solicitud.getRutaId());
-        resumen.put("origenLat", solicitud.getOrigenLat());
-        resumen.put("origenLong", solicitud.getOrigenLong());
-        resumen.put("destinoLat", solicitud.getDestinoLat());
-        resumen.put("destinoLong", solicitud.getDestinoLong());
-        return ResponseEntity.ok(resumen);
+        return ResponseEntity.ok(seguimiento);
     }
 
     // ---- Integration endpoints (delegan al service) ----

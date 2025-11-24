@@ -1826,3 +1826,12 @@ Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "
 2025-11-23T22:36:37.835Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-11-23T22:36:37.853Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-11-23T22:36:37.865Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-24T16:51:21.096Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-24T16:51:21.106Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-24T16:51:26.491Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-24T16:51:27.396Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 831 ms. Found 4 JPA repository interfaces.
+2025-11-24T16:51:29.947Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-24T16:51:30.002Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-24T16:51:30.005Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-24T16:51:30.152Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-24T16:51:30.154Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8884 ms

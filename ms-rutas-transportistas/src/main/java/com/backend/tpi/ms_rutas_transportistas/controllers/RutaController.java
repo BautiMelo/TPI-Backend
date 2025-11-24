@@ -220,7 +220,10 @@ public class RutaController {
     }
 
     /**
-     * POST /api/v1/rutas/{id}/opciones/{opcionId}/seleccionar - Selecciona una opción y reemplaza tramos
+     * POST /api/v1/rutas/{id}/opciones/{opcionId}/seleccionar
+     * Selecciona una opción y reemplaza los tramos de una ruta existente.
+     * Después de seleccionar, elimina todas las opciones restantes de la solicitud.
+     * Comportamiento similar a /confirmar pero aplicado a una ruta ya existente.
      */
     @PostMapping("/{id}/opciones/{opcionId}/seleccionar")
     @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")

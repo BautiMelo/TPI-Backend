@@ -33,7 +33,8 @@ public class EstadoTransicionService {
 
     static {
         // Configurar transiciones válidas de Solicitud
-        // Estados oficiales: PROGRAMADA, EN_TRANSITO, COMPLETADA, CANCELADA
+        // Estados oficiales: PENDIENTE, PROGRAMADA, EN_TRANSITO, COMPLETADA, CANCELADA
+        TRANSICIONES_SOLICITUD.put("PENDIENTE", Arrays.asList("PROGRAMADA", "CANCELADA"));
         TRANSICIONES_SOLICITUD.put("PROGRAMADA", Arrays.asList("EN_TRANSITO", "CANCELADA"));
         TRANSICIONES_SOLICITUD.put("EN_TRANSITO", Arrays.asList("COMPLETADA", "PROGRAMADA"));
         TRANSICIONES_SOLICITUD.put("COMPLETADA", Arrays.asList()); // Estado final
