@@ -548,7 +548,7 @@ public class TramoService {
         if (tramo.getCamionDominio() != null) {
             try {
                 java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> maybeCamion = 
-                    camionRepository.findByDominio(tramo.getCamionDominio());
+                    camionRepository.findFirstByDominio(tramo.getCamionDominio());
                 if (maybeCamion.isPresent()) {
                     com.backend.tpi.ms_rutas_transportistas.models.Camion camion = maybeCamion.get();
                     camion.setDisponible(true);
@@ -674,7 +674,7 @@ public class TramoService {
         }
         Tramo tramo = optionalTramo.get();
 
-        java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> maybeCamion = camionRepository.findByDominio(dominio);
+                java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> maybeCamion = camionRepository.findFirstByDominio(dominio);
         if (maybeCamion.isEmpty()) {
             logger.error("Camión no encontrado con dominio: {}", dominio);
             throw new IllegalArgumentException("Camión no encontrado con dominio: " + dominio);
@@ -825,7 +825,7 @@ public class TramoService {
         // Obtener datos del camión
         if (tramo.getCamionDominio() != null && !tramo.getCamionDominio().isEmpty()) {
             try {
-                java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findByDominio(tramo.getCamionDominio());
+                java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findFirstByDominio(tramo.getCamionDominio());
                 if (camionOpt.isPresent()) {
                     com.backend.tpi.ms_rutas_transportistas.models.Camion camion = camionOpt.get();
                     logger.info("  Camión encontrado - costoPorKm: {}, consumo: {}", 
@@ -951,7 +951,7 @@ public class TramoService {
         // Obtener datos del camión
         if (tramo.getCamionDominio() != null && !tramo.getCamionDominio().isEmpty()) {
             try {
-                java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findByDominio(tramo.getCamionDominio());
+                java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findFirstByDominio(tramo.getCamionDominio());
                 if (camionOpt.isPresent()) {
                     com.backend.tpi.ms_rutas_transportistas.models.Camion camion = camionOpt.get();
                     logger.info("  Camión encontrado - costoPorKm: {}, consumo: {}", 
@@ -1097,7 +1097,7 @@ public class TramoService {
         if (tramo.getCamionDominio() != null) {
             try {
                 java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> maybeCamion = 
-                    camionRepository.findByDominio(tramo.getCamionDominio());
+                    camionRepository.findFirstByDominio(tramo.getCamionDominio());
                 if (maybeCamion.isPresent()) {
                     com.backend.tpi.ms_rutas_transportistas.models.Camion camion = maybeCamion.get();
                     camion.setDisponible(true);

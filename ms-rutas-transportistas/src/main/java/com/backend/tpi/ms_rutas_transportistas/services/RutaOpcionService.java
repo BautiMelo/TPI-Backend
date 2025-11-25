@@ -48,6 +48,9 @@ public class RutaOpcionService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private DepositoService depositoService;
+
     @Value("${app.solicitudes.base-url:http://ms-solicitudes:8083}")
     private String solicitudesBaseUrl;
 
@@ -132,7 +135,7 @@ public class RutaOpcionService {
         // Parsear tramos desde JSON
         TramoTentativoDTO[] tramosArr = objectMapper.readValue(opcion.getTramosJson(), TramoTentativoDTO[].class);
         int orden = 1;
-        for (TramoTentativoDTO t : tramosArr) {
+            for (TramoTentativoDTO t : tramosArr) {
             Tramo tramo = new Tramo();
             tramo.setRuta(ruta);
             tramo.setOrden(orden++);
@@ -141,6 +144,60 @@ public class RutaOpcionService {
             tramo.setDistancia(t.getDistanciaKm());
             tramo.setDuracionHoras(t.getDuracionHoras());
             tramo.setGeneradoAutomaticamente(true);
+                // Asignar coordenadas al crear el tramo (si vienen en el DTO o consultando el servicio de cálculos)
+                try {
+                    // Origen: si es depósito, consultar coordenadas desde DepositoService; si no, tomar del DTO
+                    if (t.getOrigenDepositoId() != null) {
+                        try {
+                            java.util.Map<Long, java.util.Map<String, Object>> info = depositoService.getInfoForDepositos(java.util.List.of(t.getOrigenDepositoId()));
+                            java.util.Map<String, Object> deposito = info != null ? info.get(t.getOrigenDepositoId()) : null;
+                            if (deposito != null) {
+                                Object lat = deposito.get("latitud");
+                                Object lon = deposito.get("longitud");
+                                if (lat instanceof Number && lon instanceof Number) {
+                                    tramo.setOrigenLat(java.math.BigDecimal.valueOf(((Number) lat).doubleValue()));
+                                    tramo.setOrigenLong(java.math.BigDecimal.valueOf(((Number) lon).doubleValue()));
+                                } else {
+                                    log.warn("Depósito {} no contiene latitud/longitud válidas: {}", t.getOrigenDepositoId(), deposito);
+                                }
+                            } else {
+                                log.warn("No se encontró info del depósito origen {} desde DepositoService", t.getOrigenDepositoId());
+                            }
+                        } catch (Exception e) {
+                            log.warn("No se pudieron obtener coordenadas del depósito origen {}: {}", t.getOrigenDepositoId(), e.getMessage());
+                        }
+                    } else if (t.getOrigenLat() != null && t.getOrigenLong() != null) {
+                        tramo.setOrigenLat(java.math.BigDecimal.valueOf(t.getOrigenLat()));
+                        tramo.setOrigenLong(java.math.BigDecimal.valueOf(t.getOrigenLong()));
+                    }
+
+                    // Destino: si es depósito, consultar coordenadas desde DepositoService; si no, tomar del DTO
+                    if (t.getDestinoDepositoId() != null) {
+                        try {
+                            java.util.Map<Long, java.util.Map<String, Object>> info = depositoService.getInfoForDepositos(java.util.List.of(t.getDestinoDepositoId()));
+                            java.util.Map<String, Object> deposito = info != null ? info.get(t.getDestinoDepositoId()) : null;
+                            if (deposito != null) {
+                                Object lat = deposito.get("latitud");
+                                Object lon = deposito.get("longitud");
+                                if (lat instanceof Number && lon instanceof Number) {
+                                    tramo.setDestinoLat(java.math.BigDecimal.valueOf(((Number) lat).doubleValue()));
+                                    tramo.setDestinoLong(java.math.BigDecimal.valueOf(((Number) lon).doubleValue()));
+                                } else {
+                                    log.warn("Depósito {} no contiene latitud/longitud válidas: {}", t.getDestinoDepositoId(), deposito);
+                                }
+                            } else {
+                                log.warn("No se encontró info del depósito destino {} desde DepositoService", t.getDestinoDepositoId());
+                            }
+                        } catch (Exception e) {
+                            log.warn("No se pudieron obtener coordenadas del depósito destino {}: {}", t.getDestinoDepositoId(), e.getMessage());
+                        }
+                    } else if (t.getDestinoLat() != null && t.getDestinoLong() != null) {
+                        tramo.setDestinoLat(java.math.BigDecimal.valueOf(t.getDestinoLat()));
+                        tramo.setDestinoLong(java.math.BigDecimal.valueOf(t.getDestinoLong()));
+                    }
+                } catch (Exception e) {
+                    log.warn("Error asignando coordenadas al crear tramo en selectOption: {}", e.getMessage());
+                }
             // Asignar tipoTramo por defecto si existe
             try {
                 tipoTramoRepository.findAll().stream().findFirst().ifPresent(tramo::setTipoTramo);
@@ -206,3 +263,4 @@ public class RutaOpcionService {
     }
 
 }
+

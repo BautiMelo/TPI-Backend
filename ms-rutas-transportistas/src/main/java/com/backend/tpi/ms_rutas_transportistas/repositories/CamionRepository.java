@@ -10,5 +10,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CamionRepository extends JpaRepository<Camion, Long> {
-	java.util.Optional<Camion> findByDominio(String dominio);
+	// return the first match to avoid NonUniqueResultException when the DB contains
+	// multiple rows with the same dominio. Business logic should ensure dominios
+	// are unique, but being defensive here avoids runtime errors in production.
+	java.util.Optional<Camion> findFirstByDominio(String dominio);
 }

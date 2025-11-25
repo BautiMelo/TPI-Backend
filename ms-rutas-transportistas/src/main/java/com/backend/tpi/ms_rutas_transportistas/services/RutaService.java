@@ -58,6 +58,9 @@ public class RutaService {
     @Autowired
     private com.backend.tpi.ms_rutas_transportistas.repositories.EstadoTramoRepository estadoTramoRepository;
 
+    @Autowired
+    private DepositoService depositoService;
+
     
     @org.springframework.beans.factory.annotation.Value("${app.solicitudes.base-url:http://ms-solicitudes:8080}")
     private String solicitudesBaseUrl;
@@ -530,7 +533,7 @@ public class RutaService {
             // Obtener datos del camión por dominio si existe
             if (tramo.getCamionDominio() != null && !tramo.getCamionDominio().isEmpty()) {
                 try {
-                    java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findByDominio(tramo.getCamionDominio());
+                    java.util.Optional<com.backend.tpi.ms_rutas_transportistas.models.Camion> camionOpt = camionRepository.findFirstByDominio(tramo.getCamionDominio());
                     if (camionOpt.isPresent()) {
                         com.backend.tpi.ms_rutas_transportistas.models.Camion camion = camionOpt.get();
                         if (camion.getCostoPorKm() != null) costoKmCamion = camion.getCostoPorKm() * distancia;
@@ -832,32 +835,29 @@ public class RutaService {
                 tramo.setDuracionHoras(t.getDuracionHoras());
                 tramo.setGeneradoAutomaticamente(true);
                 
-                // Obtener token de autenticación
-                String token = extractBearerToken();
+                // Obtener token de autenticación (no necesario aquí cuando usamos DepositoService)
                 
                 // Consultar y guardar coordenadas del depósito de origen si existe
                 if (t.getOrigenDepositoId() != null) {
                     try {
-                        org.springframework.http.ResponseEntity<java.util.Map<String, Object>> depositoEntity = calculosClient.get()
-                                .uri("/api/v1/depositos/{id}", t.getOrigenDepositoId())
-                                .headers(h -> { if (token != null) h.setBearerAuth(token); })
-                                .retrieve()
-                                .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
-                        
-                        java.util.Map<String, Object> deposito = depositoEntity.getBody();
+                        java.util.Map<Long, java.util.Map<String, Object>> info = depositoService.getInfoForDepositos(java.util.List.of(t.getOrigenDepositoId()));
+                        java.util.Map<String, Object> deposito = info != null ? info.get(t.getOrigenDepositoId()) : null;
                         if (deposito != null) {
                             Object lat = deposito.get("latitud");
                             Object lon = deposito.get("longitud");
                             if (lat instanceof Number && lon instanceof Number) {
                                 tramo.setOrigenLat(java.math.BigDecimal.valueOf(((Number) lat).doubleValue()));
                                 tramo.setOrigenLong(java.math.BigDecimal.valueOf(((Number) lon).doubleValue()));
-                                logger.info("    Coordenadas de depósito origen {}: lat={}, lon={}", 
-                                    t.getOrigenDepositoId(), lat, lon);
+                                logger.info("    Coordenadas de depósito origen {}: lat={}, lon={}",
+                                        t.getOrigenDepositoId(), lat, lon);
+                            } else {
+                                logger.warn("Depósito {} no contiene latitud/longitud válidas: {}", t.getOrigenDepositoId(), deposito);
                             }
+                        } else {
+                            logger.warn("No se encontró info del depósito origen {} desde DepositoService", t.getOrigenDepositoId());
                         }
                     } catch (Exception e) {
-                        logger.warn("No se pudieron obtener coordenadas del depósito origen {}: {}", 
-                            t.getOrigenDepositoId(), e.getMessage());
+                        logger.warn("No se pudieron obtener coordenadas del depósito origen {}: {}", t.getOrigenDepositoId(), e.getMessage());
                     }
                 } else if (t.getOrigenLat() != null && t.getOrigenLong() != null) {
                     // Guardar coordenadas del punto de origen si no es un depósito (origen de solicitud)
@@ -868,26 +868,24 @@ public class RutaService {
                 // Consultar y guardar coordenadas del depósito de destino si existe
                 if (t.getDestinoDepositoId() != null) {
                     try {
-                        org.springframework.http.ResponseEntity<java.util.Map<String, Object>> depositoEntity = calculosClient.get()
-                                .uri("/api/v1/depositos/{id}", t.getDestinoDepositoId())
-                                .headers(h -> { if (token != null) h.setBearerAuth(token); })
-                                .retrieve()
-                                .toEntity(new org.springframework.core.ParameterizedTypeReference<java.util.Map<String, Object>>() {});
-                        
-                        java.util.Map<String, Object> deposito = depositoEntity.getBody();
+                        java.util.Map<Long, java.util.Map<String, Object>> info = depositoService.getInfoForDepositos(java.util.List.of(t.getDestinoDepositoId()));
+                        java.util.Map<String, Object> deposito = info != null ? info.get(t.getDestinoDepositoId()) : null;
                         if (deposito != null) {
                             Object lat = deposito.get("latitud");
                             Object lon = deposito.get("longitud");
                             if (lat instanceof Number && lon instanceof Number) {
                                 tramo.setDestinoLat(java.math.BigDecimal.valueOf(((Number) lat).doubleValue()));
                                 tramo.setDestinoLong(java.math.BigDecimal.valueOf(((Number) lon).doubleValue()));
-                                logger.info("    Coordenadas de depósito destino {}: lat={}, lon={}", 
-                                    t.getDestinoDepositoId(), lat, lon);
+                                logger.info("    Coordenadas de depósito destino {}: lat={}, lon={}",
+                                        t.getDestinoDepositoId(), lat, lon);
+                            } else {
+                                logger.warn("Depósito {} no contiene latitud/longitud válidas: {}", t.getDestinoDepositoId(), deposito);
                             }
+                        } else {
+                            logger.warn("No se encontró info del depósito destino {} desde DepositoService", t.getDestinoDepositoId());
                         }
                     } catch (Exception e) {
-                        logger.warn("No se pudieron obtener coordenadas del depósito destino {}: {}", 
-                            t.getDestinoDepositoId(), e.getMessage());
+                        logger.warn("No se pudieron obtener coordenadas del depósito destino {}: {}", t.getDestinoDepositoId(), e.getMessage());
                     }
                 } else if (t.getDestinoLat() != null && t.getDestinoLong() != null) {
                     // Guardar coordenadas del punto de destino si no es un depósito (destino de solicitud)

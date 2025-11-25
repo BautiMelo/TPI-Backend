@@ -259,6 +259,8 @@ public class RutaTentativaService {
                         .origenLong(origenLon)
                         .destinoDepositoId(origenDepositoId)
                         .destinoDepositoNombre((String) primerDeposito.get("nombre"))
+                        .destinoLat(((Number) primerDeposito.get("latitud")).doubleValue())
+                        .destinoLong(((Number) primerDeposito.get("longitud")).doubleValue())
                         .distanciaKm(distancia)
                         .duracionHoras(duracion)
                         .build());
@@ -303,8 +305,12 @@ public class RutaTentativaService {
                     .orden(orden++)
                     .origenDepositoId(depOrigen)
                     .origenDepositoNombre((String) infoOrigen.get("nombre"))
+                    .origenLat(((Number) infoOrigen.get("latitud")).doubleValue())
+                    .origenLong(((Number) infoOrigen.get("longitud")).doubleValue())
                     .destinoDepositoId(depDestino)
                     .destinoDepositoNombre((String) infoDestino.get("nombre"))
+                    .destinoLat(((Number) infoDestino.get("latitud")).doubleValue())
+                    .destinoLong(((Number) infoDestino.get("longitud")).doubleValue())
                     .distanciaKm(rutaCalculada.getDistanciaKm())
                     .duracionHoras(rutaCalculada.getDuracionHoras())
                     .build());
@@ -336,6 +342,8 @@ public class RutaTentativaService {
                         .orden(orden++)
                         .origenDepositoId(destinoDepositoId)
                         .origenDepositoNombre((String) ultimoDeposito.get("nombre"))
+                        .origenLat(((Number) ultimoDeposito.get("latitud")).doubleValue())
+                        .origenLong(((Number) ultimoDeposito.get("longitud")).doubleValue())
                         .destinoDepositoId(null) // No es un depósito, es el punto real
                         .destinoDepositoNombre("Punto de Destino")
                         .destinoLat(destinoLat) // Coordenadas del punto de destino real
@@ -469,12 +477,16 @@ public class RutaTentativaService {
                 TramoTentativoDTO tramo = TramoTentativoDTO.builder()
                         .orden(i + 1)
                         .origenDepositoId(depOrigen)
-                        .origenDepositoNombre((String) infoOrigen.get("nombre"))
-                        .destinoDepositoId(depDestino)
-                        .destinoDepositoNombre((String) infoDestino.get("nombre"))
-                        .distanciaKm(rutaCalculada.getDistanciaKm())
-                        .duracionHoras(rutaCalculada.getDuracionHoras())
-                        .build();
+                    .origenDepositoNombre((String) infoOrigen.get("nombre"))
+                    .origenLat(((Number) infoOrigen.get("latitud")).doubleValue())
+                    .origenLong(((Number) infoOrigen.get("longitud")).doubleValue())
+                    .destinoDepositoId(depDestino)
+                    .destinoDepositoNombre((String) infoDestino.get("nombre"))
+                    .destinoLat(((Number) infoDestino.get("latitud")).doubleValue())
+                    .destinoLong(((Number) infoDestino.get("longitud")).doubleValue())
+                    .distanciaKm(rutaCalculada.getDistanciaKm())
+                    .duracionHoras(rutaCalculada.getDuracionHoras())
+                    .build();
                 
                 tramos.add(tramo);
                 distanciaTotal += rutaCalculada.getDistanciaKm();

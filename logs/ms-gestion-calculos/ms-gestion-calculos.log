@@ -37,3 +37,647 @@
 2025-11-25T00:00:06.398Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/9/coordenadas - Consultando coordenadas
 2025-11-25T00:00:06.399Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 9
 2025-11-25T00:00:06.401Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/9/coordenadas - Respuesta: 200 - lat=-33.36, lon=-60.23
+2025-11-25T10:59:09.539Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T10:59:09.555Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T10:59:16.760Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T10:59:19.910Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3078 ms. Found 4 JPA repository interfaces.
+2025-11-25T10:59:24.253Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T10:59:24.457Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T10:59:24.471Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T10:59:25.013Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T10:59:25.023Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 15036 ms
+2025-11-25T10:59:29.760Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T10:59:29.883Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T10:59:31.338Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1dcca426
+2025-11-25T10:59:31.358Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T10:59:31.677Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T10:59:36.021Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T10:59:39.834Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T10:59:46.130Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T10:59:46.169Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 40.057 seconds (process running for 45.082)
+2025-11-25T11:01:18.704Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T11:01:19.020Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 1234, CABA, Argentina
+2025-11-25T11:01:25.999Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 1234, CABA, Argentina': lat=-34.5929644, lon=-58.4056192
+2025-11-25T11:01:26.196Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 500, Rosario, Santa Fe, Argentina
+2025-11-25T11:01:33.578Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 500, Rosario, Santa Fe, Argentina': lat=-33.1956685, lon=-60.4644666
+2025-11-25T11:04:17.702Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T11:04:17.703Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T11:04:18.020Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T11:04:18.084Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.086Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:04:18.109Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:04:18.159Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.161Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:04:18.167Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:04:18.460Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T11:04:18.461Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T11:04:18.482Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T11:04:18.504Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.505Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:04:18.510Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:04:18.526Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.527Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T11:04:18.534Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T11:04:18.556Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.559Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:04:18.565Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:04:18.684Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.686Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:04:18.691Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:04:18.715Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.717Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T11:04:18.722Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T11:04:18.736Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.737Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:04:18.743Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:04:18.818Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.818Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:04:18.822Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:04:18.835Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.836Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T11:04:18.839Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T11:04:18.851Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:04:18.851Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:04:18.855Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:17:41.558Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T11:17:41.575Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T11:17:41.594Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T11:17:51.472Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T11:17:51.489Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T11:17:55.930Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T11:17:56.431Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 472 ms. Found 4 JPA repository interfaces.
+2025-11-25T11:17:59.564Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T11:17:59.634Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T11:17:59.639Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T11:17:59.836Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T11:17:59.850Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8126 ms
+2025-11-25T11:18:04.153Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T11:18:04.227Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T11:18:04.675Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@77cc6a28
+2025-11-25T11:18:04.681Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T11:18:04.739Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T11:18:07.559Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T11:18:11.104Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T11:18:13.672Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T11:18:13.693Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 24.431 seconds (process running for 26.552)
+2025-11-25T11:19:16.107Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T11:19:16.385Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T11:19:16.387Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T11:19:16.695Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T11:19:16.875Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:19:16.877Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:19:16.894Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:19:16.945Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:19:16.951Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:19:16.964Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:19:17.345Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T11:19:17.347Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T11:19:17.366Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T11:19:17.392Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.393Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:19:17.399Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:19:17.418Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.421Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T11:19:17.425Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T11:19:17.443Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.447Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:19:17.453Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:19:17.574Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.576Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:19:17.584Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:19:17.606Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.608Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T11:19:17.612Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T11:19:17.629Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.630Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:19:17.636Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T11:19:17.747Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.749Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T11:19:17.754Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T11:19:17.770Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.772Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T11:19:17.776Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T11:19:17.792Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T11:19:17.793Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T11:19:17.797Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T12:25:37.146Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T12:25:37.154Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T12:25:37.165Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T12:25:42.753Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T12:25:42.774Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T12:25:47.291Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T12:25:47.707Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 385 ms. Found 4 JPA repository interfaces.
+2025-11-25T12:25:49.924Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T12:25:50.031Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T12:25:50.035Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T12:25:50.292Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T12:25:50.297Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7361 ms
+2025-11-25T12:25:52.268Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T12:25:52.353Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T12:25:52.910Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7a30e30b
+2025-11-25T12:25:52.914Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T12:25:55.015Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T12:25:56.929Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T12:25:58.804Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T12:26:00.467Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T12:26:00.482Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 19.086 seconds (process running for 20.365)
+2025-11-25T12:29:41.336Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T12:29:41.622Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T12:29:41.623Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T12:29:41.811Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T12:29:41.943Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-25T12:29:41.944Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-25T12:29:41.955Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-32.89, lon=-68.83
+2025-11-25T12:29:41.980Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Consultando coordenadas
+2025-11-25T12:29:41.981Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 11
+2025-11-25T12:29:41.986Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Respuesta: 200 - lat=-24.78, lon=-65.42
+2025-11-25T12:29:43.298Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T12:29:43.299Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T12:29:43.319Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T12:29:43.350Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-25T12:29:43.351Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-25T12:29:43.356Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-32.89, lon=-68.83
+2025-11-25T12:29:43.372Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/10/coordenadas - Consultando coordenadas
+2025-11-25T12:29:43.373Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 10
+2025-11-25T12:29:43.378Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/10/coordenadas - Respuesta: 200 - lat=-26.82, lon=-65.22
+2025-11-25T12:29:43.397Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Consultando coordenadas
+2025-11-25T12:29:43.398Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 11
+2025-11-25T12:29:43.402Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Respuesta: 200 - lat=-24.78, lon=-65.42
+2025-11-25T12:29:43.584Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-25T12:29:43.585Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-25T12:29:43.588Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-32.89, lon=-68.83
+2025-11-25T12:29:43.602Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/6/coordenadas - Consultando coordenadas
+2025-11-25T12:29:43.604Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 6
+2025-11-25T12:29:43.608Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/6/coordenadas - Respuesta: 200 - lat=-31.35, lon=-64.24
+2025-11-25T12:29:43.621Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Consultando coordenadas
+2025-11-25T12:29:43.622Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 11
+2025-11-25T12:29:43.627Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Respuesta: 200 - lat=-24.78, lon=-65.42
+2025-11-25T12:29:44.062Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Consultando coordenadas
+2025-11-25T12:29:44.063Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 7
+2025-11-25T12:29:44.068Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/7/coordenadas - Respuesta: 200 - lat=-32.89, lon=-68.83
+2025-11-25T12:29:44.088Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Consultando coordenadas
+2025-11-25T12:29:44.089Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 5
+2025-11-25T12:29:44.094Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Respuesta: 200 - lat=-31.41, lon=-64.18
+2025-11-25T12:29:44.107Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Consultando coordenadas
+2025-11-25T12:29:44.108Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 11
+2025-11-25T12:29:44.112Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/11/coordenadas - Respuesta: 200 - lat=-24.78, lon=-65.42
+2025-11-25T12:31:53.097Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2 - Buscando depósito por ID
+2025-11-25T12:31:53.101Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T12:31:53.109Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2 - Respuesta: 200 - Depósito encontrado
+2025-11-25T12:31:53.143Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2 - Buscando depósito por ID
+2025-11-25T12:31:53.145Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T12:31:53.148Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2 - Respuesta: 200 - Depósito encontrado
+2025-11-25T12:31:53.163Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3 - Buscando depósito por ID
+2025-11-25T12:31:53.164Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T12:31:53.168Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3 - Respuesta: 200 - Depósito encontrado
+2025-11-25T12:31:53.187Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3 - Buscando depósito por ID
+2025-11-25T12:31:53.188Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T12:31:53.193Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3 - Respuesta: 200 - Depósito encontrado
+2025-11-25T12:39:15.070Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T12:39:15.077Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T12:39:15.085Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T12:49:51.757Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T12:49:51.772Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T12:49:55.853Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T12:49:56.515Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 637 ms. Found 4 JPA repository interfaces.
+2025-11-25T12:50:00.097Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T12:50:00.174Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T12:50:00.180Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T12:50:00.453Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T12:50:00.454Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8509 ms
+2025-11-25T12:50:03.301Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T12:50:03.402Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T12:50:03.998Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7a30e30b
+2025-11-25T12:50:04.005Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T12:50:04.129Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T12:50:06.453Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T12:50:09.025Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T12:50:12.018Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T12:50:12.050Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 21.851 seconds (process running for 23.941)
+2025-11-25T13:00:57.312Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:00:57.322Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T13:00:57.355Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T13:01:04.119Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T13:01:04.124Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T13:01:07.086Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T13:01:07.564Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 457 ms. Found 4 JPA repository interfaces.
+2025-11-25T13:01:09.442Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T13:01:09.495Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T13:01:09.497Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T13:01:09.606Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T13:01:09.609Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5390 ms
+2025-11-25T13:01:10.535Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T13:01:11.465Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T13:01:12.376Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@f08d676
+2025-11-25T13:01:12.427Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T13:01:12.535Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T13:01:15.384Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:01:16.739Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T13:01:19.083Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T13:01:19.104Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 16.224 seconds (process running for 17.653)
+2025-11-25T13:01:44.046Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T13:01:44.301Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Rivadavia 2000, CABA, Argentina
+2025-11-25T13:01:48.166Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Rivadavia 2000, CABA, Argentina': lat=-34.6094911, lon=-58.3948003
+2025-11-25T13:01:48.319Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Colón 350, Córdoba, Argentina
+2025-11-25T13:01:49.706Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Colón 350, Córdoba, Argentina': lat=-31.4121667, lon=-64.1877963
+2025-11-25T13:02:03.587Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:02:03.588Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:02:03.819Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:02:03.907Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:02:03.908Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:02:03.929Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:02:03.971Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Consultando coordenadas
+2025-11-25T13:02:03.974Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 5
+2025-11-25T13:02:03.980Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Respuesta: 200 - lat=-31.41, lon=-64.18
+2025-11-25T13:02:04.277Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:02:04.291Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:02:04.323Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:02:04.409Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.410Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:02:04.415Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:02:04.433Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.434Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T13:02:04.440Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T13:02:04.455Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.456Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 5
+2025-11-25T13:02:04.461Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Respuesta: 200 - lat=-31.41, lon=-64.18
+2025-11-25T13:02:04.543Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.544Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:02:04.550Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:02:04.564Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/6/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.564Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 6
+2025-11-25T13:02:04.570Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/6/coordenadas - Respuesta: 200 - lat=-31.35, lon=-64.24
+2025-11-25T13:02:04.587Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.591Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 5
+2025-11-25T13:02:04.596Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Respuesta: 200 - lat=-31.41, lon=-64.18
+2025-11-25T13:02:04.678Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.679Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:02:04.683Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:02:04.697Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.697Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:02:04.701Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:02:04.711Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Consultando coordenadas
+2025-11-25T13:02:04.711Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 5
+2025-11-25T13:02:04.716Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/5/coordenadas - Respuesta: 200 - lat=-31.41, lon=-64.18
+2025-11-25T13:17:46.157Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:17:46.168Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T13:17:46.175Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T13:17:53.640Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T13:17:53.677Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T13:17:56.691Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T13:17:57.370Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 635 ms. Found 4 JPA repository interfaces.
+2025-11-25T13:17:59.874Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T13:17:59.918Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T13:17:59.921Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T13:18:00.051Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T13:18:00.056Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6130 ms
+2025-11-25T13:18:02.209Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T13:18:02.290Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T13:18:02.726Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2c7375da
+2025-11-25T13:18:02.730Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T13:18:02.799Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T13:18:06.591Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:18:08.197Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T13:18:09.332Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T13:18:09.343Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 17.01 seconds (process running for 18.485)
+2025-11-25T13:19:07.318Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T13:19:07.577Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 1234, CABA, Argentina
+2025-11-25T13:19:09.868Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 1234, CABA, Argentina': lat=-34.5929644, lon=-58.4056192
+2025-11-25T13:19:10.009Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 500, Rosario, Santa Fe, Argentina
+2025-11-25T13:19:12.035Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 500, Rosario, Santa Fe, Argentina': lat=-33.1956685, lon=-60.4644666
+2025-11-25T13:19:40.573Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:19:40.574Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:19:40.742Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:19:40.798Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:19:40.804Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:19:40.827Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:19:40.867Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:19:40.870Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:19:40.878Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:19:41.163Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:19:41.164Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:19:41.183Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:19:41.203Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.204Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:19:41.208Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:19:41.222Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.223Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T13:19:41.227Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T13:19:41.239Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.240Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:19:41.243Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:19:41.311Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.312Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:19:41.317Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:19:41.330Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.331Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T13:19:41.334Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T13:19:41.346Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.347Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:19:41.351Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:19:41.458Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.458Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:19:41.461Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:19:41.471Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.472Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T13:19:41.475Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T13:19:41.486Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:19:41.490Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:19:41.494Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:26:39.413Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:26:39.426Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T13:26:39.436Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T13:27:48.444Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T13:27:48.458Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T13:27:52.711Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T13:27:53.128Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 386 ms. Found 4 JPA repository interfaces.
+2025-11-25T13:27:55.975Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T13:27:56.063Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T13:27:56.065Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T13:27:56.250Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T13:27:56.256Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7484 ms
+2025-11-25T13:27:58.417Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T13:27:58.511Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T13:27:59.338Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1dcca426
+2025-11-25T13:27:59.346Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T13:27:59.586Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T13:28:02.686Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:28:05.329Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T13:28:07.585Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T13:28:07.608Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 21.235 seconds (process running for 22.712)
+2025-11-25T13:28:38.695Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T13:28:38.987Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 1234, CABA, Argentina
+2025-11-25T13:28:41.009Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 1234, CABA, Argentina': lat=-34.5929644, lon=-58.4056192
+2025-11-25T13:28:41.186Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 500, Rosario, Santa Fe, Argentina
+2025-11-25T13:28:44.715Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 500, Rosario, Santa Fe, Argentina': lat=-33.1956685, lon=-60.4644666
+2025-11-25T13:29:00.833Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:29:00.834Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:29:01.036Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:29:01.080Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:29:01.082Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:29:01.095Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:29:01.116Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:29:01.118Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:29:01.122Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:29:03.267Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:29:03.268Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:29:03.301Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:29:03.340Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.342Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:29:03.348Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:29:03.371Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.375Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T13:29:03.380Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T13:29:03.403Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.404Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:29:03.409Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:29:03.494Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.495Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:29:03.500Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:29:03.511Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.512Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T13:29:03.515Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T13:29:03.527Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.528Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:29:03.532Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:29:03.595Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.596Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:29:03.599Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:29:03.609Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.610Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T13:29:03.613Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T13:29:03.625Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:29:03.626Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:29:03.629Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:38:47.064Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:38:47.072Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T13:38:47.084Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T13:39:58.274Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T13:39:58.287Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T13:40:02.585Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T13:40:03.051Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 440 ms. Found 4 JPA repository interfaces.
+2025-11-25T13:40:05.788Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T13:40:05.860Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T13:40:05.870Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T13:40:06.082Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T13:40:06.088Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7619 ms
+2025-11-25T13:40:08.644Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T13:40:08.726Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T13:40:09.610Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7b29cdea
+2025-11-25T13:40:09.624Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T13:40:09.765Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T13:40:12.352Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T13:40:15.167Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T13:40:17.570Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T13:40:17.583Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 21.424 seconds (process running for 23.196)
+2025-11-25T13:40:32.816Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T13:40:33.024Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 1234, CABA, Argentina
+2025-11-25T13:40:36.719Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 1234, CABA, Argentina': lat=-34.5929644, lon=-58.4056192
+2025-11-25T13:40:36.854Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 500, Rosario, Santa Fe, Argentina
+2025-11-25T13:40:38.732Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 500, Rosario, Santa Fe, Argentina': lat=-33.1956685, lon=-60.4644666
+2025-11-25T13:40:45.146Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:40:45.147Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:40:45.302Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:40:45.348Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.349Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:45.364Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:45.387Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.392Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:45.399Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:45.452Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:40:45.453Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:40:45.476Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:40:45.498Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.499Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:45.503Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:45.517Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.518Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T13:40:45.522Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T13:40:45.544Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.549Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:45.554Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:45.603Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.605Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:45.611Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:45.625Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.626Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T13:40:45.630Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T13:40:45.641Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.642Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:45.648Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:45.694Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.698Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:45.702Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:45.716Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.717Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T13:40:45.722Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T13:40:45.744Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:45.745Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:45.752Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:55.827Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:40:55.828Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:40:55.850Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:40:55.879Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:55.882Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:55.887Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:55.908Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:55.909Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:55.913Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:56.125Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:40:56.126Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:40:56.147Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:40:56.166Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.167Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:56.171Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:56.182Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.183Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T13:40:56.187Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T13:40:56.201Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.203Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:56.207Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:56.437Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.444Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:56.448Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:56.459Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.460Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T13:40:56.464Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T13:40:56.512Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.516Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:56.521Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:40:56.578Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.579Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:40:56.584Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:40:56.594Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.594Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T13:40:56.598Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T13:40:56.607Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:40:56.608Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:40:56.612Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:49:56.032Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:49:56.034Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:49:56.058Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:51:49.502Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:51:49.503Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:51:49.519Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:51:49.532Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.533Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:51:49.536Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:51:49.549Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.550Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:51:49.552Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:51:49.603Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T13:51:49.604Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T13:51:49.620Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T13:51:49.633Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.634Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:51:49.638Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:51:49.649Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.650Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T13:51:49.655Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T13:51:49.670Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.672Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:51:49.677Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:51:49.729Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.730Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:51:49.737Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:51:49.750Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.750Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T13:51:49.754Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T13:51:49.766Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.769Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:51:49.772Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T13:51:49.833Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.834Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T13:51:49.838Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T13:51:49.852Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.852Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T13:51:49.857Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T13:51:49.868Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T13:51:49.869Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T13:51:49.872Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:03:58.744Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T14:03:58.757Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T14:03:58.768Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-11-25T14:04:06.433Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Starting GestionCalculosApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2025-11-25T14:04:06.439Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-11-25T14:04:12.280Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-25T14:04:12.865Z  INFO 1 --- [ms-gestion-calculos] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 563 ms. Found 4 JPA repository interfaces.
+2025-11-25T14:04:15.872Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-11-25T14:04:15.949Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-25T14:04:15.952Z  INFO 1 --- [ms-gestion-calculos] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-25T14:04:16.168Z  INFO 1 --- [ms-gestion-calculos] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-25T14:04:16.175Z  INFO 1 --- [ms-gestion-calculos] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9569 ms
+2025-11-25T14:04:18.955Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-25T14:04:19.017Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-25T14:04:19.498Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@f08d676
+2025-11-25T14:04:19.504Z  INFO 1 --- [ms-gestion-calculos] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-25T14:04:19.594Z  WARN 1 --- [ms-gestion-calculos] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-25T14:04:21.327Z  INFO 1 --- [ms-gestion-calculos] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T14:04:23.677Z  WARN 1 --- [ms-gestion-calculos] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-25T14:04:25.679Z  INFO 1 --- [ms-gestion-calculos] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-11-25T14:04:25.698Z  INFO 1 --- [ms-gestion-calculos] [main] c.b.t.m.GestionCalculosApplication       : Started GestionCalculosApplication in 22.389 seconds (process running for 24.288)
+2025-11-25T14:11:26.141Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-25T14:11:26.434Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. Santa Fe 1234, CABA, Argentina
+2025-11-25T14:11:28.529Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. Santa Fe 1234, CABA, Argentina': lat=-34.5929644, lon=-58.4056192
+2025-11-25T14:11:28.669Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.CalculoController    : GET /api/v1/gestion/geocode - Geocodificando: Av. San Martín 500, Rosario, Santa Fe, Argentina
+2025-11-25T14:11:30.447Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.CalculoService          : Geocodificación externa exitosa para 'Av. San Martín 500, Rosario, Santa Fe, Argentina': lat=-33.1956685, lon=-60.4644666
+2025-11-25T14:11:43.582Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T14:11:43.584Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T14:11:43.790Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T14:11:43.826Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T14:11:43.827Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T14:11:43.837Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T14:11:43.856Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T14:11:43.857Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T14:11:43.862Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:11:43.950Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Listando todos los depósitos
+2025-11-25T14:11:43.951Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.services.DepositoService         : Obteniendo todos los depósitos
+2025-11-25T14:11:43.968Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-6] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos - Respuesta: 200 - 12 depósitos encontrados
+2025-11-25T14:11:43.989Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T14:11:43.990Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T14:11:43.994Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-7] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T14:11:44.006Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.007Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T14:11:44.012Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T14:11:44.022Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.023Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T14:11:44.027Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:11:44.090Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.092Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T14:11:44.096Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T14:11:44.106Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.107Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 4
+2025-11-25T14:11:44.111Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/4/coordenadas - Respuesta: 200 - lat=-32.93, lon=-60.69
+2025-11-25T14:11:44.123Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.124Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T14:11:44.128Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:11:44.186Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.187Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T14:11:44.189Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T14:11:44.203Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.204Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 8
+2025-11-25T14:11:44.209Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-4] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/8/coordenadas - Respuesta: 200 - lat=-34.91, lon=-57.96
+2025-11-25T14:11:44.219Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T14:11:44.219Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T14:11:44.223Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-5] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:14:03.280Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T14:14:03.282Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T14:14:03.290Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-8] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T14:14:03.329Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Consultando coordenadas
+2025-11-25T14:14:03.330Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 2
+2025-11-25T14:14:03.334Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-9] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/2/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.37
+2025-11-25T14:14:03.349Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T14:14:03.351Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T14:14:03.356Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-10] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T14:14:03.383Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Consultando coordenadas
+2025-11-25T14:14:03.387Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 1
+2025-11-25T14:14:03.390Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-1] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/1/coordenadas - Respuesta: 200 - lat=-34.59, lon=-58.45
+2025-11-25T14:14:03.404Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T14:14:03.405Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T14:14:03.408Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-2] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:14:03.432Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Consultando coordenadas
+2025-11-25T14:14:03.433Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.services.DepositoService         : Buscando depósito por ID: 3
+2025-11-25T14:14:03.437Z  INFO 1 --- [ms-gestion-calculos] [http-nio-8081-exec-3] c.b.t.m.controllers.DepositoController   : GET /api/v1/depositos/3/coordenadas - Respuesta: 200 - lat=-32.96, lon=-60.64
+2025-11-25T14:22:53.300Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-25T14:22:53.307Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-25T14:22:53.320Z  INFO 1 --- [ms-gestion-calculos] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

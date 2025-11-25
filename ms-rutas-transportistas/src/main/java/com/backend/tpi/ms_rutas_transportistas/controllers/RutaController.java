@@ -119,11 +119,32 @@ public class RutaController {
      */
     @GetMapping("/solicitudes/{solicitudId}/opciones")
     @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
-    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> listOptionsForSolicitud(@PathVariable Long solicitudId) {
+    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO>> listOptionsForSolicitud(@PathVariable Long solicitudId) {
         logger.info("GET /api/v1/solicitudes/{}/opciones - Listando opciones persistidas", solicitudId);
         try {
             java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> opciones = rutaOpcionService.listOptionsForSolicitud(solicitudId);
-            return ResponseEntity.ok(opciones);
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO> dtos = new java.util.ArrayList<>();
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            for (com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion opcion : opciones) {
+                try {
+                    com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO dto = mapRutaOpcionToDTO(opcion, mapper);
+                    dtos.add(dto);
+                } catch (Exception ex) {
+                    logger.warn("No se pudo deserializar opcion id {}: {}", opcion.getId(), ex.getMessage());
+                    // En caso de error de parseo añadimos una representación mínima
+                    dtos.add(com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO.builder()
+                            .id(opcion.getId())
+                            .rutaId(opcion.getRutaId())
+                            .solicitudId(opcion.getSolicitudId())
+                            .opcionIndex(opcion.getOpcionIndex())
+                            .distanciaTotal(opcion.getDistanciaTotal())
+                            .duracionTotalHoras(opcion.getDuracionTotalHoras())
+                            .costoTotal(opcion.getCostoTotal())
+                            .fechaCreacion(opcion.getFechaCreacion())
+                            .build());
+                }
+            }
+            return ResponseEntity.ok(dtos);
         } catch (Exception e) {
             logger.error("Error listando opciones para solicitud {}: {}", solicitudId, e.getMessage(), e);
             return ResponseEntity.status(500).build();
@@ -208,15 +229,95 @@ public class RutaController {
      */
     @GetMapping("/{id}/opciones")
     @PreAuthorize("hasAnyRole('OPERADOR','ADMIN','TRANSPORTISTA')")
-    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion>> listOptions(@PathVariable Long id) {
+    public ResponseEntity<java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO>> listOptions(@PathVariable Long id) {
         logger.info("GET /api/v1/rutas/{}/opciones - Listando opciones guardadas", id);
         try {
             java.util.List<com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion> opciones = rutaOpcionService.listOptionsForRuta(id);
-            return ResponseEntity.ok(opciones);
+            java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO> dtos = new java.util.ArrayList<>();
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            for (com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion opcion : opciones) {
+                try {
+                    dtos.add(mapRutaOpcionToDTO(opcion, mapper));
+                } catch (Exception ex) {
+                    logger.warn("No se pudo deserializar opcion id {}: {}", opcion.getId(), ex.getMessage());
+                    dtos.add(com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO.builder()
+                            .id(opcion.getId())
+                            .rutaId(opcion.getRutaId())
+                            .solicitudId(opcion.getSolicitudId())
+                            .opcionIndex(opcion.getOpcionIndex())
+                            .distanciaTotal(opcion.getDistanciaTotal())
+                            .duracionTotalHoras(opcion.getDuracionTotalHoras())
+                            .costoTotal(opcion.getCostoTotal())
+                            .fechaCreacion(opcion.getFechaCreacion())
+                            .build());
+                }
+            }
+            return ResponseEntity.ok(dtos);
         } catch (Exception e) {
             logger.error("Error listando opciones para ruta {}: {}", id, e.getMessage());
             return ResponseEntity.status(500).build();
         }
+    }
+
+    /**
+     * Helper: convierte una entidad RutaOpcion en el DTO legible (sin geometry)
+     */
+    private com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO mapRutaOpcionToDTO(
+            com.backend.tpi.ms_rutas_transportistas.models.RutaOpcion opcion,
+            com.fasterxml.jackson.databind.ObjectMapper mapper) throws Exception {
+
+        java.util.List<java.lang.Long> depositosIds = null;
+        java.util.List<java.lang.String> depositosNombres = null;
+        java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO> tramos = null;
+
+        if (opcion.getDepositosIdsJson() != null && !opcion.getDepositosIdsJson().isBlank()) {
+            depositosIds = mapper.readValue(opcion.getDepositosIdsJson(),
+                    new com.fasterxml.jackson.core.type.TypeReference<java.util.List<java.lang.Long>>() {});
+        }
+        if (opcion.getDepositosNombresJson() != null && !opcion.getDepositosNombresJson().isBlank()) {
+            depositosNombres = mapper.readValue(opcion.getDepositosNombresJson(),
+                    new com.fasterxml.jackson.core.type.TypeReference<java.util.List<java.lang.String>>() {});
+        }
+        if (opcion.getTramosJson() != null && !opcion.getTramosJson().isBlank()) {
+            tramos = mapper.readValue(opcion.getTramosJson(),
+                new com.fasterxml.jackson.core.type.TypeReference<java.util.List<com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO>>() {});
+        }
+
+        // Construir resumen legible
+        String resumen = String.format("Opción %s: %.2f km, %.2f h, %d tramos",
+            opcion.getOpcionIndex() != null ? opcion.getOpcionIndex() : 0,
+            opcion.getDistanciaTotal() != null ? opcion.getDistanciaTotal() : 0.0,
+            opcion.getDuracionTotalHoras() != null ? opcion.getDuracionTotalHoras() : 0.0,
+            tramos != null ? tramos.size() : 0);
+
+        java.util.List<String> resumenTramos = new java.util.ArrayList<>();
+        if (tramos != null) {
+            for (com.backend.tpi.ms_rutas_transportistas.dtos.TramoTentativoDTO t : tramos) {
+            String origen = t.getOrigenDepositoNombre() != null ? t.getOrigenDepositoNombre() : "Origen";
+            String destino = t.getDestinoDepositoNombre() != null ? t.getDestinoDepositoNombre() : "Destino";
+            Double dist = t.getDistanciaKm() != null ? t.getDistanciaKm() : 0.0;
+            Double dur = t.getDuracionHoras() != null ? t.getDuracionHoras() : 0.0;
+            resumenTramos.add(String.format("Tramo %d: %s -> %s (%.2f km, %.2f h)",
+                t.getOrden() != null ? t.getOrden() : 0,
+                origen, destino, dist, dur));
+            }
+        }
+
+        return com.backend.tpi.ms_rutas_transportistas.dtos.RutaOpcionDTO.builder()
+            .id(opcion.getId())
+            .rutaId(opcion.getRutaId())
+            .solicitudId(opcion.getSolicitudId())
+            .opcionIndex(opcion.getOpcionIndex())
+            .distanciaTotal(opcion.getDistanciaTotal())
+            .duracionTotalHoras(opcion.getDuracionTotalHoras())
+            .costoTotal(opcion.getCostoTotal())
+            .depositosIds(depositosIds)
+            .depositosNombres(depositosNombres)
+            .tramos(tramos)
+            .resumen(resumen)
+            .resumenTramos(resumenTramos)
+            .fechaCreacion(opcion.getFechaCreacion())
+            .build();
     }
 
     /**
