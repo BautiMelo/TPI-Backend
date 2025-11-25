@@ -50,4 +50,11 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
 	 * @return Cantidad de solicitudes de la ruta
 	 */
 	long countByRutaId(Long rutaId);
+	
+	/**
+	 * Busca todas las solicitudes de un contenedor
+	 * @param contenedorId ID del contenedor
+	 * @return Lista de solicitudes del contenedor
+	 */
+	java.util.List<Solicitud> findByContenedor_Id(Long contenedorId);
 }

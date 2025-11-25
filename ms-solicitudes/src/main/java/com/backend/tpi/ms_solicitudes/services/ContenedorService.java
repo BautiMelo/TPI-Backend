@@ -34,6 +34,9 @@ public class ContenedorService {
     
     @Autowired
     private EstadoTransicionService estadoTransicionService;
+    
+    @Autowired
+    private com.backend.tpi.ms_solicitudes.repositories.EstadoSolicitudRepository estadoSolicitudRepository;
 
     /**
      * Obtiene todos los contenedores del sistema
@@ -202,7 +205,41 @@ public class ContenedorService {
         
         contenedor.setEstado(estadoDestino);
         log.info("Estado del contenedor ID: {} actualizado exitosamente a {}", id, estadoDestino.getNombre());
-        return contenedorRepository.save(contenedor);
+        Contenedor contenedorActualizado = contenedorRepository.save(contenedor);
+        
+        // Si el contenedor cambió a ENTREGADO, cambiar la solicitud activa a COMPLETADA
+        if ("ENTREGADO".equals(estadoDestino.getNombre())) {
+            try {
+                // Buscar la solicitud activa del contenedor
+                Optional<Solicitud> solicitudOpt = solicitudRepository.findByContenedor_Id(contenedor.getId())
+                    .stream()
+                    .filter(s -> s.getEstado() != null && "EN_TRANSITO".equals(s.getEstado().getNombre()))
+                    .findFirst();
+                
+                if (solicitudOpt.isPresent()) {
+                    Solicitud solicitud = solicitudOpt.get();
+                    
+                    // Buscar el estado COMPLETADA
+                    Optional<com.backend.tpi.ms_solicitudes.models.EstadoSolicitud> estadoCompletadaOpt = 
+                        estadoSolicitudRepository.findByNombre("COMPLETADA");
+                    
+                    if (estadoCompletadaOpt.isPresent()) {
+                        solicitud.setEstado(estadoCompletadaOpt.get());
+                        solicitudRepository.save(solicitud);
+                        log.info("Solicitud ID: {} cambiada automáticamente a COMPLETADA por contenedor ENTREGADO", solicitud.getId());
+                    } else {
+                        log.warn("No se encontró el estado COMPLETADA para actualizar la solicitud");
+                    }
+                } else {
+                    log.debug("No se encontró solicitud EN_TRANSITO para el contenedor ID: {}", contenedor.getId());
+                }
+            } catch (Exception e) {
+                log.error("Error al actualizar estado de solicitud cuando contenedor cambió a ENTREGADO: {}", e.getMessage(), e);
+                // No lanzamos la excepción para no fallar la actualización del contenedor
+            }
+        }
+        
+        return contenedorActualizado;
     }
 
     /**
