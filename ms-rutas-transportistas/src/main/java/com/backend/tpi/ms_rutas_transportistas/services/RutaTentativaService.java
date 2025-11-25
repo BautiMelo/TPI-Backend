@@ -139,8 +139,11 @@ public class RutaTentativaService {
             RutaTentativaDTO directa = calcularRutaTentativaCompleta(
                 origenLat, origenLon, destinoLat, destinoLon,
                 origenDepositoId, destinoDepositoId, null);
-            if (directa.getExitoso()) variantes.add(directa);
+            if (directa.getExitoso()) {
+                variantes.add(directa);
+            }
             
+            // Rutas con depósitos intermedios
             // Obtener depósitos candidatos intermedios
             List<Long> candidatos = depositoService.getKNearestToRoute(origenDepositoId, destinoDepositoId, 3);
             candidatos.remove(origenDepositoId);

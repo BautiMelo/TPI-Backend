@@ -18,6 +18,13 @@ public interface TramoRepository extends JpaRepository<Tramo, Long> {
 	java.util.List<Tramo> findByRutaId(Long rutaId);
 	
 	/**
+	 * Busca todos los tramos de una ruta específica ordenados por orden ascendente
+	 * @param rutaId ID de la ruta
+	 * @return Lista de tramos de la ruta ordenados por campo orden
+	 */
+	java.util.List<Tramo> findByRutaIdOrderByOrdenAsc(Long rutaId);
+	
+	/**
 	 * Cuenta los tramos de una ruta específica
 	 * @param rutaId ID de la ruta
 	 * @return Cantidad de tramos de la ruta

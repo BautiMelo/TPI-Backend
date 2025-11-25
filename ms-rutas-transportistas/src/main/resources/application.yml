@@ -49,5 +49,5 @@ app:
   osrm:
     base-url: http://osrm:5000  # Use local OSRM instance in Docker
   rutas:
-    estadia-deposito-horas: 2.0  # Tiempo estimado de estadía en depósitos (en horas)
+    estadia-deposito-horas: 24.0  # Tiempo estimado de estadía en depósitos (en horas)
 

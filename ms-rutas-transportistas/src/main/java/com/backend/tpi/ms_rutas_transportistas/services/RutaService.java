@@ -62,7 +62,7 @@ public class RutaService {
     @org.springframework.beans.factory.annotation.Value("${app.solicitudes.base-url:http://ms-solicitudes:8080}")
     private String solicitudesBaseUrl;
 
-    @org.springframework.beans.factory.annotation.Value("${app.rutas.estadia-deposito-horas:2.0}")
+    @org.springframework.beans.factory.annotation.Value("${app.rutas.estadia-deposito-horas:24.0}")
     private double estadiaDepositoHoras;
 
     // Manual mapping - ModelMapper removed
@@ -794,8 +794,29 @@ public class RutaService {
         if (rutaTentativa.getTramos() != null) {
             logger.info("Creando {} tramos para ruta {} con fechas estimadas", rutaTentativa.getTramos().size(), ruta.getId());
             
-            // Fecha de inicio: ahora (momento de confirmación de la ruta)
-            java.time.LocalDateTime fechaActual = java.time.LocalDateTime.now();
+            // Obtener fecha de creación de la solicitud
+            java.time.LocalDateTime fechaCreacionSolicitud = java.time.LocalDateTime.now();
+            try {
+                String token = extractBearerToken();
+                org.springframework.http.ResponseEntity<com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO> solicitudEntity = 
+                    solicitudesClient.get()
+                        .uri("/api/v1/solicitudes/{id}", solicitudId)
+                        .headers(h -> { if (token != null) h.setBearerAuth(token); })
+                        .retrieve()
+                        .toEntity(com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO.class);
+                
+                com.backend.tpi.ms_rutas_transportistas.dtos.SolicitudIntegrationDTO solicitud = solicitudEntity.getBody();
+                if (solicitud != null && solicitud.getFechaCreacion() != null) {
+                    fechaCreacionSolicitud = solicitud.getFechaCreacion();
+                    logger.info("Fecha de creación de solicitud obtenida: {}", fechaCreacionSolicitud);
+                }
+            } catch (Exception e) {
+                logger.warn("No se pudo obtener fecha de creación de solicitud, usando fecha actual: {}", e.getMessage());
+            }
+            
+            // Fecha de inicio: al día siguiente de la creación de la solicitud a las 00:00
+            java.time.LocalDateTime fechaActual = fechaCreacionSolicitud.plusDays(1).toLocalDate().atStartOfDay();
+            logger.info("Fecha de inicio de primer tramo (día siguiente a creación): {}", fechaActual);
             
             int creados = 0;
             for (TramoTentativoDTO t : rutaTentativa.getTramos()) {
@@ -893,15 +914,22 @@ public class RutaService {
                 
                 // Actualizar fecha actual para el próximo tramo
                 // Si el tramo termina en un depósito (no es el último tramo), agregar tiempo de estadía
-                if (t.getDestinoDepositoId() != null) {
+                Long depositoDestinoId = t.getDestinoDepositoId();
+                logger.warn("    ===>>> DEBUG ANTES DEL IF: destinoDepositoId={}, tipo={}", 
+                    depositoDestinoId, depositoDestinoId != null ? depositoDestinoId.getClass().getName() : "null");
+                
+                if (depositoDestinoId != null) {
+                    logger.warn("    ===>>> DENTRO DEL IF: agregando {} horas de estadía", estadiaDepositoHoras);
                     // Hay un depósito de destino, agregar tiempo de estadía
                     long minutosEstadia = (long) (estadiaDepositoHoras * 60);
                     fechaActual = fechaFinTramo.plusMinutes(minutosEstadia);
-                    logger.info("    Estadía en depósito {}: {} horas. Próximo inicio: {}", 
-                        t.getDestinoDepositoId(), estadiaDepositoHoras, fechaActual);
+                    logger.warn("    ===>>> Estadía aplicada en depósito {}: {} horas. Próximo inicio: {}", 
+                        depositoDestinoId, estadiaDepositoHoras, fechaActual);
                 } else {
+                    logger.warn("    ===>>> DENTRO DEL ELSE: sin estadía");
                     // Es el último tramo (destino final), no hay estadía
                     fechaActual = fechaFinTramo;
+                    logger.warn("    ===>>> Sin estadía (destino final). Próximo inicio: {}", fechaActual);
                 }
             }
             logger.info("Total tramos creados: {} con fechas estimadas calculadas", creados);
@@ -932,7 +960,10 @@ public class RutaService {
             logger.warn("No se pudo notificar a ms-solicitudes para solicitud {}: {}", solicitudId, e.getMessage());
         }
 
-        // Calcular automáticamente los costos aproximados de todos los tramos
+        // NO calcular costos aquí porque sobrescribe las fechas estimadas que ya fueron calculadas correctamente
+        // Los costos se pueden calcular posteriormente de forma manual si es necesario
+        // Comentado para preservar las fechas estimadas con estadía de 24 horas
+        /*
         try {
             logger.info("Calculando costos aproximados automáticamente para ruta {}", ruta.getId());
             calcularCostoRuta(ruta.getId());
@@ -943,6 +974,7 @@ public class RutaService {
         } catch (Exception e) {
             logger.warn("No se pudieron calcular los costos aproximados automáticamente: {}", e.getMessage());
         }
+        */
 
         return toDto(ruta);
     }
